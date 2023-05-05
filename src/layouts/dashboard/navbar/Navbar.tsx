@@ -32,7 +32,13 @@ const Navbar = ({ isNavOpen, onNavClose }:NavbarProps) => {
     const isLargeScreen = useResponsive("up", "lg");
 
     return (
-        <Box component="nav">
+        <Box
+            component="nav"
+            sx={{
+                flexShrink: { lg: 0 },
+                width: { lg: NAV_WIDTH },
+            }}
+        >
             <Drawer
                 open={isNavOpen}
                 onClose={onNavClose}
