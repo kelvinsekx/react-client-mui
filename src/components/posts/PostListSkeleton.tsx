@@ -2,9 +2,6 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 import CardContent from '@mui/material/CardContent';
 import Skeleton from '@mui/material/Skeleton';
-// import { POST_PREVIEW_WIDTH } from "./PostPreview.tsx";
-
-const POST_PREVIEW_WIDTH = 800;
 
 interface PostListSkeletonProps {
     amount?: number;
@@ -23,7 +20,7 @@ const PostListSkeleton = (props: PostListSkeletonProps) => {
     const { amount = 10 } = props;
 
     const renderSkeletonList = Array.from({ length: amount }).map((_, idx) => (
-        <Card key={idx} sx={{ maxWidth: POST_PREVIEW_WIDTH, marginBottom: 1 }}>
+        <Card key={idx} sx={{ marginBottom: 3 }}>
             <CardHeader
                 avatar={<Skeleton animation="pulse" variant="circular" width={40} height={40} />}
                 title={<Skeleton
