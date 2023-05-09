@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import LangCorrectAPI from "../api";
 import PostList from "../components/posts/PostList.tsx";
-import { Container } from "@mui/material";
+import { Button, Container, Stack, Typography } from "@mui/material";
 import PostListSkeleton from "../components/posts/PostListSkeleton.tsx";
+import CreateIcon from '@mui/icons-material/Create';
 
 export interface PostInterface {
     id: number;
@@ -60,10 +61,19 @@ const PostPage = () => {
         getPosts();
     }, []);
 
-    const renderPosts = isLoading ? <PostListSkeleton /> : <PostList posts={posts} />;
+    const renderPosts = isLoading ? <PostListSkeleton/> : <PostList posts={posts}/>;
 
     return (
         <Container>
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+                <Typography variant="h4" gutterBottom>
+                    Posts
+                </Typography>
+                <Button variant="contained" startIcon={<CreateIcon/>}>
+                    New Post
+                </Button>
+            </Stack>
+
             {renderPosts}
         </Container>
     );

@@ -2,30 +2,33 @@ import React from 'react';
 
 import { PostInterface } from "../../pages/PostPage.tsx";
 import {
-    Avatar, Button,
+    Avatar,
+    Button,
     Card,
-    CardActionArea, CardActions,
+    CardActionArea,
+    CardActions,
     CardContent,
     CardHeader,
+    Chip,
     IconButton,
+    ListItemIcon,
+    ListItemText,
     Menu,
     MenuItem,
+    Stack,
+    Tooltip,
     Typography
 } from "@mui/material";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
+import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import PermIdentityIcon from '@mui/icons-material/PermIdentity';
+import FlagIcon from '@mui/icons-material/Flag';
+import LanguageIcon from '@mui/icons-material/Language';
 
 interface PostPreviewInterface {
     post: PostInterface;
 }
-
-// TODO: commented out until I figure out a proper way to go about this....
-// Fast refresh only works when a file only export components. 
-// Use a new file to share constant or functions between 
-// components.eslint(react-refresh/only-export-components)
-// export const POST_PREVIEW_WIDTH = 800;
-
-const POST_PREVIEW_WIDTH = 800;
 
 const PostPreview = ({ post }: PostPreviewInterface) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -41,7 +44,7 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
     const { user, meta, content, total_correctors } = post;
 
     return (
-        <Card sx={{ marginBottom: 3, width: { lg: POST_PREVIEW_WIDTH } }} >
+        <Card sx={{ marginBottom: 3 }}>
             <CardHeader
                 avatar={
                     <Avatar aria-label={user.username}>
@@ -71,23 +74,54 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
                     'aria-labelledby': 'basic-button',
                 }}
             >
-                <MenuItem onClick={handleClose}>Save</MenuItem>
-                <MenuItem onClick={handleClose}>Visit profile</MenuItem>
-                <MenuItem onClick={handleClose}>Report post</MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <BookmarkBorderIcon />
+                    </ListItemIcon>
+                    <ListItemText>
+                        Save
+                    </ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <PermIdentityIcon />
+                    </ListItemIcon>
+                    <ListItemText>
+                        View profile
+                    </ListItemText>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <FlagIcon />
+                    </ListItemIcon>
+                    <ListItemText>
+                        Report post
+                    </ListItemText>
+                </MenuItem>
             </Menu>
             <CardActionArea>
                 <CardContent>
                     <Typography gutterBottom variant="h5" component="div">
                         {content.title}
                     </Typography>
-                    <Typography variant="body2" color="text.secondary" style={{ display: "inline-block", whiteSpace: "pre-line" }} >
+                    <Typography style={{ display: "inline-block", whiteSpace: "break-spaces" }}>
                         {content.text}
                     </Typography>
                 </CardContent>
             </CardActionArea>
-            <CardActions sx={{ display: "flex", justifyContent: "end" }}>
-                <Button variant="outlined" startIcon={<CheckCircleOutlineIcon />}>
-                    {total_correctors}
+            <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
+                <Stack direction="row" spacing={1}>
+                    <Tooltip arrow title={post.language.en_name}>
+                        <Chip icon={<LanguageIcon />} label={post.language.code} size="small" variant="outlined" />
+                    </Tooltip>
+                    <Tooltip arrow title="Corrections">
+                        <Chip icon={<CheckCircleOutlineIcon />} size="small" label={total_correctors}
+                            variant="outlined" />
+                    </Tooltip>
+                </Stack>
+                <Button size="small" variant="outlined"
+                    startIcon={<CheckCircleOutlineIcon />}>
+                    Correct
                 </Button>
             </CardActions>
         </Card>
