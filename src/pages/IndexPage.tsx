@@ -1,29 +1,35 @@
-import { Typography, Box, Grid, Container } from '@mui/material';
+import { Typography, Box, Grid, Container, Button } from '@mui/material';
 
 const IndexPage = () => {
     return (
-        <Box
-            component="section"
-            sx={{ mt: 5, mb: 5 }}
-        >
-            <Container sx={{ display: 'flex' }}>
-                <Grid container spacing={5}>
-                    <Grid item xs={12} md={6}>
+        <Container>
+            <Box component="section" py={6}>
+                <Grid container rowSpacing={{ xs: 5, md: 0 }} textAlign={{ xs: "center", md: "left" }} alignItems="center">
+                    <Grid item xs={12} md={6} order={{ xs: 2, md: 1 }}>
+                        <Typography variant="h3" color="primary" sx={{ fontWeight: "bold" }}>
+                            Write. Learn. Grow.
+                        </Typography>
+                        <Typography variant="h6" paragraph>
+                            Master grammar, spelling, and syntax in the language(s) you’re learning through direct feedback on your writing from fluent, native speakers.
+                        </Typography>
+                        <Button variant="contained" color="primary">
+                            Start learning ➔
+                        </Button>
+                        <Button color="primary">
+                            Browse as guest
+                        </Button>
+                    </Grid>
+                    <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
                         <Box
                             component="img"
                             src="src/assets/index/image-index.svg"
                             alt="img-index"
-                            sx={{ height: 250 }}
+                            sx={{ width: { xs: "80%", md: "100%" }, height: "auto" }}
                         />
                     </Grid>
-                    <Grid item xs={12} md={6}>
-                        <Typography variant="h5">
-                            Master grammar, spelling, and syntax in the language(s) you’re learning through direct feedback on your writing from fluent, native speakers.
-                        </Typography>
-                    </Grid>
                 </Grid>
-            </Container>
-        </Box>
+            </Box >
+        </Container >
     );
 }
 
