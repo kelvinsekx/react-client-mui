@@ -1,0 +1,12 @@
+del {
+    text-decoration: line-through;
+    background: #ffe6e6;
+    color: #555;
+    padding: 2px;
+}
+
+ins {
+    text-decoration: none;
+    background: #e6ffe6;
+    padding: 2px;
+}

@@ -3,6 +3,7 @@ import DashboardLayout from './layouts/dashboard/DashboardLayout';
 import PostPage from "./pages/PostPage.tsx";
 import DashboardHomePage from "./pages/DashboardHomePage.tsx";
 import IndexPage from './pages/IndexPage.tsx';
+import PostDetailPage from './pages/PostDetailPage.tsx';
 
 const RoutesList = () => {
     return useRoutes([
@@ -13,6 +14,7 @@ const RoutesList = () => {
                 { path: "", element: <DashboardHomePage /> },
                 { path: "teach", element: <PostPage /> },
                 { path: "learn", element: <PostPage /> },
+                { path: "journals/:slug", element: <PostDetailPage /> },
             ]
         },
         {

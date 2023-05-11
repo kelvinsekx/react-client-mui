@@ -1,4 +1,4 @@
-import { useTheme, Breakpoint } from '@mui/material/styles';
+import { Breakpoint, useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 type QueryType = 'up' | 'down' | 'between' | 'only';
@@ -25,8 +25,5 @@ export default function useResponsive(query: QueryType, start: Breakpoint, end?:
     };
 
     const mediaQuery = createMediaQueryString();
-    const result = useMediaQuery(mediaQuery);
-    // TODO: Remove this console log
-    console.log("🚀 ~ file: useResponsive.ts:29 ~ useResponsive ~ result:", result);
-    return result;
+    return useMediaQuery(mediaQuery);
 }

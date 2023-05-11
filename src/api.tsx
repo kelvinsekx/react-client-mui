@@ -28,6 +28,12 @@ class LangCorrectAPI {
         console.log("🚀 ~ file: api.tsx:29 ~ LangCorrectAPI ~ getPosts ~ posts:", posts);
         return posts;
     }
+
+    static async getPost(slug) {
+        console.log("🚀 ~ file: api.tsx:33 ~ LangCorrectAPI ~ getPost ~ slug:", slug);
+        const post = await this.request(`journals?meta.slug=${slug}`);
+        return post;
+    }
 }
 
 export default LangCorrectAPI;

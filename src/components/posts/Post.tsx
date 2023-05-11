@@ -5,10 +5,9 @@ import {
     Avatar,
     Button,
     Card,
-    CardActionArea,
     CardActions,
     CardHeader,
-    Chip,
+    Chip, Divider,
     IconButton,
     ListItemIcon,
     ListItemText,
@@ -20,17 +19,25 @@ import {
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
 import FlagIcon from '@mui/icons-material/Flag';
 import LanguageIcon from '@mui/icons-material/Language';
-import { Link } from 'react-router-dom';
-import Article from "./Article.tsx";
+import Article from './Article.tsx';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 interface PostPreviewInterface {
     post: PostInterface;
 }
 
-const PostPreview = ({ post }: PostPreviewInterface) => {
+/**
+ * Renders the post. This component differs from PostPreview in that there is no clickable section.
+ *
+ * Props:
+ * - post
+ *
+ * {PostDetailPage} -> Post
+ */
+const Post = ({ post }: PostPreviewInterface) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
@@ -44,7 +51,7 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
     const { user, meta, content, total_correctors } = post;
 
     return (
-        <Card sx={{ marginBottom: 3 }}>
+        <Card>
             <CardHeader
                 avatar={
                     <Avatar aria-label={user.username}>
@@ -65,6 +72,7 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
                 title={user.username}
                 subheader={meta.created}
             />
+            <Divider />
             <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
@@ -76,18 +84,27 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
             >
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                        <BookmarkBorderIcon/>
+                        <EditIcon/>
                     </ListItemIcon>
                     <ListItemText>
-                        Save
+                        Edit
                     </ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                        <PermIdentityIcon/>
+                        <DeleteIcon/>
                     </ListItemIcon>
                     <ListItemText>
-                        View profile
+                        Delete
+                    </ListItemText>
+                </MenuItem>
+                <Divider />
+                <MenuItem onClick={handleClose}>
+                    <ListItemIcon>
+                        <BookmarkBorderIcon/>
+                    </ListItemIcon>
+                    <ListItemText>
+                        Save
                     </ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
@@ -99,9 +116,7 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
                     </ListItemText>
                 </MenuItem>
             </Menu>
-            <CardActionArea component={Link} to={`/journals/${meta.slug}`}>
-                <Article title={content.title} text={content.text}/>
-            </CardActionArea>
+            <Article title={content.title} text={content.text} nativeText={content.native_text}/>
             <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
                 <Stack direction="row" spacing={1}>
                     <Tooltip arrow title={post.language.en_name}>
@@ -121,4 +136,4 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
     );
 };
 
-export default PostPreview;
+export default Post;
