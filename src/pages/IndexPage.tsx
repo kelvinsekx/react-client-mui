@@ -38,8 +38,8 @@ const SectionTwo = () => (
         <Box component="section" py={6} bgcolor="primary.main" color="white">
             <Container>
                 <Stack>
-                    <Grid container justifyContent="center">
-                        <Grid item xs={12} md={8}>
+                    <Grid container justifyContent="center" sx={{ mb: 5 }}>
+                        <Grid item xs={12} md={8} order={{ xs: 2, md: 1 }} sx={{ pr: 10 }}>
                             <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }} >
                                 Getting corrections on your writing is really easy
                             </Typography>
@@ -47,7 +47,7 @@ const SectionTwo = () => (
                                 Once you're done writing in your studying language, we will automatically match it with native speakers.
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} md={4}>
+                        <Grid item xs={12} md={4} order={{ xs: 1, md: 2 }} textAlign="center">
                             <Box
                                 component="img"
                                 src="src/assets/index/illustration-1.webp"
