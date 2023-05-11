@@ -46,10 +46,13 @@ const PostDetailPage = () => {
                 </ButtonGroup>
             </Stack>
 
-            <Stack>
+            <Stack gap={5}>
                 {mockCorrections.results.map(correction => (
-                    <UserCorrections key={correction.username} username={correction.username}
-                                     corrections={correction.corrections}/>
+                    <UserCorrections
+                        key={correction.username}
+                        username={correction.username}
+                        corrections={correction.corrections}
+                        comments={correction.comments}/>
                 ))}
             </Stack>
         </>
