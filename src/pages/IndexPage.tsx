@@ -1,4 +1,4 @@
-import { Typography, Box, Grid, Container, Button } from '@mui/material';
+import { Typography, Box, Grid, Container, Button, Stack } from '@mui/material';
 
 const SectionOne = () => (
     <>
@@ -31,10 +31,29 @@ const SectionOne = () => (
     </>
 )
 
+const SectionTwo = () => (
+    <>
+        <Box component="section" py={6}>
+            <Stack>
+                <Grid container alignItems="center" justifyContent="center">
+                    <Grid item xs={12} md={8}>Getting corrections on your writing is really easy</Grid>
+                    <Grid item xs={12} md={4}>I'm an image</Grid>
+                </Grid>
+                <Grid container alignItems="center" justifyContent="center">
+                    <Grid item xs={12} md={4}>Register an account</Grid>
+                    <Grid item xs={12} md={4}>Write a journal entry</Grid>
+                    <Grid item xs={12} md={4}>Review corrections</Grid>
+                </Grid>
+            </Stack>
+        </Box>
+    </>
+)
+
 const IndexPage = () => {
     return (
         <Container>
             <SectionOne />
+            <SectionTwo />
         </Container >
     );
 }
