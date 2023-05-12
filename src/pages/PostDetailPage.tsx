@@ -16,9 +16,8 @@ const PostDetailPage = () => {
 
     useEffect(() => {
         async function fetchPost() {
-            const resp = await LangCorrectAPI.getPost(slug);
-            const article = resp[0];
-            setPost(article);
+            const post = await LangCorrectAPI.getPost(slug);
+            setPost(post)
         }
 
         fetchPost();
