@@ -88,11 +88,106 @@ const SectionTwo = () => (
     </>
 )
 
+const SectionThree = () => (
+    <>
+        <Box component="section" py={6} >
+            <Container>
+                <Stack>
+                    <Grid container justifyContent="center">
+                        <Grid item xs={12} md={4}>
+                            <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }} >
+                                Built for serious learners
+                            </Typography>
+                            <Typography variant="h6" paragraph>
+                                Ditch all the unnecessary distractions on other language-learning platforms and spend more time focusing on your new language(s).
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }} >
+                                Straight to the point
+                            </Typography>
+                            <Typography variant="h6" paragraph>
+                                Get corrections on your writing quickly – Simply write a journal in your target language, publish it, and let the LangCorrect community do their thing to provide corrections for you.
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }} >
+                                Constantly improving
+                            </Typography>
+                            <Typography variant="h6" paragraph>
+                                The LangCorrect platform is getting better all the time. Consistent, direct feedback from our user base and frequent updates allow us to keep things fresh and interesting for our users.
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                    <Grid container justifyContent="center">
+                        <Grid item xs={12} md={4}>
+                            <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }} >
+                                Learn with friends
+                            </Typography>
+                            <Typography variant="h6" paragraph>
+                                Invite your friends to join LangCorrect and challenge one another to see who can earn the highest Rankings and Streaks.
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }} >
+                                Functionality with learning in mind
+                            </Typography>
+                            <Typography variant="h6" paragraph>
+                                From writing prompts to automatic, color-coded correction highlighting, learning to write in another language has never been this easy.
+                            </Typography>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }} >
+                                Built-in messaging
+                            </Typography>
+                            <Typography variant="h6" paragraph>
+                                Take a break to relax and chat with other learners using the messaging feature. This is a great way to make new friends and meet people from around the globe.
+                            </Typography>
+                        </Grid>
+                    </Grid>
+                </Stack>
+            </Container>
+        </Box>
+    </>
+)
+
+const SectionFour = () => (
+    <>
+        <Box component="section" py={6} bgcolor="primary.main" color="white">
+            <Container>
+                <Stack>
+                    <Grid container justifyContent="center" sx={{ mb: 5 }}>
+                        <Grid item xs={12} md={8} sx={{ pr: 10 }}>
+                            <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1 }} >
+                                Join today and experience language-learning, redefined.
+                            </Typography>
+                            <Typography variant="h6" paragraph>
+                                Whether you’re fluent or just starting out, we’d be thrilled to have you join the LangCorrect community. We’re all learners and we understand that innd confidence in a new language, it’s important to make mistakes. LangCorrect’s wonderful users are ready to help you, provide support, and answer your burning questions so that you can reach the level you want to be at in your new language.
+                            </Typography>
+                            <Button color="inherit" variant="outlined">Start learning</Button>
+                        </Grid>
+                        <Grid item xs={12} md={4} textAlign="center">
+                            <Box
+                                component="img"
+                                src="src/assets/index/index-join.webp"
+                                alt="illustration-1"
+                                sx={{ width: { xs: "80%", md: "100%" }, height: "auto" }}
+                            />
+                        </Grid>
+                    </Grid>
+                </Stack>
+            </Container>
+        </Box>
+    </>
+)
+
 const IndexPage = () => {
     return (
         <Box>
             <SectionOne />
             <SectionTwo />
+            <SectionThree />
+            <SectionFour />
         </Box >
     );
 }
