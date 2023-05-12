@@ -1,4 +1,4 @@
-import { Typography, Box, Grid, Container, Button, Stack } from '@mui/material';
+import { Typography, Box, Grid, Container, Button, Stack, List, ListItem, ListItemText, FormControl, Select, MenuItem, FormGroup } from '@mui/material';
 
 const SectionOne = () => (
     <>
@@ -181,6 +181,87 @@ const SectionFour = () => (
     </>
 )
 
+const Footer = () => (
+    <>
+        <Box component="footer" py={6} >
+            <Container>
+                <Stack>
+                    <Grid container justifyContent="center">
+                        <Grid item xs={12} md={4}>
+                            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
+                                About
+                            </Typography>
+                            <List>
+                                <ListItem disableGutters>
+                                    <ListItemText primary="Changelog" />
+                                </ListItem>
+                                <ListItem disableGutters>
+                                    <ListItemText primary="Credits" />
+                                </ListItem>
+                                <ListItem disableGutters>
+                                    <ListItemText primary="Logo Breakdown" />
+                                </ListItem>
+                            </List>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
+                                Legal
+                            </Typography>
+                            <List>
+                                <ListItem disableGutters>
+                                    <ListItemText primary="Privacy Policy" />
+                                </ListItem>
+                                <ListItem disableGutters>
+                                    <ListItemText primary="Community Guidelines" />
+                                </ListItem>
+                                <ListItem disableGutters>
+                                    <ListItemText primary="Terms of Service" />
+                                </ListItem>
+                            </List>
+                        </Grid>
+                        <Grid item xs={12} md={4}>
+                            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
+                                Site Languages
+                            </Typography>
+                            <Typography variant="subtitle1" >
+                                Don't see your language here? Help us translate the site!
+                            </Typography>
+                            <FormControl fullWidth>
+                                <FormGroup row>
+                                    <Select
+                                        label="Age"
+                                        onChange={() => console.log("hi")}
+                                        sx={{ width: "80%" }}
+                                    >
+                                        <MenuItem>English (en)</MenuItem>
+                                        <MenuItem>suomi (fi)</MenuItem>
+                                        <MenuItem>français (fr)</MenuItem>
+                                    </Select>
+                                    <Button disableElevation>Go</Button>
+                                </FormGroup>
+                            </FormControl>
+                        </Grid>
+                    </Grid>
+                    <Grid container justifyContent="space-between" sx={{ borderTop: 1 }}>
+                        <Typography>© 2023 LangCorrect - All rights reserved.</Typography>
+                        <List component={Stack} direction="row">
+                            <ListItem>
+                                <ListItemText primary="Twitter" />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary="Instagram" />
+                            </ListItem>
+                            <ListItem>
+                                <ListItemText primary="Discord" />
+                            </ListItem>
+                        </List>
+                    </Grid>
+                </Stack>
+            </Container>
+        </Box>
+    </>
+)
+
 const IndexPage = () => {
     return (
         <Box>
@@ -188,6 +269,7 @@ const IndexPage = () => {
             <SectionTwo />
             <SectionThree />
             <SectionFour />
+            <Footer />
         </Box >
     );
 }
