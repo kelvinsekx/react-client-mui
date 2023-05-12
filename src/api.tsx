@@ -11,7 +11,7 @@ class LangCorrectAPI {
 
         let headers;
 
-        if(LangCorrectAPI.token) {
+        if (LangCorrectAPI.token) {
             headers = { Authorization: `Bearer ${LangCorrectAPI.token}` };
         }
 
@@ -22,7 +22,7 @@ class LangCorrectAPI {
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 console.error("API Error:", err.response);
-                const message = err.response?.data.error.message;
+                const message = err.response?.data?.detail;
                 throw Array.isArray(message) ? message : [message];
             } else {
                 throw new Error("An error occurred other than axios")
@@ -44,12 +44,12 @@ class LangCorrectAPI {
 
 
     // POSTS
-    
+
     static async getPosts() {
-       return  await this.request("journals");
+        return await this.request("journals");
     }
 
-    static async getPost(slug: string) {
+    static async getPost(slug: string | undefined) {
         return await this.request(`journals/${slug}`);
     }
 }

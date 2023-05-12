@@ -1,0 +1,97 @@
+import { createContext, useEffect, useState } from "react";
+import LangCorrectAPI from "../api";
+import decode from "jwt-decode";
+
+interface AuthContextInterface {
+    currentUser: null | [];
+    saveTokens: (tokens: { access: string; refresh: string; }) => void;
+    logout: () => void;
+    accessToken: string | null;
+    getAccessTokenFromLocalStorage: () => string | null;
+
+}
+
+const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
+
+export const AuthContextProvider = ({ children }: { children: React.ReactNode; }) => {
+    const [accessToken, setAccessToken] = useState<string | null>(getAccessTokenFromLocalStorage());
+    const [refreshToken, setRefreshToken] = useState<string | null>(getRefreshTokenFromLocalStorage());
+
+    const [currentUser, setCurrentUser] = useState({
+        data: null,
+        infoLoaded: false
+    });
+
+    function saveTokens(tokens: { access: string; refresh: string; }) {
+        const { access, refresh } = tokens;
+        localStorage.setItem("LC_ACCESS_TOKEN", access);
+        localStorage.setItem("LC_REFRESH_TOKEN", refresh);
+        setAccessToken(access);
+        setRefreshToken(refresh);
+    }
+
+    function clearTokens() {
+        localStorage.removeItem("LC_ACCESS_TOKEN");
+        localStorage.removeItem("LC_REFRESH_TOKEN");
+    }
+
+    function logout() {
+        clearTokens();
+        setCurrentUser({
+            data: null,
+            infoLoaded: false
+        })
+    }
+
+
+    function getAccessTokenFromLocalStorage() {
+        return localStorage.getItem("LC_ACCESS_TOKEN");
+    }
+
+    function getRefreshTokenFromLocalStorage() {
+        return localStorage.getItem("LC_REFRESH_TOKEN");
+    }
+
+    useEffect(function loadUserInfo() {
+        async function getCurrentUser() {
+            if (accessToken) {
+                try {
+                    const { username } = decode(accessToken);
+                    LangCorrectAPI.token = accessToken;
+                    const fetchedUser = await LangCorrectAPI.getUser(username);
+
+                    setCurrentUser({
+                        infoLoaded: true,
+                        data: fetchedUser
+                    });
+                } catch (err) {
+                    console.error("App loadUserInfo: problem loading", err);
+                    setCurrentUser({
+                        infoLoaded: true,
+                        data: null
+                    });
+                }
+            } else {
+                setCurrentUser({
+                    infoLoaded: true,
+                    data: null
+                });
+            }
+        }
+        getCurrentUser();
+    }, [accessToken, refreshToken]);
+
+
+    return (
+        <AuthContext.Provider value={{
+            currentUser: currentUser.data,
+            saveTokens,
+            logout,
+            accessToken,
+        }}>
+            {children}
+        </AuthContext.Provider>
+    );
+};
+
+export default AuthContext;
