@@ -1,38 +1,56 @@
-// @ts-nocheck
-// TODO: Add proper checks when using the real backend API instead of JSON server
-
 import axios from "axios";
 
 const { VITE_API_BASE_URL } = import.meta.env;
 
 class LangCorrectAPI {
-    static token;
+    static token: string;
 
-    static async request(endpoint, data = {}, method = "get") {
+    static async request(endpoint: string, data = {}, method = "get") {
         console.debug("API Call:", endpoint, data, method);
         const url = `${VITE_API_BASE_URL}/${endpoint}`;
-        const headers = { Authorization: `Bearer ${LangCorrectAPI.token}` };
+
+        let headers;
+
+        if(LangCorrectAPI.token) {
+            headers = { Authorization: `Bearer ${LangCorrectAPI.token}` };
+        }
+
         const params = (method === "get") ? data : {};
 
         try {
             return (await axios({ url, method, data, params, headers })).data;
         } catch (err) {
-            console.error("API Error:", err.response);
-            const message = err.response.data.error.message;
-            throw Array.isArray(message) ? message : [message];
+            if (axios.isAxiosError(err)) {
+                console.error("API Error:", err.response);
+                const message = err.response?.data.error.message;
+                throw Array.isArray(message) ? message : [message];
+            } else {
+                throw new Error("An error occurred other than axios")
+            }
         }
     }
 
-    static async getPosts(term = null) {
-        const posts = await this.request("journals", { searchTerm: term });
-        console.log("🚀 ~ file: api.tsx:29 ~ LangCorrectAPI ~ getPosts ~ posts:", posts);
-        return posts;
+    // AUTH
+
+    static async login(data: { username: string; password: string; }) {
+        return await this.request("token/", data, "post");
     }
 
-    static async getPost(slug) {
-        console.log("🚀 ~ file: api.tsx:33 ~ LangCorrectAPI ~ getPost ~ slug:", slug);
-        const post = await this.request(`journals?meta.slug=${slug}`);
-        return post;
+    // USER
+
+    static async getUser(username: string) {
+        return await this.request(`users/${username}`);
+    }
+
+
+    // POSTS
+    
+    static async getPosts() {
+       return  await this.request("journals");
+    }
+
+    static async getPost(slug: string) {
+        return await this.request(`journals/${slug}`);
     }
 }
 
