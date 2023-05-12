@@ -1,13 +1,11 @@
 import { Alert, Button, Stack, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 
-const initialState = {
-    "username": "",
-    "password": ""
-};
-
-interface FormDataInterface {
+interface FormDataInterface extends FieldValues {
     username: string;
     password: string;
 }
@@ -15,6 +13,11 @@ interface FormDataInterface {
 interface LoginFormProps {
     onLogin: (formData: FormDataInterface) => void;
 }
+
+const validationSchema = yup.object().shape({
+    username: yup.string().required(),
+    password: yup.string().min(6).max(32).required(),
+});
 
 
 /**
@@ -28,52 +31,51 @@ interface LoginFormProps {
 
 const LoginForm = ({ onLogin }: LoginFormProps) => {
     const navigate = useNavigate();
-    const [formData, setFormData] = useState(initialState);
-    const [errors, setErrors] = useState([]);
 
-    const handleChange = (evt: React.ChangeEvent<HTMLInputElement>) => {
-        const { name, value } = evt.target;
+    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+        resolver: yupResolver(validationSchema),
+    });
 
-        setFormData(prev => ({
-            ...prev,
-            [name]: value
-        }));
-    };
+    const [alertError, setAlertError] = useState([]);
 
-    const handleSubmit = async (evt: React.FormEvent<HTMLFormElement>) => {
-        evt.preventDefault();
+    const onSubmitHandler: SubmitHandler<FieldValues> = async (data) => {
+        setAlertError([]);
 
         try {
+            const formData = data as FormDataInterface;
             await onLogin(formData);
             navigate("/");
-        } catch (err) {
-            setErrors(err);
+            reset();
+        } catch (err: any) {
+            setAlertError(err);
         }
     };
 
     return (
         <>
-            <form method="post" onSubmit={handleSubmit}>
+            <form method="post" onSubmit={handleSubmit(onSubmitHandler)}>
 
-                {errors && errors.map((er, idx) => <Alert key={idx} severity="warning" sx={{ mb: 3 }}>{er}</Alert>)}
+                {alertError && alertError.map((er, idx) =>
+                    (<Alert key={idx} severity="warning" sx={{ mb: 3 }}>{er}</Alert>)
+                )}
 
                 <Stack spacing={3} mb={3}>
 
                     <TextField
-                        name="username"
-                        label="username"
-                        onChange={handleChange}
-                        value={formData.username}
                         required
+                        {...register("username")}
+                        label="username"
+                        error={!!errors.username}
+                        helperText={errors.username && String(errors.username.message)}
                     />
 
                     <TextField
-                        name="password"
+                        required
+                        {...register("password")}
                         label="Password"
                         type='password'
-                        onChange={handleChange}
-                        value={formData.password}
-                        required
+                        error={!!errors.password}
+                        helperText={errors.password && String(errors.password.message)}
                     />
                 </Stack>
 
@@ -85,8 +87,6 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                 </Stack>
 
             </form>
-
-
         </>);
 };
 
