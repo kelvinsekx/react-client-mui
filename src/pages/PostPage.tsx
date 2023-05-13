@@ -45,26 +45,30 @@ export interface PostInterface {
  */
 
 const PostPage = ({ title }: { title: string; }) => {
-    const { accessToken } = useAuthContext();
     const [posts, setPosts] = useState<PostInterface[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const getPosts = async () => {
-        try {
-            if (accessToken) {
-                LangCorrectAPI.token = accessToken;
-            }
-            const { results } = await LangCorrectAPI.getPosts();
-            setPosts(results);
-            setIsLoading(false);
-        } catch (err) {
-            console.log("🚀 ~ file: PostPage.tsx:44 ~ getPosts ~ err:", err);
-        }
-    };
+    const context = useAuthContext();
+    if (!context) return null;
+    const { accessToken } = context;
 
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
+        const getPosts = async () => {
+            try {
+                if (accessToken) {
+                    LangCorrectAPI.token = accessToken;
+                }
+                const { results } = await LangCorrectAPI.getPosts();
+                setPosts(results);
+                setIsLoading(false);
+            } catch (err) {
+                console.log("🚀 ~ file: PostPage.tsx:44 ~ getPosts ~ err:", err);
+            }
+        };
         getPosts();
-    }, []);
+    }, [accessToken]);
 
     const renderPosts = isLoading ? <PostListSkeleton/> : <PostList posts={posts}/>;
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet } from "react-router-dom";
 import Header from "./header/Header.tsx";
 import { Container } from "@mui/material";
@@ -9,7 +9,7 @@ import Navbar from './navbar/Navbar.tsx';
 
 function SimpleLayout() {
     const [open, setOpen] = useState<boolean>(false);
-    
+
     return (
         <>
             <Header onNavOpen={() => setOpen(true)}/>

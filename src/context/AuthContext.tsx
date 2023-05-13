@@ -2,8 +2,28 @@ import { createContext, useEffect, useState } from "react";
 import LangCorrectAPI from "../api";
 import decode from "jwt-decode";
 
+
+interface UserData {
+    id: number;
+    username: string;
+    nick_name: string | null;
+    gender: string;
+    bio: string;
+    is_premium: string;
+    user_role: string;
+    date_joined: string;
+    email: string;
+    first_name: string;
+    last_name: string;
+}
+
+interface CurrentUser {
+    data: UserData | null;
+    infoLoaded: boolean;
+}
+
 interface AuthContextInterface {
-    currentUser: null | [];
+    currentUser: null | UserData;
     saveTokens: (tokens: { access: string; refresh: string; }) => void;
     logout: () => void;
     accessToken: string | null;
@@ -15,7 +35,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode; }
     const [accessToken, setAccessToken] = useState<string | null>(getAccessTokenFromLocalStorage());
     const [refreshToken, setRefreshToken] = useState<string | null>(getRefreshTokenFromLocalStorage());
 
-    const [currentUser, setCurrentUser] = useState({
+    const [currentUser, setCurrentUser] = useState<CurrentUser>({
         data: null,
         infoLoaded: false
     });
@@ -77,6 +97,7 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode; }
                 });
             }
         }
+
         getCurrentUser();
     }, [accessToken, refreshToken]);
 

@@ -10,11 +10,14 @@ import { Logout } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 
 const AvatarPopover = () => {
-    const { currentUser, logout } = useAuthContext();
-
-
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+    const context = useAuthContext();
+    if (!context) return null;
+
+    const { currentUser, logout } = context;
+
 
     const handleOpen = (evt: React.MouseEvent<HTMLButtonElement>) => {
         setOpen(true);

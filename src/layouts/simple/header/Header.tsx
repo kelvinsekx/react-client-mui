@@ -1,4 +1,3 @@
-import React from 'react';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,6 +9,7 @@ import { Stack, useMediaQuery, useTheme } from "@mui/material";
 import NotificationsPopover from "./NotificationsPopover.js";
 import AvatarPopover from "./AvatarPopover.js";
 import LogoMarkWhite from "../../../assets/logos/logo-mark-white.svg";
+import { Link } from "react-router-dom";
 
 interface Props {
     onNavOpen: () => void;
@@ -19,7 +19,10 @@ const Header = ({ onNavOpen }: Props) => {
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up('md'));
 
-    const { currentUser } = useAuthContext();
+    const context = useAuthContext();
+    if(!context) return null;
+
+    const { currentUser } = context;
 
     return (
         <>
@@ -27,7 +30,7 @@ const Header = ({ onNavOpen }: Props) => {
             <Box sx={{ flexGrow: 1 }} mb={3}>
                 <AppBar position="static" color="primary">
                     <Toolbar>
-                        <IconButton
+                        {currentUser && <IconButton
                             size="large"
                             edge="start"
                             color="inherit"
@@ -35,8 +38,8 @@ const Header = ({ onNavOpen }: Props) => {
                             sx={{ mr: 2 }}
                             onClick={onNavOpen}
                         >
-                            <MenuIcon />
-                        </IconButton>
+                            <MenuIcon/>
+                        </IconButton>}
 
                         <Box
                             display="flex"
@@ -44,17 +47,17 @@ const Header = ({ onNavOpen }: Props) => {
                             alignItems="center"
                             justifyContent={isMediumScreen ? 'center' : 'start'}
                         >
-                            <img src={LogoMarkWhite} alt="logo" height={38} width={38} />
+                            <img src={LogoMarkWhite} alt="logo" height={38} width={38}/>
                         </Box>
 
                         {currentUser ? (
                             <Stack direction="row" alignItems="center" spacing={1.5}>
-                                <NotificationsPopover />
-                                <AvatarPopover />
+                                <NotificationsPopover/>
+                                <AvatarPopover/>
                             </Stack>
                         ) : (
                             <>
-                                <Button color="inherit">Login</Button>
+                                <Button component={Link} to="/login" color="inherit">Login</Button>
                             </>
                         )}
                     </Toolbar>

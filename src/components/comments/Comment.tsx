@@ -16,7 +16,7 @@ export interface CommentInterface {
  *
  * {CommentList} -> Comment
  */
-const Comment = ({ id, username, text }: CommentInterface) => {
+const Comment = ({ username, text }: CommentInterface) => {
     return (
         <ListItem alignItems="flex-start">
             <ListItemAvatar>

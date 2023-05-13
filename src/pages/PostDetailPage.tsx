@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import LangCorrectAPI from '../api';
 import { useParams } from 'react-router-dom';
 import LayersIcon from '@mui/icons-material/Layers';
@@ -21,7 +21,7 @@ const PostDetailPage = () => {
         }
 
         fetchPost();
-    }, []);
+    }, [slug]);
 
     if (!post) return <p>Loading....</p>;
 
