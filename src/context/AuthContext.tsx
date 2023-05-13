@@ -7,8 +7,6 @@ interface AuthContextInterface {
     saveTokens: (tokens: { access: string; refresh: string; }) => void;
     logout: () => void;
     accessToken: string | null;
-    getAccessTokenFromLocalStorage: () => string | null;
-
 }
 
 const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
@@ -43,7 +41,6 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode; }
         })
     }
 
-
     function getAccessTokenFromLocalStorage() {
         return localStorage.getItem("LC_ACCESS_TOKEN");
     }
@@ -56,6 +53,8 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode; }
         async function getCurrentUser() {
             if (accessToken) {
                 try {
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                    // @ts-ignore
                     const { username } = decode(accessToken);
                     LangCorrectAPI.token = accessToken;
                     const fetchedUser = await LangCorrectAPI.getUser(username);

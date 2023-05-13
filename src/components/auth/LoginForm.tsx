@@ -1,53 +1,46 @@
-import { Alert, Button, Stack, TextField } from '@mui/material';
+import { Button, Stack, TextField } from '@mui/material';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+import AuthAlerts from './AuthAlerts';
+import Box from "@mui/material/Box";
+
 
 interface FormDataInterface extends FieldValues {
     username: string;
     password: string;
 }
 
-interface LoginFormProps {
-    onLogin: (formData: FormDataInterface) => void;
-}
-
 const validationSchema = yup.object().shape({
-    username: yup.string().required(),
-    password: yup.string().min(6).max(32).required(),
+    username: yup.string().min(6).max(16).required(),
+    password: yup.string().min(8).max(32).required(),
 });
 
 
-/**
- * Renders the login form
- *
- * Props:
- * - onLogin
- *
- * {LoginPage} -> LoginForm
- */
+interface Props {
+    onLogin: (formData: FormDataInterface) => void;
+}
 
-const LoginForm = ({ onLogin }: LoginFormProps) => {
+const LoginForm = ({ onLogin }: Props) => {
     const navigate = useNavigate();
+
+    const [loginErrors, setLoginErrors] = useState<string[] | null>(null);
 
     const { register, handleSubmit, formState: { errors }, reset } = useForm({
         resolver: yupResolver(validationSchema),
     });
 
-    const [alertError, setAlertError] = useState([]);
-
     const onSubmitHandler: SubmitHandler<FieldValues> = async (data) => {
-        setAlertError([]);
-
+        setLoginErrors(null);
         try {
             const formData = data as FormDataInterface;
             await onLogin(formData);
             navigate("/");
             reset();
         } catch (err: any) {
-            setAlertError(err);
+            setLoginErrors(err);
         }
     };
 
@@ -55,12 +48,9 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
         <>
             <form method="post" onSubmit={handleSubmit(onSubmitHandler)}>
 
-                {alertError && alertError.map((er, idx) =>
-                    (<Alert key={idx} severity="warning" sx={{ mb: 3 }}>{er}</Alert>)
-                )}
+                {loginErrors && <AuthAlerts messages={loginErrors}/>}
 
                 <Stack spacing={3} mb={3}>
-
                     <TextField
                         required
                         {...register("username")}
@@ -68,7 +58,6 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                         error={!!errors.username}
                         helperText={errors.username && String(errors.username.message)}
                     />
-
                     <TextField
                         required
                         {...register("password")}
@@ -79,15 +68,14 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                     />
                 </Stack>
 
-                <Stack direction="row" justifyContent="space-between">
-                    <Button>Forgot password?</Button>
+                <Box display="flex" justifyContent="end">
                     <Button type="submit" variant="contained">
                         Login
                     </Button>
-                </Stack>
-
+                </Box>
             </form>
-        </>);
+        </>
+    );
 };
 
 export default LoginForm;

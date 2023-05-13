@@ -1,19 +1,15 @@
 import { Box, Button, Card, CardContent, Container, Stack, Typography } from '@mui/material';
-import LoginForm from '../components/auth/LoginForm';
-import LangCorrectAPI from '../api';
-import useAuthContext from '../hooks/useAuthContext';
+import LangCorrectAPI, { RegisterUser } from '../api';
+import RegisterForm from '../components/auth/RegisterForm';
 import { Link } from "react-router-dom";
 
 
-const LoginPage = () => {
-    const context = useAuthContext();
-    if (!context) return null;
-    const { saveTokens } = context;
-
-    const login = async (formData: { username: string; password: string; }) => {
-        const tokens = await LangCorrectAPI.login(formData);
-        saveTokens(tokens);
+const RegisterPage = () => {
+    const register = async (formData: RegisterUser) => {
+        const resp = await LangCorrectAPI.register(formData);
+        console.log("🚀 ~ file: RegisterPage.tsx:12 ~ register ~ resp:", resp);
     };
+
 
     return (
         <Box minHeight={"100vh"} sx={{
@@ -26,11 +22,11 @@ const LoginPage = () => {
                         <CardContent>
                             <Stack direction="row" justifyContent="space-between" py={2}>
                                 <Typography variant="h5" gutterBottom>
-                                    Login
+                                    Register
                                 </Typography>
-                                <Button component={Link} to="/register">Don't have an account?</Button>
+                                <Button component={Link} to="/login">Already have an account?</Button>
                             </Stack>
-                            <LoginForm onLogin={login}/>
+                            <RegisterForm onRegister={register}/>
                         </CardContent>
                     </Card>
 
@@ -40,5 +36,5 @@ const LoginPage = () => {
     );
 };
 
-export default LoginPage;
+export default RegisterPage;
 
