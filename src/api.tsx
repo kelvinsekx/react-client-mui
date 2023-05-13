@@ -2,6 +2,17 @@ import axios from "axios";
 
 const { VITE_API_BASE_URL } = import.meta.env;
 
+export interface RegisterUser {
+    username: string;
+	password: string;
+	password2: string;
+	email: string;
+	native_language: string; 
+	studying_language: string;
+	studying_level: string;
+	gender: string;
+}
+
 class LangCorrectAPI {
     static token: string;
 
@@ -22,7 +33,7 @@ class LangCorrectAPI {
         } catch (err) {
             if (axios.isAxiosError(err)) {
                 console.error("API Error:", err.response);
-                const message = err.response?.data?.detail;
+                const message = err.response?.data;
                 throw Array.isArray(message) ? message : [message];
             } else {
                 throw new Error("An error occurred other than axios")
@@ -34,6 +45,10 @@ class LangCorrectAPI {
 
     static async login(data: { username: string; password: string; }) {
         return await this.request("token/", data, "post");
+    }
+
+    static async register(data: RegisterUser) {
+        return await this.request("users/~create", data, "post");
     }
 
     // USER
