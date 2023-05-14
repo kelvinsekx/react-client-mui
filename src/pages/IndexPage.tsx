@@ -1,4 +1,4 @@
-import { Typography, Box, Grid, Container, Button, Stack, List, ListItem, ListItemText, FormControl, Select, MenuItem, FormGroup } from '@mui/material';
+import { Typography, Box, Grid, Container, Button, Stack, List, ListItem, ListItemText, Select, MenuItem } from '@mui/material';
 
 const SectionOne = () => (
     <>
@@ -182,86 +182,114 @@ const SectionFour = () => (
     </>
 )
 
-const Footer = () => (
-    <>
-        <Box component="footer" py={6} >
-            <Container>
-                <Stack>
-                    <Grid container justifyContent="center">
-                        <Grid item xs={12} md={4}>
-                            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
-                                About
-                            </Typography>
-                            <List>
-                                <ListItem disableGutters>
-                                    <ListItemText primary="Changelog" />
-                                </ListItem>
-                                <ListItem disableGutters>
-                                    <ListItemText primary="Credits" />
-                                </ListItem>
-                                <ListItem disableGutters>
-                                    <ListItemText primary="Logo Breakdown" />
-                                </ListItem>
-                            </List>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
-                                Legal
-                            </Typography>
-                            <List>
-                                <ListItem disableGutters>
-                                    <ListItemText primary="Privacy Policy" />
-                                </ListItem>
-                                <ListItem disableGutters>
-                                    <ListItemText primary="Community Guidelines" />
-                                </ListItem>
-                                <ListItem disableGutters>
-                                    <ListItemText primary="Terms of Service" />
-                                </ListItem>
-                            </List>
-                        </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
-                                Site Languages
-                            </Typography>
-                            <Typography variant="subtitle1" >
-                                Don't see your language here? Help us translate the site!
-                            </Typography>
-                            <FormControl fullWidth>
-                                <FormGroup row>
-                                    <Select
-                                        label="Age"
-                                        onChange={() => console.log("hi")}
-                                        sx={{ width: "80%" }}
-                                    >
-                                        <MenuItem>English (en)</MenuItem>
-                                        <MenuItem>suomi (fi)</MenuItem>
-                                        <MenuItem>français (fr)</MenuItem>
-                                    </Select>
-                                    <Button disableElevation>Go</Button>
-                                </FormGroup>
-                            </FormControl>
-                        </Grid>
-                    </Grid>
-                    <Grid container justifyContent="space-between" sx={{ borderTop: 1 }}>
-                        <Typography>© 2023 LangCorrect - All rights reserved.</Typography>
-                        <List component={Stack} direction="row">
-                            <ListItem>
-                                <ListItemText primary="Twitter" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText primary="Instagram" />
-                            </ListItem>
-                            <ListItem>
-                                <ListItemText primary="Discord" />
-                            </ListItem>
-                        </List>
-                    </Grid>
-                </Stack>
-            </Container>
-        </Box>
-    </>
+const UrlList = ({ items }) => (
+    <List>
+        {items.map(item => (
+            <ListItem key={item.id} disableGutters component="a" href={item.url} sx={{
+                textDecoration: "none", color: "text.primary"
+            }}>
+                <ListItemText primary={item.text} />
+            </ListItem>
+        ))}
+    </List >
 )
+
+const Footer = () => {
+    const aboutItems = [
+        {
+            id: 1,
+            text: "Changelog",
+            url: "https://community.langcorrect.com/t/langcorrect-web/654"
+        },
+        {
+            id: 2,
+            text: "Credits",
+            url: "https://community.langcorrect.com/t/langcorrect-web/654"
+        },
+        {
+            id: 3,
+            text: "Logo Breakdown",
+            url: "https://community.langcorrect.com/t/langcorrect-web/654"
+        }
+    ]
+
+    const legalItems = [
+        {
+            id: 1,
+            text: "Privacy Policy",
+            url: "https://community.langcorrect.com/t/langcorrect-web/654"
+        },
+        {
+            id: 2,
+            text: "Community Guidelines",
+            url: "https://community.langcorrect.com/t/langcorrect-web/654"
+        },
+        {
+            id: 3,
+            text: "Terms of Service",
+            url: "https://community.langcorrect.com/t/langcorrect-web/654"
+        }
+    ]
+
+
+    return (
+        <>
+            <Box component="footer" py={6} >
+                <Container>
+                    <Stack>
+                        <Grid container justifyContent="center">
+                            <Grid item xs={6} md={4} sx={{ mb: 2 }}>
+                                <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
+                                    About
+                                </Typography>
+                                <UrlList items={aboutItems} />
+                            </Grid>
+                            <Grid item xs={6} md={4} sx={{ mb: 2 }} >
+                                <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
+                                    Legal
+                                </Typography>
+                                <UrlList items={legalItems} />
+                            </Grid>
+                            <Grid item xs={12} md={4} sx={{ mb: 2 }} >
+                                <form>
+                                    <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
+                                        Site Languages
+                                    </Typography>
+                                    <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                                        Don't see your language here? Help us translate the site!
+                                    </Typography>
+                                    <Stack direction="row">
+                                        <Select
+                                            value=""
+                                            color='primary'
+                                            sx={{ width: "80%", label: "null" }}
+                                        >
+                                        </Select>
+                                        <Button disableElevation>Go</Button>
+                                    </Stack>
+                                </form>
+                            </Grid>
+                        </Grid>
+                        <Grid container justifyContent="space-between" sx={{ borderTop: 1, my: 3, py: 3 }}>
+                            <Typography>© 2023 LangCorrect - All rights reserved.</Typography>
+                            <List component={Stack} direction="row">
+                                <ListItem>
+                                    <ListItemText primary="Twitter" />
+                                </ListItem>
+                                <ListItem>
+                                    <ListItemText primary="Instagram" />
+                                </ListItem>
+                                <ListItem>
+                                    <ListItemText primary="Discord" />
+                                </ListItem>
+                            </List>
+                        </Grid>
+                    </Stack>
+                </Container >
+            </Box >
+        </>
+    )
+}
 
 const IndexPage = () => {
     return (
