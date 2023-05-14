@@ -1,19 +1,6 @@
 import { Typography, Box, Grid, Button, Stack, List, ListItem, ListItemText, Select } from '@mui/material';
-import { styled } from '@mui/system';
 import { Outlet } from "react-router-dom";
-
-const BootstrapContainer = styled('div')(({ theme }) =>
-    theme.unstable_sx({
-        margin: "auto",
-        maxWidth: {
-            xs: "100%",
-            s: 540,
-            md: 720,
-            l: 960,
-            xl: 1140
-        }
-    }),
-);
+import BootstrapContainer from '../../components/BootstrapContainer';
 
 // Need to provide type hints
 const UrlTextList = ({ items }) => (
