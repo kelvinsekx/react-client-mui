@@ -1,5 +1,6 @@
 import { Navigate, useRoutes } from 'react-router-dom';
 import DashboardLayout from './layouts/dashboard/DashboardLayout';
+import SimpleLayout from './layouts/simple/SimpleLayout.tsx';
 import PostPage from "./pages/PostPage.tsx";
 import DashboardHomePage from "./pages/DashboardHomePage.tsx";
 import IndexPage from './pages/IndexPage.tsx';
@@ -19,7 +20,10 @@ const RoutesList = () => {
         },
         {
             path: "/index",
-            element: <IndexPage />
+            element: <SimpleLayout />,
+            children: [
+                { path: "", element: <IndexPage /> },
+            ]
         },
         {
             path: '*',
