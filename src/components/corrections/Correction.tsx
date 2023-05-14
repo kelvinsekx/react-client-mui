@@ -11,9 +11,9 @@ export interface CorrectionInterface {
     username: string;
     correction_id?: string;
     perfect_id?: string;
-    correction: string;
-    note: string;
-    pretty_html: string;
+    correction?: string | undefined;
+    note?: string | undefined;
+    pretty_html?: string | undefined;
     sentence_order: number;
     status: string;
 }
@@ -63,7 +63,7 @@ const Correction = ({ data }: CorrectionPropInterface) => {
 
 
     const renderCorrection = data.status === "perfect" ? "this sentence is marked as perfect " : <ListItemText
-        primary={<SanitizeHTML html={data.pretty_html}/>}
+        primary={<SanitizeHTML html={data?.pretty_html ? data.pretty_html : ""}/>}
         secondary={data.note}/>;
 
     const correctionId = data.correction_id ? data.correction_id : data.perfect_id;
