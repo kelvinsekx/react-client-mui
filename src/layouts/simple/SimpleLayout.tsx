@@ -2,10 +2,16 @@ import { Typography, Box, Grid, Button, Stack, List, ListItem, ListItemText, Sel
 import { Outlet } from "react-router-dom";
 import BootstrapContainer from '../../components/BootstrapContainer';
 
+interface FooterItems {
+    id: number,
+    text: string,
+    url: string
+}
+
 // Need to provide type hints
-const UrlTextList = ({ items }) => (
+const UrlTextList = (props: { items: Array<FooterItems>; }) => (
     <List>
-        {items.map(item => (
+        {props.items.map(item => (
             <ListItem key={item.id} disableGutters component="a" href={item.url} sx={{
                 textDecoration: "none", color: "text.primary"
             }}>
