@@ -3,13 +3,24 @@ import { styled } from '@mui/system';
 const BootstrapContainer = styled('div')(({ theme }) =>
     theme.unstable_sx({
         margin: "auto",
-        maxWidth: {
-            xs: "100%",
-            s: 720,
-            md: 960,
-            l: 1140,
-            xl: 1320,
-        }
+        '@media (min-width: 0px)': {
+            maxWidth: "100%"
+        },
+        '@media (min-width: 576px)': {
+            maxWidth: 540
+        },
+        '@media (min-width: 768px)': {
+            maxWidth: 720
+        },
+        '@media (min-width: 992px)': {
+            maxWidth: 960
+        },
+        '@media (min-width: 1200px)': {
+            maxWidth: 1140
+        },
+        '@media (min-width: 1400px)': {
+            maxWidth: 1320
+        },
     }),
 );
 
