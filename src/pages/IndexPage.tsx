@@ -12,10 +12,10 @@ const SectionOne = () => (
                     <Typography variant="h6" paragraph sx={{ mb: 2 }}>
                         Master grammar, spelling, and syntax in the language(s) you’re learning through direct feedback on your writing from fluent, native speakers.
                     </Typography>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" sx={{ textTransform: "none" }}>
                         Start learning ➔
                     </Button>
-                    <Button color="primary">
+                    <Button color="primary" sx={{ textTransform: "none" }}>
                         Browse as guest
                     </Button>
                 </Grid>
@@ -159,7 +159,7 @@ const SectionFour = () => (
                         <Typography variant="h6" paragraph>
                             Whether you’re fluent or just starting out, we’d be thrilled to have you join the LangCorrect community. We’re all learners and we understand that innd confidence in a new language, it’s important to make mistakes. LangCorrect’s wonderful users are ready to help you, provide support, and answer your burning questions so that you can reach the level you want to be at in your new language.
                         </Typography>
-                        <Button color="inherit" variant="outlined">Start learning</Button>
+                        <Button color="inherit" variant="outlined" sx={{ textTransform: "none" }}>Start learning</Button>
                     </Grid>
                     <Grid item xs={12} md={4} textAlign="center">
                         <Box
