@@ -4,6 +4,7 @@ import PostList from "../components/posts/PostList.tsx";
 import { Button, Container, Stack, Typography } from "@mui/material";
 import PostListSkeleton from "../components/posts/PostListSkeleton.tsx";
 import CreateIcon from '@mui/icons-material/Create';
+import useAuthContext from "../hooks/useAuthContext.tsx";
 
 export interface PostInterface {
     id: number;
@@ -43,31 +44,39 @@ export interface PostInterface {
  * {RoutesList} -> PostPage
  */
 
-const PostPage = () => {
+const PostPage = ({ title }: { title: string; }) => {
     const [posts, setPosts] = useState<PostInterface[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
-    const getPosts = async () => {
-        try {
-            const fetchedPosts = await LangCorrectAPI.getPosts();
-            setPosts(fetchedPosts);
-            setIsLoading(false);
-        } catch (err) {
-            console.log("🚀 ~ file: PostPage.tsx:44 ~ getPosts ~ err:", err);
-        }
-    };
+    const context = useAuthContext();
+    if (!context) return null;
+    const { accessToken } = context;
 
+
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     useEffect(() => {
+        const getPosts = async () => {
+            try {
+                if (accessToken) {
+                    LangCorrectAPI.token = accessToken;
+                }
+                const { results } = await LangCorrectAPI.getPosts();
+                setPosts(results);
+                setIsLoading(false);
+            } catch (err) {
+                console.log("🚀 ~ file: PostPage.tsx:44 ~ getPosts ~ err:", err);
+            }
+        };
         getPosts();
-    }, []);
+    }, [accessToken]);
 
     const renderPosts = isLoading ? <PostListSkeleton/> : <PostList posts={posts}/>;
 
     return (
         <Container>
-            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-                <Typography variant="h4" gutterBottom>
-                    Posts
+            <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
+                <Typography variant="h5">
+                    {title}
                 </Typography>
                 <Button variant="contained" startIcon={<CreateIcon/>}>
                     New Post
