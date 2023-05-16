@@ -10,10 +10,10 @@ interface FooterItems {
 
 // Need to provide type hints
 const UrlTextList = (props: { items: Array<FooterItems>; }) => (
-    <List>
+    <List sx={{ py: 0 }}>
         {props.items.map(item => (
             <ListItem key={item.id} disableGutters component="a" href={item.url} sx={{
-                textDecoration: "none", color: "text.primary"
+                textDecoration: "none", color: "text.secondary", py: 0
             }}>
                 <ListItemText primary={item.text} />
             </ListItem>
@@ -64,25 +64,25 @@ const Footer = () => {
             <Box component="footer" py={6}>
                 <BootstrapContainer>
                     <Stack>
-                        <Grid container justifyContent="center">
-                            <Grid item xs={6} md={4} sx={{ mb: 2 }}>
-                                <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
+                        <Grid container justifyContent="space-between">
+                            <Grid item xs={6} md={3} sx={{ mb: 2 }}>
+                                <Typography variant="h6" sx={{ fontWeight: "medium", mb: 1 }} >
                                     About
                                 </Typography>
                                 <UrlTextList items={aboutItems} />
                             </Grid>
-                            <Grid item xs={6} md={4} sx={{ mb: 2 }} >
-                                <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
+                            <Grid item xs={6} md={3} sx={{ mb: 2 }} >
+                                <Typography variant="h6" sx={{ fontWeight: "medium", mb: 1 }} >
                                     Legal
                                 </Typography>
                                 <UrlTextList items={legalItems} />
                             </Grid>
-                            <Grid item xs={12} md={4} sx={{ mb: 2 }} >
+                            <Grid item xs={12} md={6} sx={{ mb: 2, pl: { xs: 0, md: 10 } }} >
                                 <form>
-                                    <Typography variant="h6" sx={{ fontWeight: "bold", mb: 1 }} >
+                                    <Typography variant="h6" sx={{ fontWeight: "medium", mb: 1 }} >
                                         Site Languages
                                     </Typography>
-                                    <Typography variant="subtitle1" sx={{ mb: 2 }}>
+                                    <Typography variant="body1" sx={{ mb: 2 }}>
                                         Don't see your language here? Help us translate the site!
                                     </Typography>
                                     <Stack direction="row">
@@ -101,7 +101,7 @@ const Footer = () => {
                                 </form>
                             </Grid>
                         </Grid>
-                        <Grid container justifyContent="space-between" sx={{ borderTop: 1, my: 3, py: 3 }}>
+                        <Grid container justifyContent="space-between" sx={{ borderTop: 1, borderColor: "#dee2e6", my: 3, py: 3 }}>
                             <Typography>© 2023 LangCorrect - All rights reserved.</Typography>
                             <List component={Stack} direction="row" sx={{ py: 0 }}>
                                 <ListItem component="a" href="https://twitter.com/langcorrect" sx={{ py: 0, alignSelf: "start" }}>

@@ -12,7 +12,7 @@ const SectionOne = () => (
                     <Typography variant="h6" paragraph sx={{ mb: 2 }}>
                         Master grammar, spelling, and syntax in the language(s) you’re learning through direct feedback on your writing from fluent, native speakers.
                     </Typography>
-                    <Button variant="contained" color="primary" sx={{ mr: 1 }} >
+                    <Button variant="contained" color="primary" sx={{ mr: 1, boxShadow: 5 }} >
                         <Typography variant="body1" sx={{ textTransform: "none", pr: { xs: 0, md: 1 } }}>
                             Start learning
                         </Typography>
@@ -76,7 +76,7 @@ const SectionTwo = () => {
                                 component="img"
                                 src="src/assets/index/illustration-1.webp"
                                 alt="illustration-1"
-                                sx={{ width: { xs: "70%", md: "80%" }, height: "auto" }}
+                                sx={{ width: { xs: "75%", md: "80%" }, height: "auto" }}
                             />
                         </Grid>
                     </Grid>
@@ -136,7 +136,7 @@ const SectionThree = () => {
         <Box component="section" py={6} >
             <BootstrapContainer>
                 <Stack>
-                    <Grid container justifyContent="center">
+                    <Grid container columnSpacing={3} justifyContent="center">
                         {grids.map(grid => (
                             <Grid key={grid.id} item xs={12} md={4}>
                                 <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }} >
@@ -177,7 +177,7 @@ const SectionFour = () => (
                             component="img"
                             src="src/assets/index/index-join.webp"
                             alt="illustration-1"
-                            sx={{ width: { xs: "80%", md: "100%" }, height: "auto" }}
+                            sx={{ width: { xs: "75%", md: "100%" }, height: "auto" }}
                         />
                     </Grid>
                 </Grid>
