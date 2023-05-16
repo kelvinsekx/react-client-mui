@@ -92,7 +92,11 @@ const Footer = () => {
                                             sx={{ width: "80%", label: "null" }}
                                         >
                                         </Select>
-                                        <Button variant="outlined" disableElevation sx={{ textTransform: 'none' }}>Go</Button>
+                                        <Button variant="outlined" disableElevation>
+                                            <Typography variant="body1" sx={{ textTransform: "none" }}>
+                                                Go
+                                            </Typography>
+                                        </Button>
                                     </Stack>
                                 </form>
                             </Grid>

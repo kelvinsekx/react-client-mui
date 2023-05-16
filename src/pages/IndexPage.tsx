@@ -6,17 +6,24 @@ const SectionOne = () => (
         <BootstrapContainer>
             <Grid container rowSpacing={{ xs: 5, md: 0 }} textAlign={{ xs: "center", md: "left" }} alignItems="center">
                 <Grid item xs={12} md={6} order={{ xs: 2, md: 1 }}>
-                    <Typography variant="h3" color="primary" sx={{ fontWeight: "bold", mb: 1 }}>
+                    <Typography variant="h4" color="primary" sx={{ fontWeight: "bold", mb: 1 }}>
                         Write. Learn. Grow.
                     </Typography>
                     <Typography variant="h6" paragraph sx={{ mb: 2 }}>
                         Master grammar, spelling, and syntax in the language(s) you’re learning through direct feedback on your writing from fluent, native speakers.
                     </Typography>
-                    <Button variant="contained" color="primary" sx={{ textTransform: "none" }}>
-                        Start learning ➔
+                    <Button variant="contained" color="primary" sx={{ mr: 1 }} >
+                        <Typography variant="body1" sx={{ textTransform: "none", pr: { xs: 0, md: 1 } }}>
+                            Start learning
+                        </Typography>
+                        <Typography variant="body1" display={{ xs: "none", md: "inline-block" }} >
+                            ➔
+                        </Typography>
                     </Button>
-                    <Button color="primary" sx={{ textTransform: "none" }}>
-                        Browse as guest
+                    <Button color="primary">
+                        <Typography variant="body1" sx={{ textTransform: "none" }}>
+                            Browse as guest
+                        </Typography>
                     </Button>
                 </Grid>
                 <Grid item xs={12} md={6} order={{ xs: 1, md: 2 }}>
@@ -159,7 +166,11 @@ const SectionFour = () => (
                         <Typography variant="h6" paragraph>
                             Whether you’re fluent or just starting out, we’d be thrilled to have you join the LangCorrect community. We’re all learners and we understand that innd confidence in a new language, it’s important to make mistakes. LangCorrect’s wonderful users are ready to help you, provide support, and answer your burning questions so that you can reach the level you want to be at in your new language.
                         </Typography>
-                        <Button color="inherit" variant="outlined" sx={{ textTransform: "none" }}>Start learning</Button>
+                        <Button color="inherit" variant="outlined">
+                            <Typography variant="body1" sx={{ textTransform: "none" }}>
+                                Start learning
+                            </Typography>
+                        </Button>
                     </Grid>
                     <Grid item xs={12} md={4} textAlign="center">
                         <Box
