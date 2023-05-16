@@ -1,5 +1,6 @@
 import { Typography, Box, Grid, Button, Stack } from '@mui/material';
 import BootstrapContainer from '../components/BootstrapContainer';
+import SimpleStepper from '../components/SimpleStepper';
 
 const SectionOne = () => (
     <Box component="section" py={6}>
@@ -43,17 +44,17 @@ const SectionTwo = () => {
     const grids = [
         {
             id: 1,
-            header: "1 Register an account",
+            header: "Register an account",
             content: "We start with a short 3-step registration process to help us determine users you should be match with."
         },
         {
             id: 2,
-            header: "2 Write a journal entry",
+            header: "Write a journal entry",
             content: "Browse a wide variety of writing prompts or simply create a journal from scratch."
         },
         {
             id: 3,
-            header: "3 Review corrections",
+            header: "Review corrections",
             content: "Native speakers will correct your writing and provide constructive feedback."
         },
     ]
@@ -84,6 +85,7 @@ const SectionTwo = () => {
                         {grids.map(grid => (
                             <Grid key={grid.id} item xs={12} md={4}>
                                 <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }} >
+                                    <SimpleStepper>{grid.id}</SimpleStepper>
                                     {grid.header}
                                 </Typography>
                                 <Typography variant="h6" paragraph>
