@@ -13,18 +13,17 @@ function SimpleLayout() {
 
     return (
         <>
-            <Header onNavOpen={() => setOpen(true)} />
-            <Navbar isNavOpen={open} onNavClose={() => setOpen(false)} />
-            {/* The index page renders correctly without this Container */}
-            {/* <Container> */}
-            <Outlet />
-            <ScrollToTop>
-                <Fab size="small" aria-label="scroll back to top">
-                    <KeyboardArrowUpIcon />
-                </Fab>
-            </ScrollToTop>
+            <Header onNavOpen={() => setOpen(true)}/>
+            <Navbar isNavOpen={open} onNavClose={() => setOpen(false)}/>
+            <Container>
+                <Outlet/>
+                <ScrollToTop>
+                    <Fab size="small" aria-label="scroll back to top">
+                        <KeyboardArrowUpIcon/>
+                    </Fab>
+                </ScrollToTop>
+            </Container>
             <Footer />
-            {/* </Container> */}
         </>
     );
 }
