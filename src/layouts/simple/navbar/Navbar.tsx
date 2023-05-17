@@ -49,29 +49,29 @@ const Navbar = ({ isNavOpen, onNavClose }: NavbarProps) => {
                 role="presentation"
             >
                 <List>
-                    <ListItemButton component={Link} to="/">
+                    <ListItemButton component={Link} to="/" onClick={onNavClose}>
                         <ListItemIcon>
-                            <HomeIcon/>
+                            <HomeIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Home"/>
+                        <ListItemText primary="Home" />
                     </ListItemButton>
                     <ListItemButton onClick={handleClick}>
                         <ListItemIcon>
-                            <ArticleIcon/>
+                            <ArticleIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Posts"/>
-                        {open ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
+                        <ListItemText primary="Posts" />
+                        {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                     </ListItemButton>
                     <Collapse in={open} timeout="auto">
                         <List component="div">
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/teach">
-                                <ListItemText primary="Teach"/>
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/teach" onClick={onNavClose}>
+                                <ListItemText primary="Teach" />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/learn">
-                                <ListItemText primary="Learn"/>
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/learn" onClick={onNavClose}>
+                                <ListItemText primary="Learn" />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/following">
-                                <ListItemText primary="Following"/>
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/following" onClick={onNavClose}>
+                                <ListItemText primary="Following" />
                             </ListItemButton>
                         </List>
                     </Collapse>
