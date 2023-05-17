@@ -62,39 +62,37 @@ const SectionTwo = () => {
     return (
         <Box component="section" py={6} bgcolor="primary.main" color="white">
             <BootstrapContainer>
-                <Stack>
-                    <Grid container alignItems="center" justifyContent="center" sx={{ mb: 5 }}>
-                        <Grid item xs={12} md={8} order={{ xs: 2, md: 1 }} sx={{ pr: 10 }}>
-                            <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1, maxWidth: 450 }} >
-                                Getting corrections on your writing is really easy
+                <Grid container alignItems="center" justifyContent="center" sx={{ mb: 5 }}>
+                    <Grid item xs={12} md={8} order={{ xs: 2, md: 1 }} sx={{ pr: 10 }}>
+                        <Typography variant="h4" sx={{ fontWeight: "bold", mb: 1, maxWidth: 450 }} >
+                            Getting corrections on your writing is really easy
+                        </Typography>
+                        <Typography variant="h6" paragraph>
+                            Once you're done writing in your studying language, we will automatically match it with native speakers.
+                        </Typography>
+                    </Grid>
+                    <Grid item xs={12} md={4} order={{ xs: 1, md: 2 }} textAlign="center">
+                        <Box
+                            component="img"
+                            src="src/assets/index/illustration-1.webp"
+                            alt="illustration-1"
+                            sx={{ width: { xs: "75%", md: "80%" }, height: "auto" }}
+                        />
+                    </Grid>
+                </Grid>
+                <Grid container columnSpacing={3} justifyContent="center">
+                    {grids.map(grid => (
+                        <Grid key={grid.id} item xs={12} md={4}>
+                            <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }} >
+                                <SimpleStepper>{grid.id}</SimpleStepper>
+                                {grid.header}
                             </Typography>
                             <Typography variant="h6" paragraph>
-                                Once you're done writing in your studying language, we will automatically match it with native speakers.
+                                {grid.content}
                             </Typography>
                         </Grid>
-                        <Grid item xs={12} md={4} order={{ xs: 1, md: 2 }} textAlign="center">
-                            <Box
-                                component="img"
-                                src="src/assets/index/illustration-1.webp"
-                                alt="illustration-1"
-                                sx={{ width: { xs: "75%", md: "80%" }, height: "auto" }}
-                            />
-                        </Grid>
-                    </Grid>
-                    <Grid container columnSpacing={3} justifyContent="center">
-                        {grids.map(grid => (
-                            <Grid key={grid.id} item xs={12} md={4}>
-                                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }} >
-                                    <SimpleStepper>{grid.id}</SimpleStepper>
-                                    {grid.header}
-                                </Typography>
-                                <Typography variant="h6" paragraph>
-                                    {grid.content}
-                                </Typography>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Stack>
+                    ))}
+                </Grid>
             </BootstrapContainer>
         </Box>
     )
@@ -137,20 +135,18 @@ const SectionThree = () => {
     return (
         <Box component="section" py={6} >
             <BootstrapContainer>
-                <Stack>
-                    <Grid container columnSpacing={3} justifyContent="center">
-                        {grids.map(grid => (
-                            <Grid key={grid.id} item xs={12} md={4}>
-                                <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }} >
-                                    {grid.header}
-                                </Typography>
-                                <Typography variant="body1" paragraph>
-                                    {grid.content}
-                                </Typography>
-                            </Grid>
-                        ))}
-                    </Grid>
-                </Stack>
+                <Grid container columnSpacing={3} justifyContent="center">
+                    {grids.map(grid => (
+                        <Grid key={grid.id} item xs={12} md={4}>
+                            <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }} >
+                                {grid.header}
+                            </Typography>
+                            <Typography variant="body1" paragraph>
+                                {grid.content}
+                            </Typography>
+                        </Grid>
+                    ))}
+                </Grid>
             </BootstrapContainer>
         </Box>
     )
@@ -159,31 +155,29 @@ const SectionThree = () => {
 const SectionFour = () => (
     <Box component="section" py={6} bgcolor="primary.main" color="white">
         <BootstrapContainer>
-            <Stack>
-                <Grid container justifyContent="center" alignItems="center" sx={{ mb: 5 }}>
-                    <Grid item xs={12} md={8} sx={{ pr: 10 }}>
-                        <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }} >
-                            Join today and experience language-learning, redefined.
+            <Grid container justifyContent="center" alignItems="center">
+                <Grid item xs={12} md={8} sx={{ pr: { xs: 0, md: 10 } }}>
+                    <Typography variant="h5" sx={{ fontWeight: "bold", mb: 1 }} >
+                        Join today and experience language-learning, redefined.
+                    </Typography>
+                    <Typography variant="body1" paragraph>
+                        Whether you’re fluent or just starting out, we’d be thrilled to have you join the LangCorrect community. We’re all learners and we understand that innd confidence in a new language, it’s important to make mistakes. LangCorrect’s wonderful users are ready to help you, provide support, and answer your burning questions so that you can reach the level you want to be at in your new language.
+                    </Typography>
+                    <Button color="inherit" variant="outlined">
+                        <Typography variant="body1" sx={{ textTransform: "none" }}>
+                            Start learning
                         </Typography>
-                        <Typography variant="body1" paragraph>
-                            Whether you’re fluent or just starting out, we’d be thrilled to have you join the LangCorrect community. We’re all learners and we understand that innd confidence in a new language, it’s important to make mistakes. LangCorrect’s wonderful users are ready to help you, provide support, and answer your burning questions so that you can reach the level you want to be at in your new language.
-                        </Typography>
-                        <Button color="inherit" variant="outlined">
-                            <Typography variant="body1" sx={{ textTransform: "none" }}>
-                                Start learning
-                            </Typography>
-                        </Button>
-                    </Grid>
-                    <Grid item xs={12} md={4} textAlign="center">
-                        <Box
-                            component="img"
-                            src="src/assets/index/index-join.webp"
-                            alt="illustration-1"
-                            sx={{ width: { xs: "75%", md: "100%" }, height: "auto" }}
-                        />
-                    </Grid>
+                    </Button>
                 </Grid>
-            </Stack>
+                <Grid item xs={12} md={4} textAlign="center">
+                    <Box
+                        component="img"
+                        src="src/assets/index/index-join.webp"
+                        alt="illustration-1"
+                        sx={{ width: { xs: "75%", md: "100%" }, height: "auto" }}
+                    />
+                </Grid>
+            </Grid>
         </BootstrapContainer>
     </Box>
 )

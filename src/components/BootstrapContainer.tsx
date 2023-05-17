@@ -2,6 +2,8 @@ import { styled } from '@mui/system';
 
 const BootstrapContainer = styled("div")({
     margin: "auto",
+    paddingLeft: 16,
+    paddingRight: 16,
     '@media (min-width: 0px)': {
         maxWidth: "100%"
     },

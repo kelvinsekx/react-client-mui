@@ -2,9 +2,9 @@ import { Typography, Box, Grid, Button, Stack, List, ListItem, ListItemText, Sel
 import BootstrapContainer from './BootstrapContainer';
 
 interface FooterItems {
-    id: number,
-    text: string,
-    url: string
+    id: number;
+    text: string;
+    url: string;
 }
 
 const UrlTextList = (props: { items: Array<FooterItems>; }) => (
