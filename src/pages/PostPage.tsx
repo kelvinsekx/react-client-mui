@@ -5,6 +5,7 @@ import PostListSkeleton from "../components/posts/PostListSkeleton.tsx";
 import CreateIcon from '@mui/icons-material/Create';
 import useAuthContext from "../hooks/useAuthContext.tsx";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 export interface PostInterface {
     id: number;
@@ -70,7 +71,7 @@ const PostPage = ({ title }: { title: string; }) => {
                 <Typography variant="h5">
                     {title}
                 </Typography>
-                <Button variant="contained" startIcon={<CreateIcon />}>
+                <Button variant="contained" startIcon={<CreateIcon />} component={Link} to="/feed/create">
                     New Post
                 </Button>
             </Stack>

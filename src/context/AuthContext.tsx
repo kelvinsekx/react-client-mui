@@ -15,6 +15,8 @@ interface UserData {
     email: string;
     first_name: string;
     last_name: string;
+    get_studying_languages: any;
+    get_native_languages: any;
 }
 
 interface CurrentUser {

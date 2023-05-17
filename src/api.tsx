@@ -1,16 +1,17 @@
 import axios from "axios";
+import { ICreatePostData } from "./components/posts/PostCreateForm.tsx";
 
 const { VITE_API_BASE_URL } = import.meta.env;
 
 export interface RegisterUser {
     username: string;
-	password: string;
-	password2: string;
-	email: string;
-	native_language: string; 
-	studying_language: string;
-	studying_level: string;
-	gender: string;
+    password: string;
+    password2: string;
+    email: string;
+    native_language: string;
+    studying_language: string;
+    studying_level: string;
+    gender: string;
 }
 
 class LangCorrectAPI {
@@ -36,7 +37,7 @@ class LangCorrectAPI {
                 const message = err.response?.data;
                 throw Array.isArray(message) ? message : [message];
             } else {
-                throw new Error("An error occurred other than axios")
+                throw new Error("An error occurred other than axios");
             }
         }
     }
@@ -66,6 +67,10 @@ class LangCorrectAPI {
 
     static async getPost(slug: string | undefined) {
         return await this.request(`journals/${slug}`);
+    }
+
+    static async createPost(data: ICreatePostData) {
+        return await this.request("journals/", data, "post");
     }
 }
 
