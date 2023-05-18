@@ -12,12 +12,14 @@ import IndexPage from './pages/IndexPage.tsx';
 
 const RoutesList = () => {
     const context = useAuthContext();
-    
+
     if (context === undefined) {
         return <h1>Loading...</h1>;
     }
-    
-    const { currentUser } = context;
+
+    const { currentUser, userInfoLoaded } = context;
+
+    if (!userInfoLoaded) return;
 
     return (
         <Routes>
@@ -27,7 +29,7 @@ const RoutesList = () => {
             <Route path="register" element={<RegisterPage />} />
 
             <Route element={<LayoutWithoutContainer />}>
-                <Route path="/" element={<IndexPage />} />
+                <Route path="/" element={!currentUser && <IndexPage />} />
             </Route>
 
             {/* Mixed Routes */}
