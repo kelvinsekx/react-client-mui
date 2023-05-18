@@ -2,8 +2,12 @@ import { createContext, useEffect, useState } from "react";
 import LangCorrectAPI from "../api";
 import decode from "jwt-decode";
 
+interface ILanguage {
+    code: string;
+    en_name: string;
+}
 
-interface UserData {
+export interface UserData {
     id: number;
     username: string;
     nick_name: string | null;
@@ -15,17 +19,14 @@ interface UserData {
     email: string;
     first_name: string;
     last_name: string;
-    get_studying_languages: any;
-    get_native_languages: any;
+    get_studying_languages: ILanguage[];
+    get_native_languages: ILanguage[];
 }
 
-interface CurrentUser {
-    data: UserData | null;
-    infoLoaded: boolean;
-}
 
 interface AuthContextInterface {
     currentUser: null | UserData;
+    userInfoLoaded: boolean;
     saveTokens: (tokens: { access: string; refresh: string; }) => void;
     logout: () => void;
     accessToken: string | null;
@@ -37,10 +38,8 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode; }
     const [accessToken, setAccessToken] = useState<string | null>(getAccessTokenFromLocalStorage());
     const [refreshToken, setRefreshToken] = useState<string | null>(getRefreshTokenFromLocalStorage());
 
-    const [currentUser, setCurrentUser] = useState<CurrentUser>({
-        data: null,
-        infoLoaded: false
-    });
+    const [userInfoLoaded, setUserInfoLoaded] = useState(false);
+    const [currentUser, setCurrentUser] = useState<UserData | null>(null);
 
     function saveTokens(tokens: { access: string; refresh: string; }) {
         const { access, refresh } = tokens;
@@ -57,10 +56,8 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode; }
 
     function logout() {
         clearTokens();
-        setCurrentUser({
-            data: null,
-            infoLoaded: false
-        })
+        setCurrentUser(null);
+        setUserInfoLoaded(false);
     }
 
     function getAccessTokenFromLocalStorage() {
@@ -81,22 +78,16 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode; }
                     LangCorrectAPI.token = accessToken;
                     const fetchedUser = await LangCorrectAPI.getUser(username);
 
-                    setCurrentUser({
-                        infoLoaded: true,
-                        data: fetchedUser
-                    });
+                    setCurrentUser(fetchedUser);
+                    setUserInfoLoaded(true);
                 } catch (err) {
-                    console.error("App loadUserInfo: problem loading", err);
-                    setCurrentUser({
-                        infoLoaded: true,
-                        data: null
-                    });
+                    console.error("🚀 ~ file: AuthContext.tsx:84 ~ getCurrentUser ~ err:", err);
+                    setCurrentUser(null);
+                    setUserInfoLoaded(true);
                 }
             } else {
-                setCurrentUser({
-                    infoLoaded: true,
-                    data: null
-                });
+                setCurrentUser(null);
+                setUserInfoLoaded(true);
             }
         }
 
@@ -106,10 +97,11 @@ export const AuthContextProvider = ({ children }: { children: React.ReactNode; }
 
     return (
         <AuthContext.Provider value={{
-            currentUser: currentUser.data,
+            currentUser,
             saveTokens,
             logout,
             accessToken,
+            userInfoLoaded
         }}>
             {children}
         </AuthContext.Provider>
