@@ -1,5 +1,5 @@
 import { Typography, Box, Grid, Button, Stack, List, ListItem, ListItemText, Select } from '@mui/material';
-import BootstrapContainer from './BootstrapContainer';
+import BootstrapContainer from '../components/BootstrapContainer';
 
 interface FooterItems {
     id: number;
