@@ -1,6 +1,7 @@
 import { Typography, Box, Grid, Button, Stack } from '@mui/material';
 import BootstrapContainer from '../components/BootstrapContainer';
 import SimpleStepper from '../components/SimpleStepper';
+import { Link } from 'react-router-dom';
 
 const SectionOne = () => (
     <Box component="section" py={6}>
@@ -13,7 +14,7 @@ const SectionOne = () => (
                     <Typography variant="h6" paragraph sx={{ mb: 2 }}>
                         Master grammar, spelling, and syntax in the language(s) you’re learning through direct feedback on your writing from fluent, native speakers.
                     </Typography>
-                    <Button variant="contained" color="primary" sx={{ mr: 1, boxShadow: 5 }} >
+                    <Button variant="contained" color="primary" sx={{ mr: 1, boxShadow: 5 }} component={Link} to="/register">
                         <Typography variant="body1" sx={{ textTransform: "none", pr: { xs: 0, md: 1 } }}>
                             Start learning
                         </Typography>
@@ -21,7 +22,7 @@ const SectionOne = () => (
                             ➔
                         </Typography>
                     </Button>
-                    <Button color="primary">
+                    <Button color="primary" component={Link} to="/journals">
                         <Typography variant="body1" sx={{ textTransform: "none" }}>
                             Browse as guest
                         </Typography>
@@ -163,7 +164,7 @@ const SectionFour = () => (
                     <Typography variant="body1" paragraph>
                         Whether you’re fluent or just starting out, we’d be thrilled to have you join the LangCorrect community. We’re all learners and we understand that innd confidence in a new language, it’s important to make mistakes. LangCorrect’s wonderful users are ready to help you, provide support, and answer your burning questions so that you can reach the level you want to be at in your new language.
                     </Typography>
-                    <Button color="inherit" variant="outlined">
+                    <Button color="inherit" variant="outlined" component={Link} to="/register">
                         <Typography variant="body1" sx={{ textTransform: "none" }}>
                             Start learning
                         </Typography>
