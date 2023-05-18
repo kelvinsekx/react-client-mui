@@ -8,6 +8,7 @@ import LayoutWithContainer from './layouts/LayoutWithContainer.tsx';
 import ProtectedRoute from './utils/ProtectedRoute.tsx';
 import useAuthContext from './hooks/useAuthContext.tsx';
 import LayoutWithoutContainer from './layouts/LayoutWithoutContainer.tsx';
+import IndexPage from './pages/IndexPage.tsx';
 
 const RoutesList = () => {
     const context = useAuthContext();
@@ -22,6 +23,7 @@ const RoutesList = () => {
             <Route element={<LayoutWithoutContainer />}>
                 <Route path="login" element={<LoginPage />} />
                 <Route path="register" element={<RegisterPage />} />
+                <Route path="/" element={<IndexPage />} />
             </Route>
 
             {/* Mixed Routes */}

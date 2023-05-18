@@ -49,7 +49,7 @@ const Navbar = ({ isNavOpen, onNavClose }: NavbarProps) => {
                 role="presentation"
             >
                 <List>
-                    <ListItemButton component={Link} to="/">
+                    <ListItemButton component={Link} to="/" onClick={onNavClose}>
                         <ListItemIcon>
                             <HomeIcon />
                         </ListItemIcon>
@@ -64,13 +64,13 @@ const Navbar = ({ isNavOpen, onNavClose }: NavbarProps) => {
                     </ListItemButton>
                     <Collapse in={open} timeout="auto">
                         <List component="div">
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/teach">
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/teach" onClick={onNavClose}>
                                 <ListItemText primary="Teach" />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/learn">
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/learn" onClick={onNavClose}>
                                 <ListItemText primary="Learn" />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/following">
+                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/following" onClick={onNavClose}>
                                 <ListItemText primary="Following" />
                             </ListItemButton>
                         </List>
