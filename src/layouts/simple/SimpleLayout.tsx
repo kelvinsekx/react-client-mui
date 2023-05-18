@@ -6,6 +6,7 @@ import ScrollToTop from './ScrollToTop.tsx';
 import Fab from '@mui/material/Fab';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import Navbar from './navbar/Navbar.tsx';
+import Footer from '../../components/Footer.tsx';
 
 function SimpleLayout() {
     const [open, setOpen] = useState<boolean>(false);
@@ -22,6 +23,7 @@ function SimpleLayout() {
                     </Fab>
                 </ScrollToTop>
             </Container>
+            <Footer />
         </>
     );
 }

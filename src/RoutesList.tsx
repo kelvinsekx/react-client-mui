@@ -4,6 +4,7 @@ import PostDetailPage from './pages/PostDetailPage.tsx';
 import LoginPage from './pages/LoginPage.tsx';
 import SimpleLayout from "./layouts/simple/SimpleLayout.tsx";
 import RegisterPage from './pages/RegisterPage.tsx';
+import IndexPage from './pages/IndexPage.tsx';
 
 const RoutesList = () => {
     return useRoutes([
@@ -19,9 +20,10 @@ const RoutesList = () => {
         },
         { path: "login", element: <LoginPage/> },
         { path: "register", element: <RegisterPage/> },
+        { path: "index", element: <IndexPage /> },
         {
             path: '*',
-            element: <Navigate to="/404" replace/>,
+            element: <Navigate to="/404" replace />,
         },
     ]);
 };
