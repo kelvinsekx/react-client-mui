@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import LangCorrectAPI from '../api';
 import { useParams } from 'react-router-dom';
 import LayersIcon from '@mui/icons-material/Layers';
@@ -9,37 +8,38 @@ import Post from '../components/posts/Post';
 import { Button, ButtonGroup, Stack, Tooltip, Typography } from '@mui/material';
 import { mockCorrections } from '../_mockdata/correctionsMock';
 import UserCorrections from '../components/corrections/UserCorrections';
+import { useQuery } from '@tanstack/react-query';
 
 const PostDetailPage = () => {
     const { slug } = useParams();
-    const [post, setPost] = useState<PostInterface | null>(null);
 
-    useEffect(() => {
-        async function fetchPost() {
-            const post = await LangCorrectAPI.getPost(slug);
-            setPost(post)
-        }
+    async function getPost() {
+        return await LangCorrectAPI.getPost(slug);
+    }
 
-        fetchPost();
-    }, [slug]);
+    const { isLoading, isError, data, error } = useQuery({
+        queryKey: ["posts", slug],
+        queryFn: getPost
+    });
 
-    if (!post) return <p>Loading....</p>;
+    if (isLoading) return "Loading...";
+    if (isError) return "Error...";
 
     return (
         <>
-            <Post post={post}/>
+            <Post post={data} />
 
             <Stack direction="row" justifyContent="end" alignItems="center" gap={1} my={3}>
                 <Typography>Corrections</Typography>
                 <ButtonGroup variant="outlined">
                     <Tooltip title="Display corrections grouped by user">
                         <Button>
-                            <PersonIcon/>
+                            <PersonIcon />
                         </Button>
                     </Tooltip>
                     <Tooltip title="Display corrections grouped by sentence">
                         <Button>
-                            <LayersIcon/>
+                            <LayersIcon />
                         </Button>
                     </Tooltip>
                 </ButtonGroup>
@@ -51,7 +51,7 @@ const PostDetailPage = () => {
                         key={correction.username}
                         username={correction.username}
                         corrections={correction.corrections}
-                        comments={correction.comments}/>
+                        comments={correction.comments} />
                 ))}
             </Stack>
         </>
