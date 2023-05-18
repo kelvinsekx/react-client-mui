@@ -1,12 +1,16 @@
-import { Typography, Box, Grid, Button, Stack } from '@mui/material';
+import { Typography, Box, Button } from "@mui/material";
 import BootstrapContainer from "../components/BootstrapContainer"
 
 const NotFoundPage = () => (
-    <Box component="section" sx={{ height: "80vh" }}>
-        <BootstrapContainer sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", height: "100%", textAlign: "center" }}>
-            <Typography variant="h3">Uh Oh.</Typography>
-            <Typography variant="body1" color="text.secondary">Sorry, this page isn't available. The link you followed may be broken, or the page may have been removed.</Typography>
-            <Button variant="contained">Back to Journals</Button>
+    <Box component="section">
+        <BootstrapContainer sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh", width: { xs: "100%", sm: "50%" }, textAlign: "center" }}>
+            <Typography component="h1" variant="h2" fontWeight="light" color="primary.main" mb={1}>Uh Oh.</Typography>
+            <Typography variant="body1" color="text.secondary" mb={6}>Sorry, this page isn't available. The link you followed may be broken, or the page may have been removed.</Typography>
+            <Button variant="contained">
+                <Typography variant="body1" sx={{ textTransform: "none" }}>
+                    Back to Journals
+                </Typography>
+            </Button>
         </BootstrapContainer>
     </Box>
 )
