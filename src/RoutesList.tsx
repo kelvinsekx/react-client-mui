@@ -9,14 +9,15 @@ import ProtectedRoute from './utils/ProtectedRoute.tsx';
 import useAuthContext from './hooks/useAuthContext.tsx';
 import LayoutWithoutContainer from './layouts/LayoutWithoutContainer.tsx';
 import IndexPage from './pages/IndexPage.tsx';
+import NotFoundPage from './pages/NotFoundPage.tsx';
 
 const RoutesList = () => {
     const context = useAuthContext();
-    
+
     if (context === undefined) {
         return <h1>Loading...</h1>;
     }
-    
+
     const { currentUser } = context;
 
     return (
@@ -28,6 +29,7 @@ const RoutesList = () => {
 
             <Route element={<LayoutWithoutContainer />}>
                 <Route path="/" element={<IndexPage />} />
+                <Route path="/404" element={<NotFoundPage />} />
             </Route>
 
             {/* Mixed Routes */}
