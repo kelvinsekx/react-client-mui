@@ -51,27 +51,27 @@ const Navbar = ({ isNavOpen, onNavClose }: NavbarProps) => {
                 <List>
                     <ListItemButton component={Link} to="/">
                         <ListItemIcon>
-                            <HomeIcon/>
+                            <HomeIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Home"/>
+                        <ListItemText primary="Home" />
                     </ListItemButton>
                     <ListItemButton onClick={handleClick}>
                         <ListItemIcon>
-                            <ArticleIcon/>
+                            <ArticleIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Posts"/>
-                        {open ? <ExpandLessIcon/> : <ExpandMoreIcon/>}
+                        <ListItemText primary="Posts" />
+                        {open ? <ExpandLessIcon /> : <ExpandMoreIcon />}
                     </ListItemButton>
                     <Collapse in={open} timeout="auto">
                         <List component="div">
                             <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/teach">
-                                <ListItemText primary="Teach"/>
+                                <ListItemText primary="Teach" />
                             </ListItemButton>
                             <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/learn">
-                                <ListItemText primary="Learn"/>
+                                <ListItemText primary="Learn" />
                             </ListItemButton>
                             <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/following">
-                                <ListItemText primary="Following"/>
+                                <ListItemText primary="Following" />
                             </ListItemButton>
                         </List>
                     </Collapse>

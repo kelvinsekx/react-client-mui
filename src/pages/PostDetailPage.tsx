@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import LayersIcon from '@mui/icons-material/Layers';
 import PersonIcon from '@mui/icons-material/Person';
 
-import { PostInterface } from "./PostPage";
 import Post from '../components/posts/Post';
 import { Button, ButtonGroup, Stack, Tooltip, Typography } from '@mui/material';
 import { mockCorrections } from '../_mockdata/correctionsMock';
@@ -17,13 +16,13 @@ const PostDetailPage = () => {
         return await LangCorrectAPI.getPost(slug);
     }
 
-    const { isLoading, isError, data, error } = useQuery({
+    const { isLoading, isError, data } = useQuery({
         queryKey: ["posts", slug],
         queryFn: getPost
     });
 
-    if (isLoading) return "Loading...";
-    if (isError) return "Error...";
+    if (isLoading) return <h1>Loading....</h1>;
+    if (isError) return <h1>Error....</h1>;
 
     return (
         <>

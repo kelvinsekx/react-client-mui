@@ -39,8 +39,8 @@ const LoginForm = ({ onLogin }: Props) => {
             await onLogin(formData);
             navigate("/");
             reset();
-        } catch (err: any) {
-            setLoginErrors(err);
+        } catch (err:any) {
+            setLoginErrors([err[0].detail]);
         }
     };
 

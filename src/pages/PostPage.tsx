@@ -1,7 +1,6 @@
 import LangCorrectAPI from "../api";
 import PostList from "../components/posts/PostList.tsx";
-import { Button, Container, Stack, Typography } from "@mui/material";
-import PostListSkeleton from "../components/posts/PostListSkeleton.tsx";
+import { Button, Stack, Typography } from "@mui/material";
 import CreateIcon from '@mui/icons-material/Create';
 import useAuthContext from "../hooks/useAuthContext.tsx";
 import { useQuery } from "@tanstack/react-query";
@@ -46,7 +45,7 @@ export interface PostInterface {
  */
 
 const PostPage = ({ title }: { title: string; }) => {
-    const { isLoading, isError, data, error } = useQuery({
+    const { isLoading, isError, data } = useQuery({
         queryKey: ["posts"],
         queryFn: fetchPosts
     });
@@ -61,23 +60,22 @@ const PostPage = ({ title }: { title: string; }) => {
         return results ? results : [];
     }
 
-
-    if (isLoading) return <PostListSkeleton />;
     if (isError) return <h1>Problems loading...</h1>;
 
     return (
-        <Container>
+        <>
             <Stack direction="row" alignItems="center" justifyContent="space-between" mb={3}>
                 <Typography variant="h5">
                     {title}
                 </Typography>
+
                 <Button variant="contained" startIcon={<CreateIcon />} component={Link} to="/feed/create">
                     New Post
                 </Button>
             </Stack>
 
-            <PostList posts={data} />
-        </Container>
+            <PostList posts={data} isLoading={isLoading} />
+        </>
     );
 };
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Avatar, Divider, IconButton, Popover } from '@mui/material';
-import useAuthContext from '../../../hooks/useAuthContext';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -8,10 +7,13 @@ import ListItemText from '@mui/material/ListItemText';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Logout } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
+import { useNavigate } from 'react-router-dom';
+import useAuthContext from '../../hooks/useAuthContext';
 
 const AvatarPopover = () => {
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+    const navigate = useNavigate();
 
     const context = useAuthContext();
     if (!context) return null;
@@ -32,7 +34,7 @@ const AvatarPopover = () => {
     return (
         <>
             <IconButton color={open ? "primary" : "default"} onClick={handleOpen}>
-                <Avatar sx={{ width: 36, height: 36 }} alt={currentUser?.username} src="/"/>
+                <Avatar sx={{ width: 36, height: 36 }} alt={currentUser?.username} src="/" />
             </IconButton>
 
             <Popover
@@ -49,35 +51,38 @@ const AvatarPopover = () => {
                     component="nav"
                     aria-labelledby="nested-list-subheader"
                     disablePadding
-                    // subheader={
-                    //     <ListSubheader sx={{ p: 3}} component="div" id="nested-list-subheader">
-                    //         <Typography fontWeight={700}>
-                    //             {currentUser?.username}
-                    //         </Typography>
-                    //         <Typography fontWeight={700}>
-                    //             {currentUser?.email}
-                    //         </Typography>
-                    //     </ListSubheader>
-                    // }
+                // subheader={
+                //     <ListSubheader sx={{ p: 3}} component="div" id="nested-list-subheader">
+                //         <Typography fontWeight={700}>
+                //             {currentUser?.username}
+                //         </Typography>
+                //         <Typography fontWeight={700}>
+                //             {currentUser?.email}
+                //         </Typography>
+                //     </ListSubheader>
+                // }
                 >
                     <ListItemButton>
                         <ListItemIcon>
-                            <AccountCircleIcon/>
+                            <AccountCircleIcon />
                         </ListItemIcon>
-                        <ListItemText primary="View Profile"/>
+                        <ListItemText primary="View Profile" />
                     </ListItemButton>
                     <ListItemButton>
                         <ListItemIcon>
-                            <EditIcon/>
+                            <EditIcon />
                         </ListItemIcon>
-                        <ListItemText primary="Edit Profile"/>
+                        <ListItemText primary="Edit Profile" />
                     </ListItemButton>
-                    <Divider/>
-                    <ListItemButton onClick={() => logout()}>
+                    <Divider />
+                    <ListItemButton onClick={() => {
+                        logout();
+                        navigate("/login");
+                    }}>
                         <ListItemIcon>
-                            <Logout/>
+                            <Logout />
                         </ListItemIcon>
-                        <ListItemText primary="Logout"/>
+                        <ListItemText primary="Logout" />
                     </ListItemButton>
                 </List>
             </Popover>
