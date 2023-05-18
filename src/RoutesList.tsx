@@ -12,17 +12,21 @@ import IndexPage from './pages/IndexPage.tsx';
 
 const RoutesList = () => {
     const context = useAuthContext();
+    
     if (context === undefined) {
         return <h1>Loading...</h1>;
     }
+    
     const { currentUser } = context;
+
     return (
         <Routes>
             {/* Public Routes */}
 
+            <Route path="login" element={<LoginPage />} />
+            <Route path="register" element={<RegisterPage />} />
+
             <Route element={<LayoutWithoutContainer />}>
-                <Route path="login" element={<LoginPage />} />
-                <Route path="register" element={<RegisterPage />} />
                 <Route path="/" element={<IndexPage />} />
             </Route>
 
