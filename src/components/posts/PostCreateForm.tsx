@@ -1,10 +1,18 @@
-import React from 'react';
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import { useNavigate } from 'react-router-dom';
-import { Box, Button, FormControl, FormHelperText, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
-import useAuthContext from '../../hooks/useAuthContext';
+import { useNavigate } from "react-router-dom";
+import {
+    Box,
+    Button,
+    FormControl,
+    FormHelperText,
+    InputLabel,
+    MenuItem,
+    Select,
+    Stack,
+    TextField,
+} from "@mui/material";
 
 export interface ICreatePostData extends FieldValues {
     title: string;
@@ -28,29 +36,32 @@ const validationSchema = yup.object().shape({
 
 interface IProps {
     onCreate: (formData: ICreatePostData) => {
-        "title": string;
-        "text": string;
-        "native_text": string,
-        "language": number;
-        "gender_of_narration": string;
-        "permission": string;
-        "tags": [],
-        "slug": string;
+        title: string;
+        text: string;
+        native_text: string;
+        language: number;
+        gender_of_narration: string;
+        permission: string;
+        tags: [];
+        slug: string;
     };
 }
 
 const PostCreateForm = ({ onCreate }: IProps) => {
     const navigate = useNavigate();
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
         resolver: yupResolver(validationSchema),
     });
 
-    const context = useAuthContext();
-    if (!context) return null;
-    const { currentUser } = context;
-
-
+    // const context = useAuthContext();
+    // if (!context) return null;
+    // const { currentUser } = context;
 
     const onSubmitHandler: SubmitHandler<FieldValues> = async (data) => {
         // setLoginErrors(null);
@@ -66,7 +77,6 @@ const PostCreateForm = ({ onCreate }: IProps) => {
 
     return (
         <form method="post" onSubmit={handleSubmit(onSubmitHandler)}>
-
             <Stack spacing={3} mb={3}>
                 <TextField
                     required
@@ -90,33 +100,39 @@ const PostCreateForm = ({ onCreate }: IProps) => {
                     {...register("native_text")}
                     label="Notes"
                     error={!!errors.native_text}
-                    helperText={errors.native_text && String(errors.native_text.message)}
+                    helperText={
+                        errors.native_text && String(errors.native_text.message)
+                    }
                 />
-                <FormControl
-                    error={!!errors.language}
-                    fullWidth
-                    required
-
-                >
-                    <InputLabel id="demo-simple-select-label">Language</InputLabel>
+                <FormControl error={!!errors.language} fullWidth required>
+                    <InputLabel id="demo-simple-select-label">
+                        Language
+                    </InputLabel>
                     <Select
                         {...register("language")}
                         label="Language"
                         defaultValue=""
                     >
-                        {currentUser?.get_studying_languages?.map(lang => (
-                            <MenuItem key={lang.code} value={lang.code}>{lang.en_name}</MenuItem>
+                        {currentUser?.get_studying_languages?.map((lang) => (
+                            <MenuItem key={lang.code} value={lang.code}>
+                                {lang.en_name}
+                            </MenuItem>
                         ))}
                     </Select>
-                    {errors.language &&
-                        <FormHelperText>{String(errors.language.message)}</FormHelperText>}
+                    {errors.language && (
+                        <FormHelperText>
+                            {String(errors.language.message)}
+                        </FormHelperText>
+                    )}
                 </FormControl>
                 <FormControl
                     error={!!errors.gender_of_narration}
                     fullWidth
                     required
                 >
-                    <InputLabel id="demo-simple-select-label">Gender of Narration</InputLabel>
+                    <InputLabel id="demo-simple-select-label">
+                        Gender of Narration
+                    </InputLabel>
                     <Select
                         {...register("gender_of_narration")}
                         label="Gender of Narration"
@@ -127,27 +143,36 @@ const PostCreateForm = ({ onCreate }: IProps) => {
                         <MenuItem value="O">Other</MenuItem>
                         <MenuItem value="U">Prefer not to say</MenuItem>
                     </Select>
-                    {errors.gender_of_narration &&
-                        <FormHelperText>{String(errors.gender_of_narration.message)}</FormHelperText>}
+                    {errors.gender_of_narration && (
+                        <FormHelperText>
+                            {String(errors.gender_of_narration.message)}
+                        </FormHelperText>
+                    )}
                 </FormControl>
                 <FormControl
                     error={!!errors.language}
                     fullWidth
                     required
                     defaultValue=""
-
                 >
-                    <InputLabel id="demo-simple-select-label">Visibility</InputLabel>
+                    <InputLabel id="demo-simple-select-label">
+                        Visibility
+                    </InputLabel>
                     <Select
                         {...register("permission")}
                         label="Visibility"
                         defaultValue="public"
                     >
                         <MenuItem value="public">Viewable by everyone</MenuItem>
-                        <MenuItem value="member">Viewable only by registered members</MenuItem>
+                        <MenuItem value="member">
+                            Viewable only by registered members
+                        </MenuItem>
                     </Select>
-                    {errors.permission &&
-                        <FormHelperText>{String(errors.permission.message)}</FormHelperText>}
+                    {errors.permission && (
+                        <FormHelperText>
+                            {String(errors.permission.message)}
+                        </FormHelperText>
+                    )}
                 </FormControl>
             </Stack>
 
@@ -156,7 +181,6 @@ const PostCreateForm = ({ onCreate }: IProps) => {
                     Submit
                 </Button>
             </Box>
-
         </form>
     );
 };

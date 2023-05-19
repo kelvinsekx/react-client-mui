@@ -1,11 +1,19 @@
-import React from 'react';
-import { Divider, IconButton, ListItem, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
-import ReplyIcon from '@mui/icons-material/Reply';
-import sanitizeHtml from 'sanitize-html';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import EditIcon from '@mui/icons-material/Edit';
+import React from "react";
+import {
+    Divider,
+    IconButton,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Menu,
+    MenuItem,
+} from "@mui/material";
+import ReplyIcon from "@mui/icons-material/Reply";
+import sanitizeHtml from "sanitize-html";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import EditIcon from "@mui/icons-material/Edit";
 import "./Correction.css";
-import DeleteIcon from '@mui/icons-material/Delete';
+import DeleteIcon from "@mui/icons-material/Delete";
 
 export interface CorrectionInterface {
     username: string;
@@ -28,28 +36,17 @@ interface SanitizeProps {
 }
 
 const defaultOptions: sanitizeHtml.IOptions = {
-    allowedTags: ["span", "del", "ins"]
+    allowedTags: ["span", "del", "ins"],
 };
 
 const sanitize = ({ html, options }: SanitizeProps) => ({
-    __html: sanitizeHtml(
-        html,
-        { ...defaultOptions, ...options }
-    )
+    __html: sanitizeHtml(html, { ...defaultOptions, ...options }),
 });
 
 const SanitizeHTML = ({ html, options }: SanitizeProps) => (
-    <div dangerouslySetInnerHTML={sanitize({ html, options })}/>
+    <div dangerouslySetInnerHTML={sanitize({ html, options })} />
 );
 
-/**
- * Renders an individual correction
- *
- * Props:
- * - data
- *
- * {UserCorrections} -> Correction
- */
 
 const Correction = ({ data }: CorrectionPropInterface) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -61,12 +58,23 @@ const Correction = ({ data }: CorrectionPropInterface) => {
         setAnchorEl(null);
     };
 
+    const renderCorrection =
+        data.status === "perfect" ? (
+            "this sentence is marked as perfect "
+        ) : (
+            <ListItemText
+                primary={
+                    <SanitizeHTML
+                        html={data?.pretty_html ? data.pretty_html : ""}
+                    />
+                }
+                secondary={data.note}
+            />
+        );
 
-    const renderCorrection = data.status === "perfect" ? "this sentence is marked as perfect " : <ListItemText
-        primary={<SanitizeHTML html={data?.pretty_html ? data.pretty_html : ""}/>}
-        secondary={data.note}/>;
-
-    const correctionId = data.correction_id ? data.correction_id : data.perfect_id;
+    const correctionId = data.correction_id
+        ? data.correction_id
+        : data.perfect_id;
 
     return (
         <>
@@ -77,12 +85,12 @@ const Correction = ({ data }: CorrectionPropInterface) => {
                         <IconButton
                             edge="end"
                             aria-label="options"
-                            aria-controls={open ? 'basic-menu' : undefined}
+                            aria-controls={open ? "basic-menu" : undefined}
                             aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
+                            aria-expanded={open ? "true" : undefined}
                             onClick={handleClick}
                         >
-                            <MoreVertIcon/>
+                            <MoreVertIcon />
                         </IconButton>
                         <Menu
                             id="basic-menu"
@@ -90,46 +98,39 @@ const Correction = ({ data }: CorrectionPropInterface) => {
                             open={open}
                             onClose={handleClose}
                             MenuListProps={{
-                                'aria-labelledby': 'basic-button',
+                                "aria-labelledby": "basic-button",
                             }}
                         >
                             <MenuItem onClick={handleClose}>
                                 <ListItemIcon>
-                                    <EditIcon/>
+                                    <EditIcon />
                                 </ListItemIcon>
-                                <ListItemText>
-                                    Edit
-                                </ListItemText>
+                                <ListItemText>Edit</ListItemText>
                             </MenuItem>
                             <MenuItem onClick={handleClose}>
                                 <ListItemIcon>
-                                    <DeleteIcon/>
+                                    <DeleteIcon />
                                 </ListItemIcon>
-                                <ListItemText>
-                                    Delete
-                                </ListItemText>
+                                <ListItemText>Delete</ListItemText>
                             </MenuItem>
-                            <Divider/>
+                            <Divider />
                             <MenuItem onClick={handleClose}>
                                 <ListItemIcon>
-                                    <ReplyIcon/>
+                                    <ReplyIcon />
                                 </ListItemIcon>
-                                <ListItemText>
-                                    Reply
-                                </ListItemText>
+                                <ListItemText>Reply</ListItemText>
                             </MenuItem>
                         </Menu>
                     </>
-
                 }
                 sx={{
                     paddingTop: "1rem",
-                    paddingBottom: "1rem"
+                    paddingBottom: "1rem",
                 }}
             >
                 {renderCorrection}
             </ListItem>
-            <Divider/>
+            <Divider />
         </>
     );
 };

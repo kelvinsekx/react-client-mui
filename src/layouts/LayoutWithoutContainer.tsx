@@ -1,9 +1,8 @@
-import { Fab } from '@mui/material';
-import { Outlet } from 'react-router-dom';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
-import BaseLayout from './BaseLayout';
-import ScrollToTop from './ScrollToTop';
-
+import { Fab } from "@mui/material";
+import { Outlet } from "react-router-dom";
+import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
+import BaseLayout from "./BaseLayout";
+import ScrollToTop from "./ScrollToTop";
 
 const LayoutWithoutContainer = () => {
     return (

@@ -1,4 +1,4 @@
-import { CardContent, Typography } from '@mui/material';
+import { CardContent, Typography } from "@mui/material";
 
 interface ArticleInterface {
     title: string;
@@ -12,10 +12,16 @@ const Article = ({ title, text, nativeText }: ArticleInterface) => {
             <Typography gutterBottom variant="h5" component="div">
                 {title}
             </Typography>
-            <Typography mb={3} style={{ display: "inline-block", whiteSpace: "break-spaces" }}>
+            <Typography
+                mb={3}
+                style={{ display: "inline-block", whiteSpace: "break-spaces" }}
+            >
                 {text}
             </Typography>
-            <Typography color="secondary" style={{ display: "inline-block", whiteSpace: "break-spaces" }}>
+            <Typography
+                color="secondary"
+                style={{ display: "inline-block", whiteSpace: "break-spaces" }}
+            >
                 {nativeText}
             </Typography>
         </CardContent>

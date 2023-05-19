@@ -1,25 +1,28 @@
-import React, { useState } from 'react';
-import { Avatar, Divider, IconButton, Popover } from '@mui/material';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ListItemText from '@mui/material/ListItemText';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { Logout } from '@mui/icons-material';
-import EditIcon from '@mui/icons-material/Edit';
-import { useNavigate } from 'react-router-dom';
-import useAuthContext from '../../hooks/useAuthContext';
+import React, { useState } from "react";
+import { Avatar, Divider, IconButton, Popover } from "@mui/material";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import { Logout } from "@mui/icons-material";
+import EditIcon from "@mui/icons-material/Edit";
+import { useNavigate } from "react-router-dom";
 
 const AvatarPopover = () => {
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const navigate = useNavigate();
 
-    const context = useAuthContext();
-    if (!context) return null;
+    const currentUser = null;
+    const logout = () => {
+        //
+    };
 
-    const { currentUser, logout } = context;
+    // const context = useAuthContext();
+    // if (!context) return null;
 
+    // const { currentUser, logout } = context;
 
     const handleOpen = (evt: React.MouseEvent<HTMLButtonElement>) => {
         setOpen(true);
@@ -33,8 +36,15 @@ const AvatarPopover = () => {
 
     return (
         <>
-            <IconButton color={open ? "primary" : "default"} onClick={handleOpen}>
-                <Avatar sx={{ width: 36, height: 36 }} alt={currentUser?.username} src="/" />
+            <IconButton
+                color={open ? "primary" : "default"}
+                onClick={handleOpen}
+            >
+                <Avatar
+                    sx={{ width: 36, height: 36 }}
+                    alt={currentUser?.username}
+                    src="/"
+                />
             </IconButton>
 
             <Popover
@@ -42,25 +52,29 @@ const AvatarPopover = () => {
                 anchorEl={anchorEl}
                 onClose={handleClose}
                 anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'left',
+                    vertical: "bottom",
+                    horizontal: "left",
                 }}
             >
                 <List
-                    sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+                    sx={{
+                        width: "100%",
+                        maxWidth: 360,
+                        bgcolor: "background.paper",
+                    }}
                     component="nav"
                     aria-labelledby="nested-list-subheader"
                     disablePadding
-                // subheader={
-                //     <ListSubheader sx={{ p: 3}} component="div" id="nested-list-subheader">
-                //         <Typography fontWeight={700}>
-                //             {currentUser?.username}
-                //         </Typography>
-                //         <Typography fontWeight={700}>
-                //             {currentUser?.email}
-                //         </Typography>
-                //     </ListSubheader>
-                // }
+                    // subheader={
+                    //     <ListSubheader sx={{ p: 3}} component="div" id="nested-list-subheader">
+                    //         <Typography fontWeight={700}>
+                    //             {currentUser?.username}
+                    //         </Typography>
+                    //         <Typography fontWeight={700}>
+                    //             {currentUser?.email}
+                    //         </Typography>
+                    //     </ListSubheader>
+                    // }
                 >
                     <ListItemButton>
                         <ListItemIcon>
@@ -75,10 +89,12 @@ const AvatarPopover = () => {
                         <ListItemText primary="Edit Profile" />
                     </ListItemButton>
                     <Divider />
-                    <ListItemButton onClick={() => {
-                        logout();
-                        navigate("/login");
-                    }}>
+                    <ListItemButton
+                        onClick={() => {
+                            logout();
+                            navigate("/login");
+                        }}
+                    >
                         <ListItemIcon>
                             <Logout />
                         </ListItemIcon>
