@@ -9,6 +9,7 @@ import IndexPage from "./pages/IndexPage.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
 import useAuth from "./hooks/useAuth.tsx";
 import CreatePostPage from "./pages/CreatePostPage.tsx";
+import NotFoundPage from './pages/NotFoundPage.tsx';
 
 const RoutesList = () => {
     const authContext = useAuth();
@@ -83,8 +84,10 @@ const RoutesList = () => {
             </Route>
 
             {/* Catch all route */}
-            {/* TODO: Make a <NotFoundPage /> */}
             <Route path="*" element={<Navigate to="/404" />} />
+            <Route element={<LayoutWithContainer />}>
+                <Route path="404" element={<NotFoundPage />} />
+            </Route>
         </Routes>
     );
 };
