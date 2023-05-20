@@ -8,11 +8,8 @@ import Box from "@mui/material/Box";
 import axios from "../../api/axios";
 
 import useAuth from "../../hooks/useAuth";
-
-// interface FormDataInterface extends FieldValues {
-//     username: string;
-//     password: string;
-// }
+import { IAuthContext } from "../../context/AuthProvider";
+import { AxiosError, isAxiosError } from "axios";
 
 const validationSchema = yup.object().shape({
     username: yup.string().min(6).max(16).required(),
@@ -20,12 +17,10 @@ const validationSchema = yup.object().shape({
 });
 
 const LoginForm = () => {
-    const { setAccessToken, setRefreshToken, setCurrentUser } = useAuth();
     const navigate = useNavigate();
     const location = useLocation();
-    const from = location.state?.from?.pathname || "/";
+    const authContext = useAuth();
     const [errMsg, setErrMsg] = useState("");
-
     const {
         register,
         handleSubmit,
@@ -33,6 +28,13 @@ const LoginForm = () => {
     } = useForm({
         resolver: yupResolver(validationSchema),
     });
+
+    if (!authContext) return <p>Loading...</p>;
+
+    const { setAccessToken, setRefreshToken, setCurrentUser } =
+        authContext as IAuthContext;
+
+    const from = location.state?.from?.pathname || "/";
 
     const onSubmitHandler: SubmitHandler<FieldValues> = async (data) => {
         setErrMsg("");
@@ -51,12 +53,17 @@ const LoginForm = () => {
             });
             navigate(from, { replace: true });
         } catch (err) {
-            if (!err?.response) {
-                setErrMsg("No server response");
-            } else if (err.response?.status === 401) {
-                setErrMsg(err.response.data.detail);
+            const error = err as Error | AxiosError;
+            if (!isAxiosError(error)) {
+                setErrMsg("An error has occured.");
             } else {
-                setErrMsg("Login failed");
+                if (!error?.response) {
+                    setErrMsg("No server response");
+                } else if (error.response?.status === 401) {
+                    setErrMsg(error.response?.data?.detail);
+                } else {
+                    setErrMsg("Login failed");
+                }
             }
         }
     };

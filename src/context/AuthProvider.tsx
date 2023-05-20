@@ -7,8 +7,16 @@ import {
     REFRESH_TOKEN_STORAGE_ID,
 } from "../constants";
 
-interface IAuthContext {
+export interface IAuthContext {
     currentUser: object;
+    refreshToken: string | null;
+    accessToken: string | null;
+    isAuthenticated: boolean;
+    userInfoLoaded: boolean;
+    logout: () => void;
+    setCurrentUser: (user: object) => void;
+    setRefreshToken: (token: string) => void;
+    setAccessToken: (token: string) => void;
 }
 
 interface IDecodeToken {
@@ -20,7 +28,7 @@ interface IDecodeToken {
     username: string;
 }
 
-const AuthContext = createContext<IAuthContext | object>({});
+const AuthContext = createContext<IAuthContext | null>(null);
 
 /**
  * DEV NOTE:
@@ -62,7 +70,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         async function fetchUser() {
             if (accessToken) {
-                // I disabled this line b/c I don't see how it can be null b/c of my conditional check
+                // I disabled this line b/c I don't see how `accessToken` can be null b/c of my conditional check
                 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 // @ts-ignore
                 const decodedToken = jwtDecode<IDecodeToken>(accessToken);
