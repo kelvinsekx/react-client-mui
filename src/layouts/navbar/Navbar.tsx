@@ -63,7 +63,7 @@ const Navbar = ({ isNavOpen, onNavClose }: NavbarProps) => {
                             <ListItemButton
                                 sx={{ pl: 4 }}
                                 component={Link}
-                                to="/feed/teach"
+                                to="/teach"
                                 onClick={onNavClose}
                             >
                                 <ListItemText primary="Teach" />
@@ -71,7 +71,7 @@ const Navbar = ({ isNavOpen, onNavClose }: NavbarProps) => {
                             <ListItemButton
                                 sx={{ pl: 4 }}
                                 component={Link}
-                                to="/feed/learn"
+                                to="/learn"
                                 onClick={onNavClose}
                             >
                                 <ListItemText primary="Learn" />

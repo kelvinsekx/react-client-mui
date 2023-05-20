@@ -1,5 +1,5 @@
 import LangCorrectAPI from "../api/api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import LayersIcon from "@mui/icons-material/Layers";
 import PersonIcon from "@mui/icons-material/Person";
 
@@ -8,9 +8,11 @@ import { Button, ButtonGroup, Stack, Tooltip, Typography } from "@mui/material";
 import { mockCorrections } from "../_mockdata/correctionsMock";
 import UserCorrections from "../components/corrections/UserCorrections";
 import { useQuery } from "@tanstack/react-query";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const PostDetailPage = () => {
     const { slug } = useParams();
+    const navigate = useNavigate();
 
     async function getPost() {
         return await LangCorrectAPI.getPost(slug);
@@ -26,6 +28,13 @@ const PostDetailPage = () => {
 
     return (
         <>
+            <Button
+                onClick={() => navigate(-1)}
+                startIcon={<KeyboardBackspaceIcon />}
+                sx={{ mb: 2 }}
+            >
+                Go back
+            </Button>
             <Post post={data} />
 
             <Stack

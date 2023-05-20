@@ -8,7 +8,7 @@ import { Skeleton, Stack, useMediaQuery, useTheme } from "@mui/material";
 import NotificationsPopover from "./NotificationsPopover.js";
 import AvatarPopover from "./AvatarPopover.js";
 import LogoMarkWhite from "../../assets/logos/logo-mark-white.svg";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
 
 interface Props {
@@ -18,6 +18,7 @@ interface Props {
 const Header = ({ onNavOpen }: Props) => {
     const theme = useTheme();
     const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
+    const navigate = useNavigate();
     const { isAuthenticated, userInfoLoaded } = useAuth();
 
     if (!userInfoLoaded) return;
@@ -63,7 +64,7 @@ const Header = ({ onNavOpen }: Props) => {
     return (
         <>
             <div id="back-to-top-anchor"></div>
-            <AppBar position="static" color="primary">
+            <AppBar position="static" color="primary" sx={{ mb: 3 }}>
                 <Toolbar>
                     {renderMenuIcon}
                     <Box
@@ -72,7 +73,12 @@ const Header = ({ onNavOpen }: Props) => {
                         alignItems="center"
                         justifyContent={isMediumScreen ? "center" : "start"}
                     >
-                        {renderLogo}
+                        <span
+                            style={{ cursor: "pointer" }}
+                            onClick={() => navigate("/")}
+                        >
+                            {renderLogo}
+                        </span>
                     </Box>
                     {renderPopovers}
                 </Toolbar>
