@@ -1,12 +1,26 @@
-import { createContext, useEffect, useState } from "react";
+import { ReactNode, createContext, useEffect, useState } from "react";
 import useLocalStorage from "../hooks/useLocalStorage";
 import { axiosPrivate } from "../api/axios";
 import jwtDecode from "jwt-decode";
+import {
+    ACCESS_TOKEN_STORAGE_ID,
+    REFRESH_TOKEN_STORAGE_ID,
+} from "../constants";
 
-export const ACCESS_TOKEN_STORAGE_ID = "LC-access";
-export const REFRESH_TOKEN_STORAGE_ID = "LC-refresh";
+interface IAuthContext {
+    currentUser: object;
+}
 
-const AuthContext = createContext({});
+interface IDecodeToken {
+    token_type: string;
+    exp: number;
+    iat: number;
+    jti: string;
+    user_id: number;
+    username: string;
+}
+
+const AuthContext = createContext<IAuthContext | object>({});
 
 /**
  * DEV NOTE:
@@ -21,7 +35,7 @@ const AuthContext = createContext({});
  * - This solution feels a bit janky....
  */
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [accessToken, setAccessToken] = useLocalStorage(
         ACCESS_TOKEN_STORAGE_ID,
     );
@@ -35,15 +49,24 @@ export const AuthProvider = ({ children }) => {
     const isAuthenticated = Object.keys(currentUser).length > 0;
 
     const logout = () => {
-        setAccessToken(null);
-        setRefreshToken(null);
+        if (
+            typeof setAccessToken === "function" &&
+            typeof setRefreshToken === "function"
+        ) {
+            setAccessToken(null);
+            setRefreshToken(null);
+        }
         setCurrentUser({});
     };
 
     useEffect(() => {
         async function fetchUser() {
             if (accessToken) {
-                const { username } = jwtDecode(accessToken);
+                // I disabled this line b/c I don't see how it can be null b/c of my conditional check
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-ignore
+                const decodedToken = jwtDecode<IDecodeToken>(accessToken);
+                const { username } = decodedToken;
                 const response = await axiosPrivate.get(`/users/${username}`);
                 setCurrentUser(response.data);
                 setUserInfoLoaded(true);
