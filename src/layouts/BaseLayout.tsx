@@ -1,7 +1,6 @@
-import { ReactNode, useState } from 'react';
-import Header from './header/Header';
-import Navbar from './navbar/Navbar';
-
+import { ReactNode, useState } from "react";
+import Header from "./header/Header";
+import Navbar from "./navbar/Navbar";
 
 interface IProps {
     children: ReactNode;

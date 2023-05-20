@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
     Avatar,
     Card,
@@ -12,14 +12,14 @@ import {
     Menu,
     MenuItem,
     Stack,
-    Typography
-} from '@mui/material';
-import Correction, { CorrectionInterface } from './Correction';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import DeleteIcon from '@mui/icons-material/Delete';
-import EditIcon from '@mui/icons-material/Edit';
-import CorrectionComments from './CorrectionComments';
-import { CommentInterface } from '../comments/Comment';
+    Typography,
+} from "@mui/material";
+import Correction, { CorrectionInterface } from "./Correction";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import CorrectionComments from "./CorrectionComments";
+import { CommentInterface } from "../comments/Comment";
 
 interface UserCorrectionsInterface {
     username: string;
@@ -27,16 +27,11 @@ interface UserCorrectionsInterface {
     comments: CommentInterface[];
 }
 
-/**
- * Renders corrections made by a user
- *
- * Props:
- * - username
- * - corrections
- *
- * {PostDetailPage} -> UserCorrections
- */
-const UserCorrections = ({ username, corrections, comments }: UserCorrectionsInterface) => {
+const UserCorrections = ({
+    username,
+    corrections,
+    comments,
+}: UserCorrectionsInterface) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -50,35 +45,39 @@ const UserCorrections = ({ username, corrections, comments }: UserCorrectionsInt
         <>
             <Card>
                 <CardHeader
-                    avatar={
-                        <Avatar>
-                            {username.slice(0, 1)}
-                        </Avatar>
-                    }
+                    avatar={<Avatar>{username.slice(0, 1)}</Avatar>}
                     title={username}
                 />
-                <Divider/>
+                <Divider />
                 <List disablePadding>
                     {corrections.map((correction) => (
-                        <Correction key={correction.correction_id ? correction.correction_id :
-                            correction.perfect_id} data={correction}/>
+                        <Correction
+                            key={
+                                correction.correction_id
+                                    ? correction.correction_id
+                                    : correction.perfect_id
+                            }
+                            data={correction}
+                        />
                     ))}
                 </List>
                 {/* <Divider /> */}
                 <CardContent>
-                    <Stack direction="row" justifyContent="space-between" alignItems="center">
-                        <Typography fontWeight={700}>
-                            Feedback
-                        </Typography>
+                    <Stack
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                    >
+                        <Typography fontWeight={700}>Feedback</Typography>
                         <IconButton
                             edge="end"
                             aria-label="options"
-                            aria-controls={open ? 'basic-menu' : undefined}
+                            aria-controls={open ? "basic-menu" : undefined}
                             aria-haspopup="true"
-                            aria-expanded={open ? 'true' : undefined}
+                            aria-expanded={open ? "true" : undefined}
                             onClick={handleClick}
                         >
-                            <MoreVertIcon/>
+                            <MoreVertIcon />
                         </IconButton>
                         <Menu
                             id="basic-menu"
@@ -86,42 +85,36 @@ const UserCorrections = ({ username, corrections, comments }: UserCorrectionsInt
                             open={open}
                             onClose={handleClose}
                             MenuListProps={{
-                                'aria-labelledby': 'basic-button',
+                                "aria-labelledby": "basic-button",
                             }}
                         >
                             <MenuItem onClick={handleClose}>
                                 <ListItemIcon>
-                                    <EditIcon/>
+                                    <EditIcon />
                                 </ListItemIcon>
-                                <ListItemText>
-                                    Edit
-                                </ListItemText>
+                                <ListItemText>Edit</ListItemText>
                             </MenuItem>
                             <MenuItem onClick={handleClose}>
                                 <ListItemIcon>
-                                    <DeleteIcon/>
+                                    <DeleteIcon />
                                 </ListItemIcon>
-                                <ListItemText>
-                                    Delete
-                                </ListItemText>
+                                <ListItemText>Delete</ListItemText>
                             </MenuItem>
                         </Menu>
                     </Stack>
                     <Typography>
                         {/* TODO: Add proper feedback */}
-                        Lorem ipsum dolor sit, amet consectetur adipisicing elit. Suscipit atque at iste voluptatum iure
-                        impedit doloribus, iusto ex hic consequuntur blanditiis exercitationem facilis quam. Facilis
-                        odio assumenda ex eum rerum?
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Suscipit atque at iste voluptatum iure impedit
+                        doloribus, iusto ex hic consequuntur blanditiis
+                        exercitationem facilis quam. Facilis odio assumenda ex
+                        eum rerum?
                     </Typography>
                 </CardContent>
-                <CorrectionComments comments={comments}/>
+                <CorrectionComments comments={comments} />
             </Card>
         </>
     );
 };
 
 export default UserCorrections;
-
-
-
-
