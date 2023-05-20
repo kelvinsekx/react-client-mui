@@ -1,16 +1,15 @@
-import { Box, Button, FormHelperText, Stack, TextField } from '@mui/material';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Box, Button, FormHelperText, Stack, TextField } from "@mui/material";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { GENDER_OPTIONS, LANGUAGE_OPTIONS, LEVEL_OPTIONS } from './formData';
-import AuthAlerts from './AuthAlerts';
-
+import InputLabel from "@mui/material/InputLabel";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import { GENDER_OPTIONS, LANGUAGE_OPTIONS, LEVEL_OPTIONS } from "./formData";
+import AuthAlerts from "./AuthAlerts";
 
 interface FormDataInterface extends FieldValues {
     username: string;
@@ -41,9 +40,16 @@ interface Props {
 const RegisterForm = ({ onRegister }: Props) => {
     const navigate = useNavigate();
 
-    const [registrationErrors, setRegistrationErrors] = useState<string[] | null>(null);
+    const [registrationErrors, setRegistrationErrors] = useState<
+        string[] | null
+    >(null);
 
-    const { register, handleSubmit, formState: { errors }, reset } = useForm({
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+        reset,
+    } = useForm({
         resolver: yupResolver(validationSchema),
     });
 
@@ -60,21 +66,22 @@ const RegisterForm = ({ onRegister }: Props) => {
         }
     };
 
-
     return (
         <>
             <form method="post" onSubmit={handleSubmit(onSubmitHandler)}>
-
-                {registrationErrors && <AuthAlerts messages={registrationErrors}/>}
+                {registrationErrors && (
+                    <AuthAlerts messages={registrationErrors} />
+                )}
 
                 <Stack spacing={3} mb={3}>
-
                     <TextField
                         required
                         {...register("username")}
                         label="username"
                         error={!!errors.username}
-                        helperText={errors.username && String(errors.username.message)}
+                        helperText={
+                            errors.username && String(errors.username.message)
+                        }
                     />
 
                     <TextField
@@ -82,25 +89,31 @@ const RegisterForm = ({ onRegister }: Props) => {
                         {...register("email")}
                         label="email"
                         error={!!errors.email}
-                        helperText={errors.email && String(errors.email.message)}
+                        helperText={
+                            errors.email && String(errors.email.message)
+                        }
                     />
 
                     <TextField
                         required
                         {...register("password")}
                         label="Password"
-                        type='password'
+                        type="password"
                         error={!!errors.password}
-                        helperText={errors.password && String(errors.password.message)}
+                        helperText={
+                            errors.password && String(errors.password.message)
+                        }
                     />
 
                     <TextField
                         required
                         {...register("password2")}
                         label="Re-enter your password"
-                        type='password'
+                        type="password"
                         error={!!errors.password2}
-                        helperText={errors.password2 && String(errors.password2.message)}
+                        helperText={
+                            errors.password2 && String(errors.password2.message)
+                        }
                     />
 
                     <FormControl
@@ -108,18 +121,25 @@ const RegisterForm = ({ onRegister }: Props) => {
                         fullWidth
                         required
                     >
-                        <InputLabel id="demo-simple-select-label">Native Language</InputLabel>
+                        <InputLabel id="demo-simple-select-label">
+                            Native Language
+                        </InputLabel>
                         <Select
                             {...register("native_language")}
                             label="Native Language"
                             defaultValue=""
                         >
-                            {LANGUAGE_OPTIONS.map(lang => (
-                                <MenuItem key={lang[0]} value={lang[0]}>{lang[1]}</MenuItem>
+                            {LANGUAGE_OPTIONS.map((lang) => (
+                                <MenuItem key={lang[0]} value={lang[0]}>
+                                    {lang[1]}
+                                </MenuItem>
                             ))}
                         </Select>
-                        {errors.native_language &&
-                            <FormHelperText>{String(errors.native_language.message)}</FormHelperText>}
+                        {errors.native_language && (
+                            <FormHelperText>
+                                {String(errors.native_language.message)}
+                            </FormHelperText>
+                        )}
                     </FormControl>
 
                     <FormControl
@@ -127,19 +147,25 @@ const RegisterForm = ({ onRegister }: Props) => {
                         fullWidth
                         required
                     >
-                        <InputLabel id="demo-simple-select-label">Studying Language</InputLabel>
+                        <InputLabel id="demo-simple-select-label">
+                            Studying Language
+                        </InputLabel>
                         <Select
                             {...register("studying_language")}
                             label="Studying Language"
                             defaultValue=""
                         >
-                            {LANGUAGE_OPTIONS.map(lang => (
-                                <MenuItem key={lang[0]} value={lang[0]}>{lang[1]}</MenuItem>
+                            {LANGUAGE_OPTIONS.map((lang) => (
+                                <MenuItem key={lang[0]} value={lang[0]}>
+                                    {lang[1]}
+                                </MenuItem>
                             ))}
                         </Select>
-                        {errors.studying_language &&
-                            <FormHelperText>{String(errors.studying_language.message)}</FormHelperText>}
-
+                        {errors.studying_language && (
+                            <FormHelperText>
+                                {String(errors.studying_language.message)}
+                            </FormHelperText>
+                        )}
                     </FormControl>
 
                     <FormControl
@@ -147,39 +173,48 @@ const RegisterForm = ({ onRegister }: Props) => {
                         fullWidth
                         required
                     >
-                        <InputLabel id="demo-simple-select-label">Studying Level</InputLabel>
+                        <InputLabel id="demo-simple-select-label">
+                            Studying Level
+                        </InputLabel>
                         <Select
                             {...register("studying_level")}
                             label="Studying Level"
                             defaultValue=""
                         >
-                            {LEVEL_OPTIONS.map(level => (
-                                <MenuItem key={level[0]} value={level[0]}>{level[1]}</MenuItem>
+                            {LEVEL_OPTIONS.map((level) => (
+                                <MenuItem key={level[0]} value={level[0]}>
+                                    {level[1]}
+                                </MenuItem>
                             ))}
                         </Select>
-                        {errors.studying_level &&
-                            <FormHelperText>{String(errors.studying_level.message)}</FormHelperText>}
+                        {errors.studying_level && (
+                            <FormHelperText>
+                                {String(errors.studying_level.message)}
+                            </FormHelperText>
+                        )}
                     </FormControl>
 
-                    <FormControl
-                        error={!!errors.gender}
-                        fullWidth
-                        required
-                    >
-                        <InputLabel id="demo-simple-select-label">Gender of Narration</InputLabel>
+                    <FormControl error={!!errors.gender} fullWidth required>
+                        <InputLabel id="demo-simple-select-label">
+                            Gender of Narration
+                        </InputLabel>
                         <Select
                             {...register("gender")}
                             label="Gender of Narration"
                             defaultValue=""
                         >
-                            {GENDER_OPTIONS.map(gender => (
-                                <MenuItem key={gender[0]} value={gender[0]}>{gender[1]}</MenuItem>
+                            {GENDER_OPTIONS.map((gender) => (
+                                <MenuItem key={gender[0]} value={gender[0]}>
+                                    {gender[1]}
+                                </MenuItem>
                             ))}
                         </Select>
-                        {errors.gender && <FormHelperText>{String(errors.gender.message)}</FormHelperText>}
+                        {errors.gender && (
+                            <FormHelperText>
+                                {String(errors.gender.message)}
+                            </FormHelperText>
+                        )}
                     </FormControl>
-
-
                 </Stack>
 
                 <Box display="flex" justifyContent="end">
@@ -187,7 +222,6 @@ const RegisterForm = ({ onRegister }: Props) => {
                         Register
                     </Button>
                 </Box>
-
             </form>
         </>
     );

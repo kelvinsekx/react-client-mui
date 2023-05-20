@@ -1,16 +1,18 @@
-import LangCorrectAPI from '../api';
-import { useParams } from 'react-router-dom';
-import LayersIcon from '@mui/icons-material/Layers';
-import PersonIcon from '@mui/icons-material/Person';
+import LangCorrectAPI from "../api/api";
+import { useNavigate, useParams } from "react-router-dom";
+import LayersIcon from "@mui/icons-material/Layers";
+import PersonIcon from "@mui/icons-material/Person";
 
-import Post from '../components/posts/Post';
-import { Button, ButtonGroup, Stack, Tooltip, Typography } from '@mui/material';
-import { mockCorrections } from '../_mockdata/correctionsMock';
-import UserCorrections from '../components/corrections/UserCorrections';
-import { useQuery } from '@tanstack/react-query';
+import Post from "../components/posts/Post";
+import { Button, ButtonGroup, Stack, Tooltip, Typography } from "@mui/material";
+import { mockCorrections } from "../_mockdata/correctionsMock";
+import UserCorrections from "../components/corrections/UserCorrections";
+import { useQuery } from "@tanstack/react-query";
+import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 
 const PostDetailPage = () => {
     const { slug } = useParams();
+    const navigate = useNavigate();
 
     async function getPost() {
         return await LangCorrectAPI.getPost(slug);
@@ -18,7 +20,7 @@ const PostDetailPage = () => {
 
     const { isLoading, isError, data } = useQuery({
         queryKey: ["posts", slug],
-        queryFn: getPost
+        queryFn: getPost,
     });
 
     if (isLoading) return <h1>Loading....</h1>;
@@ -26,9 +28,22 @@ const PostDetailPage = () => {
 
     return (
         <>
+            <Button
+                onClick={() => navigate(-1)}
+                startIcon={<KeyboardBackspaceIcon />}
+                sx={{ mb: 2 }}
+            >
+                Go back
+            </Button>
             <Post post={data} />
 
-            <Stack direction="row" justifyContent="end" alignItems="center" gap={1} my={3}>
+            <Stack
+                direction="row"
+                justifyContent="end"
+                alignItems="center"
+                gap={1}
+                my={3}
+            >
                 <Typography>Corrections</Typography>
                 <ButtonGroup variant="outlined">
                     <Tooltip title="Display corrections grouped by user">
@@ -45,12 +60,13 @@ const PostDetailPage = () => {
             </Stack>
 
             <Stack gap={5}>
-                {mockCorrections.results.map(correction => (
+                {mockCorrections.results.map((correction) => (
                     <UserCorrections
                         key={correction.username}
                         username={correction.username}
                         corrections={correction.corrections}
-                        comments={correction.comments} />
+                        comments={correction.comments}
+                    />
                 ))}
             </Stack>
         </>

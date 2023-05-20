@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 
 import { PostInterface } from "../../pages/PostPage.tsx";
 import {
@@ -15,15 +15,15 @@ import {
     Menu,
     MenuItem,
     Stack,
-    Tooltip
+    Tooltip,
 } from "@mui/material";
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import PermIdentityIcon from '@mui/icons-material/PermIdentity';
-import FlagIcon from '@mui/icons-material/Flag';
-import LanguageIcon from '@mui/icons-material/Language';
-import { Link } from 'react-router-dom';
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+import PermIdentityIcon from "@mui/icons-material/PermIdentity";
+import FlagIcon from "@mui/icons-material/Flag";
+import LanguageIcon from "@mui/icons-material/Language";
+import { Link } from "react-router-dom";
 import Article from "./Article.tsx";
 
 interface PostPreviewInterface {
@@ -53,13 +53,13 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
                 }
                 action={
                     <IconButton
-                        aria-controls={open ? 'menu' : undefined}
+                        aria-controls={open ? "menu" : undefined}
                         aria-haspopup="true"
-                        aria-expanded={open ? 'true' : undefined}
+                        aria-expanded={open ? "true" : undefined}
                         aria-label="settings"
                         onClick={handleClick}
                     >
-                        <MoreVertIcon/>
+                        <MoreVertIcon />
                     </IconButton>
                 }
                 title={user.username}
@@ -71,49 +71,57 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
                 open={open}
                 onClose={handleClose}
                 MenuListProps={{
-                    'aria-labelledby': 'basic-button',
+                    "aria-labelledby": "basic-button",
                 }}
             >
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                        <BookmarkBorderIcon/>
+                        <BookmarkBorderIcon />
                     </ListItemIcon>
-                    <ListItemText>
-                        Save
-                    </ListItemText>
+                    <ListItemText>Save</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                        <PermIdentityIcon/>
+                        <PermIdentityIcon />
                     </ListItemIcon>
-                    <ListItemText>
-                        View profile
-                    </ListItemText>
+                    <ListItemText>View profile</ListItemText>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
                     <ListItemIcon>
-                        <FlagIcon/>
+                        <FlagIcon />
                     </ListItemIcon>
-                    <ListItemText>
-                        Report post
-                    </ListItemText>
+                    <ListItemText>Report post</ListItemText>
                 </MenuItem>
             </Menu>
             <CardActionArea component={Link} to={`/journals/${meta.slug}`}>
-                <Article title={content.title} text={content.text}/>
+                <Article title={content.title} text={content.text} />
             </CardActionArea>
-            <CardActions sx={{ display: "flex", justifyContent: "space-between" }}>
+            <CardActions
+                sx={{ display: "flex", justifyContent: "space-between" }}
+            >
                 <Stack direction="row" spacing={1}>
                     <Tooltip arrow title={post.language.en_name}>
-                        <Chip icon={<LanguageIcon/>} label={post.language.code} size="small" variant="outlined"/>
+                        <Chip
+                            icon={<LanguageIcon />}
+                            label={post.language.code}
+                            size="small"
+                            variant="outlined"
+                        />
                     </Tooltip>
                     <Tooltip arrow title="Corrections">
-                        <Chip icon={<CheckCircleOutlineIcon/>} size="small" label={total_correctors}
-                              variant="outlined"/>
+                        <Chip
+                            icon={<CheckCircleOutlineIcon />}
+                            size="small"
+                            label={total_correctors}
+                            variant="outlined"
+                        />
                     </Tooltip>
                 </Stack>
-                <Button size="small" variant="outlined"
-                        startIcon={<CheckCircleOutlineIcon/>}>
+                <Button
+                    size="small"
+                    variant="outlined"
+                    startIcon={<CheckCircleOutlineIcon />}
+                >
                     Correct
                 </Button>
             </CardActions>

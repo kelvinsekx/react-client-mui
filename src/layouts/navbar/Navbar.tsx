@@ -1,18 +1,17 @@
 import { useState } from "react";
-import ArticleIcon from '@mui/icons-material/Article';
+import ArticleIcon from "@mui/icons-material/Article";
 import { Link } from "react-router-dom";
-import Box from '@mui/material/Box';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItemButton from '@mui/material/ListItemButton';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import ExpandLessIcon from '@mui/icons-material/ExpandLess';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import HomeIcon from '@mui/icons-material/Home';
+import Box from "@mui/material/Box";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import HomeIcon from "@mui/icons-material/Home";
 
-
-import ListItemText from '@mui/material/ListItemText';
-import Collapse from '@mui/material/Collapse';
+import ListItemText from "@mui/material/ListItemText";
+import Collapse from "@mui/material/Collapse";
 
 export interface NavbarProps {
     isNavOpen: boolean;
@@ -39,17 +38,14 @@ const Navbar = ({ isNavOpen, onNavClose }: NavbarProps) => {
     };
 
     return (
-        <Drawer
-            anchor="left"
-            open={isNavOpen}
-            onClose={onNavClose}
-        >
-            <Box
-                sx={{ width: NAV_WIDTH }}
-                role="presentation"
-            >
+        <Drawer anchor="left" open={isNavOpen} onClose={onNavClose}>
+            <Box sx={{ width: NAV_WIDTH }} role="presentation">
                 <List>
-                    <ListItemButton component={Link} to="/" onClick={onNavClose}>
+                    <ListItemButton
+                        component={Link}
+                        to="/"
+                        onClick={onNavClose}
+                    >
                         <ListItemIcon>
                             <HomeIcon />
                         </ListItemIcon>
@@ -64,13 +60,28 @@ const Navbar = ({ isNavOpen, onNavClose }: NavbarProps) => {
                     </ListItemButton>
                     <Collapse in={open} timeout="auto">
                         <List component="div">
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/teach" onClick={onNavClose}>
+                            <ListItemButton
+                                sx={{ pl: 4 }}
+                                component={Link}
+                                to="/teach"
+                                onClick={onNavClose}
+                            >
                                 <ListItemText primary="Teach" />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/learn" onClick={onNavClose}>
+                            <ListItemButton
+                                sx={{ pl: 4 }}
+                                component={Link}
+                                to="/learn"
+                                onClick={onNavClose}
+                            >
                                 <ListItemText primary="Learn" />
                             </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }} component={Link} to="/feed/following" onClick={onNavClose}>
+                            <ListItemButton
+                                sx={{ pl: 4 }}
+                                component={Link}
+                                to="/feed/following"
+                                onClick={onNavClose}
+                            >
                                 <ListItemText primary="Following" />
                             </ListItemButton>
                         </List>
