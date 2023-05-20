@@ -13,6 +13,8 @@ import {
     Stack,
     TextField,
 } from "@mui/material";
+import useAuth from "../../hooks/useAuth";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 
 export interface ICreatePostData extends FieldValues {
     title: string;
@@ -34,21 +36,22 @@ const validationSchema = yup.object().shape({
     // tags: yup.string(),
 });
 
-interface IProps {
-    onCreate: (formData: ICreatePostData) => {
-        title: string;
-        text: string;
-        native_text: string;
-        language: number;
-        gender_of_narration: string;
-        permission: string;
-        tags: [];
-        slug: string;
-    };
-}
+// interface IProps {
+//     onCreate: (formData: ICreatePostData) => {
+//         title: string;
+//         text: string;
+//         native_text: string;
+//         language: number;
+//         gender_of_narration: string;
+//         permission: string;
+//         tags: [];
+//         slug: string;
+//     };
+// }
 
-const PostCreateForm = ({ onCreate }: IProps) => {
+const PostCreateForm = () => {
     const navigate = useNavigate();
+    const axiosPrivate = useAxiosPrivate();
 
     const {
         register,
@@ -59,19 +62,19 @@ const PostCreateForm = ({ onCreate }: IProps) => {
         resolver: yupResolver(validationSchema),
     });
 
-    // const context = useAuthContext();
-    // if (!context) return null;
-    // const { currentUser } = context;
+    const { currentUser } = useAuth();
 
     const onSubmitHandler: SubmitHandler<FieldValues> = async (data) => {
-        // setLoginErrors(null);
         try {
-            const formData = data as ICreatePostData;
-            const { slug } = await onCreate(formData);
-            navigate(`/journals/${slug}`);
+            const response = await axiosPrivate.post("/journals/", data);
+            const { slug } = response.data;
             reset();
-        } catch (err: any) {
-            // setLoginErrors(err);
+            navigate(`/journals/${slug}`);
+        } catch (err) {
+            console.log(
+                "🚀 ~ file: PostCreateForm.tsx:74 ~ constonSubmitHandler:SubmitHandler<FieldValues>= ~ err:",
+                err,
+            );
         }
     };
 

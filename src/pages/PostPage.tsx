@@ -89,7 +89,7 @@ const PostPage = ({ mode }) => {
                     variant="contained"
                     startIcon={<CreateIcon />}
                     component={Link}
-                    to="/feed/create"
+                    to="/create/post"
                 >
                     New Post
                 </Button>

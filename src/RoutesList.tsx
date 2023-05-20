@@ -8,6 +8,7 @@ import LayoutWithoutContainer from "./layouts/LayoutWithoutContainer.tsx";
 import IndexPage from "./pages/IndexPage.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
 import useAuth from "./hooks/useAuth.tsx";
+import CreatePostPage from "./pages/CreatePostPage.tsx";
 
 const RoutesList = () => {
     const authContext = useAuth();
@@ -74,10 +75,8 @@ const RoutesList = () => {
             <Route element={<RequireAuth />}>
                 <Route element={<LayoutWithContainer />}>
                     <Route path="teach" element={<PostPage mode="teach" />} />
-                    <Route
-                        path="feed/learn"
-                        element={<PostPage mode="learn" />}
-                    />
+                    <Route path="learn" element={<PostPage mode="learn" />} />
+                    <Route path="create/post" element={<CreatePostPage />} />
                 </Route>
             </Route>
 
