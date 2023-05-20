@@ -1,6 +1,7 @@
 import { Typography, Box, Grid, Button, Stack } from "@mui/material";
 import BootstrapContainer from "../components/BootstrapContainer";
 import SimpleStepper from "../components/SimpleStepper";
+import { Link } from "react-router-dom";
 
 const SectionOne = () => (
     <Box component="section" py={6}>
@@ -27,6 +28,8 @@ const SectionOne = () => (
                         variant="contained"
                         color="primary"
                         sx={{ mr: 1, boxShadow: 5 }}
+                        component={Link}
+                        to="/register"
                     >
                         <Typography
                             variant="body1"
@@ -41,7 +44,7 @@ const SectionOne = () => (
                             ➔
                         </Typography>
                     </Button>
-                    <Button color="primary">
+                    <Button color="primary" component={Link} to="/journals">
                         <Typography
                             variant="body1"
                             sx={{ textTransform: "none" }}
@@ -232,7 +235,12 @@ const SectionFour = () => (
                         questions so that you can reach the level you want to be
                         at in your new language.
                     </Typography>
-                    <Button color="inherit" variant="outlined">
+                    <Button
+                        color="inherit"
+                        variant="outlined"
+                        component={Link}
+                        to="/register"
+                    >
                         <Typography
                             variant="body1"
                             sx={{ textTransform: "none" }}

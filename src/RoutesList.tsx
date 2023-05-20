@@ -20,6 +20,8 @@ const RoutesList = () => {
     // read dev notes in context/AuthProvider
     if (!userInfoLoaded) return <p>Loading...</p>;
 
+    if (!userInfoLoaded) return;
+
     return (
         <Routes>
             {/* Public Routes */}
