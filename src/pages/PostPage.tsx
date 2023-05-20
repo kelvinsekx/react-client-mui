@@ -57,8 +57,6 @@ const PostPage = ({ mode }: IProps) => {
     });
 
     const authContext = useAuth();
-    if (authContext === undefined) return <p>Loading...</p>;
-
     const { accessToken } = authContext as IAuthContext;
 
     async function fetchPosts() {
