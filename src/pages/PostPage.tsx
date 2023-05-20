@@ -6,6 +6,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate.tsx";
 import useAuth from "../hooks/useAuth.tsx";
 import axios from "../api/axios.tsx";
+import { IAuthContext } from "../context/AuthProvider.tsx";
 
 export interface PostInterface {
     id: number;
@@ -35,13 +36,17 @@ export interface PostInterface {
     total_correctors: number;
 }
 
-const SECTION_TITLE = {
+const SECTION_TITLE: { [key: string]: string } = {
     teach: "Journals awaiting your correction",
     learn: "Journals in the languages you’re studying",
     recentlyCorrected: "Recently corrected journals",
 };
 
-const PostPage = ({ mode }) => {
+interface IProps {
+    mode: string;
+}
+
+const PostPage = ({ mode }: IProps) => {
     const axiosPrivate = useAxiosPrivate();
     const location = useLocation();
     const navigate = useNavigate();
@@ -51,7 +56,10 @@ const PostPage = ({ mode }) => {
         queryFn: fetchPosts,
     });
 
-    const { accessToken } = useAuth();
+    const authContext = useAuth();
+    if (authContext === undefined) return <p>Loading...</p>;
+
+    const { accessToken } = authContext as IAuthContext;
 
     async function fetchPosts() {
         let results = [];
