@@ -63,7 +63,7 @@ const Header = ({ onNavOpen }: Props) => {
     return (
         <>
             <div id="back-to-top-anchor"></div>
-            <AppBar position="static" color="primary">
+            <AppBar position="static" color="primary" sx={{ mb: 3 }}>
                 <Toolbar>
                     {renderMenuIcon}
                     <Box
