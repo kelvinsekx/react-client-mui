@@ -1,0 +1,27 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`matches snapshot 1`] = `
+<div>
+  <div
+    class="MuiCardContent-root css-46bh2p-MuiCardContent-root"
+  >
+    <div
+      class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-h93ljk-MuiTypography-root"
+    >
+      test
+    </div>
+    <p
+      class="MuiTypography-root MuiTypography-body1 css-1kdgsg-MuiTypography-root"
+      style="display: inline-block; white-space: break-spaces;"
+    >
+      text
+    </p>
+    <p
+      class="MuiTypography-root MuiTypography-body1 css-18brw8f-MuiTypography-root"
+      style="display: inline-block; white-space: break-spaces;"
+    >
+      native
+    </p>
+  </div>
+</div>
+`;
