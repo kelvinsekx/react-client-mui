@@ -8,21 +8,14 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { Logout } from "@mui/icons-material";
 import EditIcon from "@mui/icons-material/Edit";
 import { useNavigate } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const AvatarPopover = () => {
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
     const navigate = useNavigate();
 
-    const currentUser = null;
-    const logout = () => {
-        //
-    };
-
-    // const context = useAuthContext();
-    // if (!context) return null;
-
-    // const { currentUser, logout } = context;
+    const { currentUser, logout } = useAuth();
 
     const handleOpen = (evt: React.MouseEvent<HTMLButtonElement>) => {
         setOpen(true);

@@ -34,6 +34,12 @@ export const AuthProvider = ({ children }) => {
 
     const isAuthenticated = Object.keys(currentUser).length > 0;
 
+    const logout = () => {
+        setAccessToken(null);
+        setRefreshToken(null);
+        setCurrentUser({});
+    };
+
     useEffect(() => {
         async function fetchUser() {
             if (accessToken) {
@@ -60,6 +66,7 @@ export const AuthProvider = ({ children }) => {
                 setCurrentUser,
                 isAuthenticated,
                 userInfoLoaded,
+                logout,
             }}
         >
             {children}
