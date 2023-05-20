@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ICreatePostData } from "./components/posts/PostCreateForm.tsx";
+import { ICreatePostData } from "../components/posts/PostCreateForm.js";
 
 const { VITE_API_BASE_URL } = import.meta.env;
 
@@ -27,7 +27,7 @@ class LangCorrectAPI {
             headers = { Authorization: `Bearer ${LangCorrectAPI.token}` };
         }
 
-        const params = (method === "get") ? data : {};
+        const params = method === "get" ? data : {};
 
         try {
             return (await axios({ url, method, data, params, headers })).data;
@@ -44,7 +44,7 @@ class LangCorrectAPI {
 
     // AUTH
 
-    static async login(data: { username: string; password: string; }) {
+    static async login(data: { username: string; password: string }) {
         return await this.request("token/", data, "post");
     }
 
@@ -57,7 +57,6 @@ class LangCorrectAPI {
     static async getUser(username: string) {
         return await this.request(`users/${username}`);
     }
-
 
     // POSTS
 
@@ -75,4 +74,3 @@ class LangCorrectAPI {
 }
 
 export default LangCorrectAPI;
-

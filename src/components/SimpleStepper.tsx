@@ -1,4 +1,4 @@
-import { styled } from '@mui/system';
+import { styled } from "@mui/system";
 
 const SimpleStepper = styled("div")({
     fontSize: 18,
@@ -12,7 +12,7 @@ const SimpleStepper = styled("div")({
     alignItems: "center",
     top: -3,
     position: "relative",
-    marginRight: 8
-})
+    marginRight: 8,
+});
 
-export default SimpleStepper
+export default SimpleStepper;

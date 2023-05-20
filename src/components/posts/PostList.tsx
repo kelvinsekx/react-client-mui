@@ -7,32 +7,16 @@ interface PostListInterface {
     isLoading: boolean;
 }
 
-/**
- * Renders the post list
- * 
- * Props:
- * - posts
- * 
- * {PostPage} -> PostList
- */
-
 const POSTS_LENGTH = 20;
 
 const PostList = ({ posts, isLoading }: PostListInterface) => {
+    const renderPosts = isLoading
+        ? Array.from({ length: POSTS_LENGTH }).map((_, idx) => (
+              <PostPreviewSkeleton key={idx} />
+          ))
+        : posts.map((post) => <PostPreview key={post.id} post={post} />);
 
-    const renderPosts = (
-        isLoading
-            ?
-            Array.from({ length: POSTS_LENGTH }).map((_, idx) => <PostPreviewSkeleton key={idx} />)
-            :
-            posts.map(post => <PostPreview key={post.id} post={post} />)
-    );
-
-    return (
-        <>
-            {renderPosts}
-        </>
-    );
+    return <>{renderPosts}</>;
 };
 
 export default PostList;
