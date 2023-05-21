@@ -47,9 +47,9 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
         setAnchorEl(null);
     };
 
-    const { user, meta, content, total_correctors, get_correctors } = post;
+    const { user, meta, content, total_correctors, corrected_by } = post;
 
-    const isCorrectedByUser = get_correctors?.includes(currentUser?.username);
+    const isCorrectedByUser = corrected_by?.includes(currentUser?.username);
 
     return (
         <Card sx={{ marginBottom: 3 }}>

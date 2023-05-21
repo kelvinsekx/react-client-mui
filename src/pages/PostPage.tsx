@@ -34,6 +34,7 @@ export interface PostInterface {
         id_premium: boolean;
     };
     total_correctors: number;
+    corrected_by: string[];
 }
 
 const SECTION_TITLE: { [key: string]: string } = {
