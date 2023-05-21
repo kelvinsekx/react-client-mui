@@ -1,30 +1,47 @@
-import LangCorrectAPI from "../api/api";
 import { useNavigate, useParams } from "react-router-dom";
 import LayersIcon from "@mui/icons-material/Layers";
 import PersonIcon from "@mui/icons-material/Person";
 
 import Post from "../components/posts/Post";
 import { Button, ButtonGroup, Stack, Tooltip, Typography } from "@mui/material";
-import { mockCorrections } from "../_mockdata/correctionsMock";
 import UserCorrections from "../components/corrections/UserCorrections";
-import { useQuery } from "@tanstack/react-query";
+import { useQueries } from "@tanstack/react-query";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
+import axiosPublic from "../api/axios";
 
 const PostDetailPage = () => {
     const { slug } = useParams();
     const navigate = useNavigate();
 
-    async function getPost() {
-        return await LangCorrectAPI.getPost(slug);
-    }
-
-    const { isLoading, isError, data } = useQuery({
-        queryKey: ["posts", slug],
-        queryFn: getPost,
+    const [postQuery, correctionsQuery] = useQueries({
+        queries: [
+            {
+                queryKey: ["posts", slug],
+                queryFn: () =>
+                    axiosPublic
+                        .get(`/journals/${slug}`)
+                        .then((res) => res.data),
+            },
+            {
+                queryKey: ["corrections", slug],
+                queryFn: () =>
+                    axiosPublic
+                        .get(`/journals/${slug}/corrections`)
+                        .then((res) => {
+                            console.log(
+                                "🚀 ~ file: PostDetailPage.tsx:34 ~ .then ~ res:",
+                                res,
+                            );
+                            return res.data?.results;
+                        }),
+            },
+        ],
     });
 
-    if (isLoading) return <h1>Loading....</h1>;
-    if (isError) return <h1>Error....</h1>;
+    if (postQuery.isLoading) return <p>Loading...</p>;
+    if (correctionsQuery.isLoading) return <p>Loading...</p>;
+
+    const isCorrected = correctionsQuery.data?.length;
 
     return (
         <>
@@ -35,40 +52,47 @@ const PostDetailPage = () => {
             >
                 Go back
             </Button>
-            <Post post={data} />
+            <Post post={postQuery.data} />
 
-            <Stack
-                direction="row"
-                justifyContent="end"
-                alignItems="center"
-                gap={1}
-                my={3}
-            >
-                <Typography>Corrections</Typography>
-                <ButtonGroup variant="outlined">
-                    <Tooltip title="Display corrections grouped by user">
-                        <Button>
-                            <PersonIcon />
-                        </Button>
-                    </Tooltip>
-                    <Tooltip title="Display corrections grouped by sentence">
-                        <Button>
-                            <LayersIcon />
-                        </Button>
-                    </Tooltip>
-                </ButtonGroup>
-            </Stack>
+            {isCorrected > 0 ? (
+                <>
+                    <Stack
+                        direction="row"
+                        justifyContent="end"
+                        alignItems="center"
+                        gap={1}
+                        my={3}
+                    >
+                        <Typography>Corrections</Typography>
+                        <ButtonGroup variant="outlined">
+                            <Tooltip title="Display corrections grouped by user">
+                                <Button>
+                                    <PersonIcon />
+                                </Button>
+                            </Tooltip>
+                            <Tooltip title="Display corrections grouped by sentence">
+                                <Button>
+                                    <LayersIcon />
+                                </Button>
+                            </Tooltip>
+                        </ButtonGroup>
+                    </Stack>
 
-            <Stack gap={5}>
-                {mockCorrections.results.map((correction) => (
-                    <UserCorrections
-                        key={correction.username}
-                        username={correction.username}
-                        corrections={correction.corrections}
-                        comments={correction.comments}
-                    />
-                ))}
-            </Stack>
+                    <Stack gap={5}>
+                        {correctionsQuery.data.map((correction) => (
+                            <UserCorrections
+                                key={correction.username}
+                                username={correction.username}
+                                corrections={correction.corrections}
+                                comments={correction.comments}
+                                feedback={correction.overall_feedback}
+                            />
+                        ))}
+                    </Stack>
+                </>
+            ) : (
+                <Typography>Post has not been corrected yet.</Typography>
+            )}
         </>
     );
 };

@@ -21,16 +21,24 @@ import EditIcon from "@mui/icons-material/Edit";
 import CorrectionComments from "./CorrectionComments";
 import { CommentInterface } from "../comments/Comment";
 
+interface IOverallFeedback {
+    id?: string;
+    comment?: string;
+    username?: string;
+}
+
 interface UserCorrectionsInterface {
     username: string;
     corrections: CorrectionInterface[];
     comments: CommentInterface[];
+    feedback: IOverallFeedback[];
 }
 
 const UserCorrections = ({
     username,
     corrections,
     comments,
+    feedback,
 }: UserCorrectionsInterface) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -40,6 +48,8 @@ const UserCorrections = ({
     const handleClose = () => {
         setAnchorEl(null);
     };
+
+    const hasFeedback = feedback.length > 0 && feedback[0]?.comment !== "";
 
     return (
         <>
@@ -102,14 +112,13 @@ const UserCorrections = ({
                             </MenuItem>
                         </Menu>
                     </Stack>
-                    <Typography>
-                        {/* TODO: Add proper feedback */}
-                        Lorem ipsum dolor sit, amet consectetur adipisicing
-                        elit. Suscipit atque at iste voluptatum iure impedit
-                        doloribus, iusto ex hic consequuntur blanditiis
-                        exercitationem facilis quam. Facilis odio assumenda ex
-                        eum rerum?
-                    </Typography>
+                    {hasFeedback ? (
+                        feedback?.map((fnote) => (
+                            <Typography>{fnote.comment}</Typography>
+                        ))
+                    ) : (
+                        <Typography>No feedback has been provided.</Typography>
+                    )}
                 </CardContent>
                 <CorrectionComments comments={comments} />
             </Card>

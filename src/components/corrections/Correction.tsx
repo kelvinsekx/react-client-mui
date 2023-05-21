@@ -1,5 +1,7 @@
 import React from "react";
 import {
+    Alert,
+    Box,
     Divider,
     IconButton,
     ListItem,
@@ -7,6 +9,7 @@ import {
     ListItemText,
     Menu,
     MenuItem,
+    Typography,
 } from "@mui/material";
 import ReplyIcon from "@mui/icons-material/Reply";
 import sanitizeHtml from "sanitize-html";
@@ -14,6 +17,9 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import EditIcon from "@mui/icons-material/Edit";
 import "./Correction.css";
 import DeleteIcon from "@mui/icons-material/Delete";
+import CheckIcon from "@mui/icons-material/Check";
+import ClearIcon from "@mui/icons-material/Clear";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 export interface CorrectionInterface {
     username: string;
@@ -24,6 +30,7 @@ export interface CorrectionInterface {
     pretty_html?: string | undefined;
     sentence_order: number;
     status: string;
+    original_sentence?: string;
 }
 
 export interface CorrectionPropInterface {
@@ -47,7 +54,6 @@ const SanitizeHTML = ({ html, options }: SanitizeProps) => (
     <div dangerouslySetInnerHTML={sanitize({ html, options })} />
 );
 
-
 const Correction = ({ data }: CorrectionPropInterface) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
@@ -60,15 +66,46 @@ const Correction = ({ data }: CorrectionPropInterface) => {
 
     const renderCorrection =
         data.status === "perfect" ? (
-            "this sentence is marked as perfect "
+            <Typography color="success.main">
+                <Box
+                    component="span"
+                    display="flex"
+                    alignItems="center"
+                    gap={1}
+                >
+                    <CheckIcon />
+                    {data.original_sentence}
+                </Box>
+            </Typography>
         ) : (
             <ListItemText
                 primary={
-                    <SanitizeHTML
-                        html={data?.pretty_html ? data.pretty_html : ""}
-                    />
+                    <Box
+                        component="span"
+                        display="flex"
+                        alignItems="center"
+                        gap={1}
+                    >
+                        <ClearIcon sx={{ color: "error.main" }} />
+                        <SanitizeHTML
+                            html={data?.pretty_html ? data.pretty_html : ""}
+                        />
+                    </Box>
                 }
-                secondary={data.note}
+                secondary={
+                    data.note ? (
+                        <Alert
+                            icon={<ErrorOutlineIcon />}
+                            variant="outlined"
+                            color="info"
+                            sx={{ mt: 2 }}
+                        >
+                            {data.note}
+                        </Alert>
+                    ) : (
+                        ""
+                    )
+                }
             />
         );
 
