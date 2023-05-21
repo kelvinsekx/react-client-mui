@@ -66,20 +66,28 @@ exports[`matches snapshot 1`] = `
       class="MuiCardContent-root css-46bh2p-MuiCardContent-root"
     >
       <div
-        class="MuiTypography-root MuiTypography-h5 MuiTypography-gutterBottom css-h93ljk-MuiTypography-root"
+        class="MuiTypography-root MuiTypography-h5 css-ch2k2f-MuiTypography-root"
       >
         The Catcher in the Rye
       </div>
-      <p
-        class="MuiTypography-root MuiTypography-body1 css-1kdgsg-MuiTypography-root"
-        style="display: inline-block; white-space: break-spaces;"
+      <div
+        class="MuiBox-root css-0"
       >
-        Jài commencé lire la histoire « The Catcher in the Rye ». Le livre es d'un garçon qui échoue a l’École. Il déambule ensuite en New York. Il fait la connaissance qu'un homme qui force le garçon de rencontrer un femme a un hôtel. Elle est assise sur ses genoux et le garçon dit : Je te donne les cinq dollar promis, mais parlons juste. La femme va, et l'homme revient et demande autre cinq dollars. Le garçon est menacé. Je n'ai pas lu plus loin.
-      </p>
-      <p
-        class="MuiTypography-root MuiTypography-body1 css-18brw8f-MuiTypography-root"
-        style="display: inline-block; white-space: break-spaces;"
-      />
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-z2eky3-MuiTypography-root"
+          style="display: inline-block; white-space: break-spaces;"
+        >
+          Jài commencé lire la histoire « The Catcher in the Rye ». Le livre es d'un garçon qui échoue a l’École. Il déambule ensuite en New York. Il fait la connaissance qu'un homme qui force le garçon de rencontrer un femme a un hôtel. Elle est assise sur ses genoux et le garçon dit : Je te donne les cinq dollar promis, mais parlons juste. La femme va, et l'homme revient et demande autre cinq dollars. Le garçon est menacé. Je n'ai pas lu plus loin.
+        </p>
+      </div>
+      <div
+        class="MuiBox-root css-0"
+      >
+        <p
+          class="MuiTypography-root MuiTypography-body1 css-18brw8f-MuiTypography-root"
+          style="display: inline-block; white-space: break-spaces;"
+        />
+      </div>
     </div>
     <div
       class="MuiCardActions-root MuiCardActions-spacing css-1vbr7to-MuiCardActions-root"

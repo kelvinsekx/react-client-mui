@@ -35,7 +35,10 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
-    const { currentUser } = useAuth();
+    const authContext = useAuth();
+    if (authContext === null) return <p>Loading...</p>;
+
+    const { currentUser } = authContext;
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -46,7 +49,7 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
 
     const { user, meta, content, total_correctors, get_correctors } = post;
 
-    const isCorrectedByUser = get_correctors.includes(currentUser.username);
+    const isCorrectedByUser = get_correctors?.includes(currentUser?.username);
 
     return (
         <Card sx={{ marginBottom: 3 }}>

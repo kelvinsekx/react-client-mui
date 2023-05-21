@@ -2,11 +2,14 @@ import { render } from "@testing-library/react";
 import { samplePost } from "./Post.test";
 import { BrowserRouter } from "react-router-dom";
 import PostPreview from "./PostPreview";
+import { TestAuthProvider } from "../../testUtils";
 
 it("renders without crashing", () => {
     render(
         <BrowserRouter>
-            <PostPreview post={samplePost} />
+            <TestAuthProvider>
+                <PostPreview post={samplePost} />
+            </TestAuthProvider>
         </BrowserRouter>,
     );
 });
