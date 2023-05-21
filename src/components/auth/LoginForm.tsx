@@ -12,7 +12,7 @@ import { IAuthContext } from "../../context/AuthProvider";
 import { AxiosError, isAxiosError } from "axios";
 
 const validationSchema = yup.object().shape({
-    username: yup.string().min(6).max(16).required(),
+    username: yup.string().min(6).max(26).required(),
     password: yup.string().min(8).max(32).required(),
 });
 
