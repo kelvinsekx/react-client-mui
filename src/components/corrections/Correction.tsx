@@ -1,5 +1,6 @@
 import React from "react";
 import {
+    Alert,
     Box,
     Divider,
     IconButton,
@@ -18,6 +19,7 @@ import "./Correction.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 export interface CorrectionInterface {
     username: string;
@@ -90,7 +92,20 @@ const Correction = ({ data }: CorrectionPropInterface) => {
                         />
                     </Box>
                 }
-                secondary={data.note}
+                secondary={
+                    data.note ? (
+                        <Alert
+                            icon={<ErrorOutlineIcon />}
+                            variant="outlined"
+                            color="info"
+                            sx={{ mt: 2 }}
+                        >
+                            {data.note}
+                        </Alert>
+                    ) : (
+                        ""
+                    )
+                }
             />
         );
 

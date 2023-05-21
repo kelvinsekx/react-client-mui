@@ -91,7 +91,7 @@ const PostDetailPage = () => {
                     </Stack>
                 </>
             ) : (
-                <p>Post has not been corrected yet.</p>
+                <Typography>Post has not been corrected yet.</Typography>
             )}
         </>
     );
