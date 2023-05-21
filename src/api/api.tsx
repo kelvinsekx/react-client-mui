@@ -1,5 +1,5 @@
 import axios from "axios";
-import { ICreatePostData } from "../components/posts/PostCreateForm.js";
+import { ICreatePostData } from "../components/posts/PostForm.js";
 
 const { VITE_API_BASE_URL } = import.meta.env;
 

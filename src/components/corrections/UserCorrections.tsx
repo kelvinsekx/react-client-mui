@@ -49,7 +49,7 @@ const UserCorrections = ({
         setAnchorEl(null);
     };
 
-    const hasFeedback = feedback.length > 0 && feedback[0]?.comment !== "";
+    const hasFeedback = feedback?.length > 0 && feedback[0]?.comment !== "";
 
     return (
         <>

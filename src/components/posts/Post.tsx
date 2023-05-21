@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { PostInterface } from "../../pages/PostPage.tsx";
 import {
@@ -19,19 +19,22 @@ import {
 } from "@mui/material";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
-import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-import FlagIcon from "@mui/icons-material/Flag";
+// import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
+// import FlagIcon from "@mui/icons-material/Flag";
 import LanguageIcon from "@mui/icons-material/Language";
-import Article from "./Article.tsx";
 import EditIcon from "@mui/icons-material/Edit";
-import DeleteIcon from "@mui/icons-material/Delete";
+// import DeleteIcon from "@mui/icons-material/Delete";
+import EditableArticle from "./EditableArticle.tsx";
+import { axiosPrivate } from "../../api/axios.tsx";
 
 interface PostPreviewInterface {
     post: PostInterface;
 }
 
 const Post = ({ post }: PostPreviewInterface) => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const [isEditing, setIsEditing] = useState(false);
+
     const open = Boolean(anchorEl);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,7 +44,36 @@ const Post = ({ post }: PostPreviewInterface) => {
         setAnchorEl(null);
     };
 
-    const { user, meta, content, total_correctors } = post;
+    const handleEdit = () => {
+        setIsEditing(true);
+        handleClose();
+    };
+
+    const handleSubmit = async (data) => {
+        const slug = `/journals/${post.meta.slug}`;
+        const response = await axiosPrivate.patch(slug, data);
+        setIsEditing(false);
+        handleClose();
+        return response;
+    };
+
+    const {
+        user,
+        meta,
+        content,
+        language,
+        total_correctors,
+        gender_of_narration,
+    } = post;
+
+    const serializedPost = {
+        title: content.title,
+        text: content.text,
+        native_text: content?.native_text,
+        language: language.code,
+        gender_of_narration,
+        permission: meta.permission,
+    };
 
     return (
         <Card>
@@ -67,21 +99,22 @@ const Post = ({ post }: PostPreviewInterface) => {
             />
             <Divider />
             <Menu
-                id="basic-menu"
+                id="post-menu"
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
                 MenuListProps={{
-                    "aria-labelledby": "basic-button",
+                    "aria-labelledby": "post-menu-button",
                 }}
             >
-                <MenuItem onClick={handleClose}>
+                <MenuItem onClick={handleEdit} disabled={isEditing}>
                     <ListItemIcon>
                         <EditIcon />
                     </ListItemIcon>
                     <ListItemText>Edit</ListItemText>
                 </MenuItem>
-                <MenuItem onClick={handleClose}>
+                {/* commented out until implemented */}
+                {/* <MenuItem onClick={handleClose}>
                     <ListItemIcon>
                         <DeleteIcon />
                     </ListItemIcon>
@@ -99,42 +132,45 @@ const Post = ({ post }: PostPreviewInterface) => {
                         <FlagIcon />
                     </ListItemIcon>
                     <ListItemText>Report post</ListItemText>
-                </MenuItem>
+                </MenuItem> */}
             </Menu>
-            <Article
-                title={content.title}
-                text={content.text}
-                nativeText={content.native_text}
+            <EditableArticle
+                post={serializedPost}
+                isEditing={isEditing}
+                onSubmit={handleSubmit}
             />
-            <CardActions
-                sx={{ display: "flex", justifyContent: "space-between" }}
-            >
-                <Stack direction="row" spacing={1}>
-                    <Tooltip arrow title={post.language.en_name}>
-                        <Chip
-                            icon={<LanguageIcon />}
-                            label={post.language.code}
-                            size="small"
-                            variant="outlined"
-                        />
-                    </Tooltip>
-                    <Tooltip arrow title="Corrections">
-                        <Chip
-                            icon={<CheckCircleOutlineIcon />}
-                            size="small"
-                            label={total_correctors}
-                            variant="outlined"
-                        />
-                    </Tooltip>
-                </Stack>
-                <Button
-                    size="small"
-                    variant="outlined"
-                    startIcon={<CheckCircleOutlineIcon />}
+
+            {!isEditing && (
+                <CardActions
+                    sx={{ display: "flex", justifyContent: "space-between" }}
                 >
-                    Correct
-                </Button>
-            </CardActions>
+                    <Stack direction="row" spacing={1}>
+                        <Tooltip arrow title={post.language.en_name}>
+                            <Chip
+                                icon={<LanguageIcon />}
+                                label={post.language.code}
+                                size="small"
+                                variant="outlined"
+                            />
+                        </Tooltip>
+                        <Tooltip arrow title="Corrections">
+                            <Chip
+                                icon={<CheckCircleOutlineIcon />}
+                                size="small"
+                                label={total_correctors}
+                                variant="outlined"
+                            />
+                        </Tooltip>
+                    </Stack>
+                    <Button
+                        size="small"
+                        variant="outlined"
+                        startIcon={<CheckCircleOutlineIcon />}
+                    >
+                        Correct
+                    </Button>
+                </CardActions>
+            )}
         </Card>
     );
 };

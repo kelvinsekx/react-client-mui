@@ -3,6 +3,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import {
+    Alert,
     Box,
     Button,
     FormControl,
@@ -15,6 +16,7 @@ import {
 } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useState } from "react";
 
 export interface ICreatePostData extends FieldValues {
     title: string;
@@ -49,10 +51,11 @@ const validationSchema = yup.object().shape({
 //     };
 // }
 
-const PostCreateForm = () => {
+const PostForm = ({ post, onSubmit }) => {
     const navigate = useNavigate();
     const axiosPrivate = useAxiosPrivate();
-
+    const isEditing = post !== undefined && Object.keys(post).length > 0;
+    const [errMsg, setErrMsg] = useState("");
     const {
         register,
         handleSubmit,
@@ -60,21 +63,29 @@ const PostCreateForm = () => {
         reset,
     } = useForm({
         resolver: yupResolver(validationSchema),
+        defaultValues: post,
     });
 
     const { currentUser } = useAuth();
 
     const onSubmitHandler: SubmitHandler<FieldValues> = async (data) => {
         try {
-            const response = await axiosPrivate.post("/journals/", data);
-            const { slug } = response.data;
+            const response = await onSubmit(data);
             reset();
-            navigate(`/journals/${slug}`);
+
+            if (!isEditing) {
+                const { slug } = response.data;
+                navigate(`/journals/${slug}`);
+            }
         } catch (err) {
-            console.log(
-                "🚀 ~ file: PostCreateForm.tsx:74 ~ constonSubmitHandler:SubmitHandler<FieldValues>= ~ err:",
-                err,
-            );
+            if (err.response.status === 403) {
+                setErrMsg(err.response.data?.detail);
+            } else {
+                console.log(
+                    "🚀 ~ file: PostForm.tsx:73 ~ constonSubmitHandler:SubmitHandler<FieldValues>= ~ err:",
+                    err,
+                );
+            }
         }
     };
 
@@ -86,7 +97,7 @@ const PostCreateForm = () => {
                     {...register("title")}
                     label="Title"
                     error={!!errors.title}
-                    helperText={errors.title && String(errors.title.message)}
+                    helperText={errors.title && String(errors.title?.message)}
                 />
                 <TextField
                     multiline
@@ -95,7 +106,7 @@ const PostCreateForm = () => {
                     {...register("text")}
                     label="Write in your target language"
                     error={!!errors.text}
-                    helperText={errors.text && String(errors.text.message)}
+                    helperText={errors.text && String(errors.text?.message)}
                 />
                 <TextField
                     multiline
@@ -104,17 +115,16 @@ const PostCreateForm = () => {
                     label="Notes"
                     error={!!errors.native_text}
                     helperText={
-                        errors.native_text && String(errors.native_text.message)
+                        errors.native_text &&
+                        String(errors.native_text?.message)
                     }
                 />
                 <FormControl error={!!errors.language} fullWidth required>
-                    <InputLabel id="demo-simple-select-label">
-                        Language
-                    </InputLabel>
+                    <InputLabel id="language">Language</InputLabel>
                     <Select
                         {...register("language")}
                         label="Language"
-                        defaultValue=""
+                        defaultValue={post?.language || ""}
                     >
                         {currentUser?.get_studying_languages?.map((lang) => (
                             <MenuItem key={lang.code} value={lang.code}>
@@ -133,13 +143,11 @@ const PostCreateForm = () => {
                     fullWidth
                     required
                 >
-                    <InputLabel id="demo-simple-select-label">
-                        Gender of Narration
-                    </InputLabel>
+                    <InputLabel id="gender">Gender of Narration</InputLabel>
                     <Select
                         {...register("gender_of_narration")}
                         label="Gender of Narration"
-                        defaultValue="U"
+                        defaultValue={post?.gender_of_narration || "U"}
                     >
                         <MenuItem value="M">Male</MenuItem>
                         <MenuItem value="F">Female</MenuItem>
@@ -152,19 +160,12 @@ const PostCreateForm = () => {
                         </FormHelperText>
                     )}
                 </FormControl>
-                <FormControl
-                    error={!!errors.language}
-                    fullWidth
-                    required
-                    defaultValue=""
-                >
-                    <InputLabel id="demo-simple-select-label">
-                        Visibility
-                    </InputLabel>
+                <FormControl error={!!errors.permission} fullWidth required>
+                    <InputLabel id="visibility">Visibility</InputLabel>
                     <Select
                         {...register("permission")}
                         label="Visibility"
-                        defaultValue="public"
+                        defaultValue={post?.permission || "public"}
                     >
                         <MenuItem value="public">Viewable by everyone</MenuItem>
                         <MenuItem value="member">
@@ -179,13 +180,22 @@ const PostCreateForm = () => {
                 </FormControl>
             </Stack>
 
-            <Box display="flex" justifyContent="end">
+            {errMsg && (
+                <Alert severity="error" sx={{ mb: 3 }}>
+                    {errMsg}
+                </Alert>
+            )}
+
+            <Box display="flex" justifyContent="end" gap={1}>
+                <Button variant="outlined" color="error" onClick={() => {}}>
+                    {isEditing ? "Discard changes" : "Cancel"}
+                </Button>
                 <Button type="submit" variant="contained">
-                    Submit
+                    {isEditing ? "Save" : "Submit"}
                 </Button>
             </Box>
         </form>
     );
 };
 
-export default PostCreateForm;
+export default PostForm;
