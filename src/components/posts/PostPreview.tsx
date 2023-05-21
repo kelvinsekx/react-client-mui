@@ -25,6 +25,7 @@ import FlagIcon from "@mui/icons-material/Flag";
 import LanguageIcon from "@mui/icons-material/Language";
 import { Link } from "react-router-dom";
 import Article from "./Article.tsx";
+import useAuth from "../../hooks/useAuth.tsx";
 
 interface PostPreviewInterface {
     post: PostInterface;
@@ -34,6 +35,8 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 
+    const { currentUser } = useAuth();
+
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
@@ -41,7 +44,9 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
         setAnchorEl(null);
     };
 
-    const { user, meta, content, total_correctors } = post;
+    const { user, meta, content, total_correctors, get_correctors } = post;
+
+    const isCorrectedByUser = get_correctors.includes(currentUser.username);
 
     return (
         <Card sx={{ marginBottom: 3 }}>
@@ -119,10 +124,10 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
                 </Stack>
                 <Button
                     size="small"
-                    variant="outlined"
+                    variant={isCorrectedByUser ? "contained" : "outlined"}
                     startIcon={<CheckCircleOutlineIcon />}
                 >
-                    Correct
+                    {isCorrectedByUser ? "Already corrected" : "Correct"}
                 </Button>
             </CardActions>
         </Card>
