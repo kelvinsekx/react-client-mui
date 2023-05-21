@@ -26,6 +26,7 @@ import EditIcon from "@mui/icons-material/Edit";
 // import DeleteIcon from "@mui/icons-material/Delete";
 import EditableArticle from "./EditableArticle.tsx";
 import { axiosPrivate } from "../../api/axios.tsx";
+import useAuth from "../../hooks/useAuth.tsx";
 
 interface PostPreviewInterface {
     post: PostInterface;
@@ -34,6 +35,8 @@ interface PostPreviewInterface {
 const Post = ({ post }: PostPreviewInterface) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isEditing, setIsEditing] = useState(false);
+
+    const { currentUser } = useAuth();
 
     const open = Boolean(anchorEl);
 
@@ -64,6 +67,7 @@ const Post = ({ post }: PostPreviewInterface) => {
         language,
         total_correctors,
         gender_of_narration,
+        corrected_by,
     } = post;
 
     const serializedPost = {
@@ -74,6 +78,8 @@ const Post = ({ post }: PostPreviewInterface) => {
         gender_of_narration,
         permission: meta.permission,
     };
+
+    const isCorrectedByUser = corrected_by?.includes(currentUser?.username);
 
     return (
         <Card>
@@ -164,10 +170,10 @@ const Post = ({ post }: PostPreviewInterface) => {
                     </Stack>
                     <Button
                         size="small"
-                        variant="outlined"
+                        variant={isCorrectedByUser ? "contained" : "outlined"}
                         startIcon={<CheckCircleOutlineIcon />}
                     >
-                        Correct
+                        {isCorrectedByUser ? "Already corrected" : "Correct"}
                     </Button>
                 </CardActions>
             )}
