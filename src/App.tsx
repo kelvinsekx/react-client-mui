@@ -1,15 +1,20 @@
-import { CssBaseline } from "@mui/material";
+import { CssBaseline, ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
 import RoutesList from "./RoutesList.tsx";
+import { ColorModeContext, useColorMode } from "./theme.tsx";
 
 function App() {
+    const [theme, colorMode] = useColorMode();
+
     return (
-        <>
-            <CssBaseline />
-            <BrowserRouter>
-                <RoutesList />
-            </BrowserRouter>
-        </>
+        <ColorModeContext.Provider value={colorMode}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline />
+                <BrowserRouter>
+                    <RoutesList />
+                </BrowserRouter>
+            </ThemeProvider>
+        </ColorModeContext.Provider>
     );
 }
 

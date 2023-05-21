@@ -10,6 +10,9 @@ import AvatarPopover from "./AvatarPopover.js";
 import LogoMarkWhite from "../../assets/logos/logo-mark-white.svg";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
+import { useContext } from "react";
+import NightlightRoundIcon from "@mui/icons-material/NightlightRound";
+import { ColorModeContext } from "../../theme.js";
 
 interface Props {
     onNavOpen: () => void;
@@ -17,6 +20,7 @@ interface Props {
 
 const Header = ({ onNavOpen }: Props) => {
     const theme = useTheme();
+    const colorMode = useContext(ColorModeContext);
     const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
     const navigate = useNavigate();
     const { isAuthenticated, userInfoLoaded } = useAuth();
@@ -80,6 +84,12 @@ const Header = ({ onNavOpen }: Props) => {
                             {renderLogo}
                         </span>
                     </Box>
+                    <IconButton
+                        onClick={colorMode.toggleColorMode}
+                        color="inherit"
+                    >
+                        <NightlightRoundIcon />
+                    </IconButton>
                     {renderPopovers}
                 </Toolbar>
             </AppBar>

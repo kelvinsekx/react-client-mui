@@ -9,6 +9,7 @@ import {
     Popover,
     Stack,
     Typography,
+    useTheme,
 } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import React, { useState } from "react";
@@ -26,6 +27,8 @@ import CreateIcon from "@mui/icons-material/Create";
  */
 
 const NotificationsPopover = () => {
+    const theme = useTheme();
+    const isLightMode = theme.palette.mode === "light";
     const [open, setOpen] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
@@ -41,12 +44,12 @@ const NotificationsPopover = () => {
 
     return (
         <>
-            <IconButton
-                color={open ? "primary" : "default"}
-                onClick={handleOpen}
-            >
-                <Badge badgeContent={99} color="success">
-                    <NotificationsIcon color="action" />
+            <IconButton onClick={handleOpen} color="inherit">
+                <Badge
+                    badgeContent={99}
+                    color={isLightMode ? "secondary" : "primary"}
+                >
+                    <NotificationsIcon color="inherit" />
                 </Badge>
             </IconButton>
 

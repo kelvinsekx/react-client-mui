@@ -9,19 +9,17 @@ import IndexPage from "./pages/IndexPage.tsx";
 import RequireAuth from "./components/RequireAuth.tsx";
 import useAuth from "./hooks/useAuth.tsx";
 import CreatePostPage from "./pages/CreatePostPage.tsx";
-import NotFoundPage from './pages/NotFoundPage.tsx';
+import NotFoundPage from "./pages/NotFoundPage.tsx";
 
 const RoutesList = () => {
     const authContext = useAuth();
     if (authContext === undefined) return <p>Loading...</p>;
 
-    const { currentUser, isAuthenticated, userInfoLoaded } = useAuth();
+    const { currentUser, isAuthenticated, userInfoLoaded } = authContext;
 
     // needed in order to render the layouts correctly.
     // read dev notes in context/AuthProvider
     if (!userInfoLoaded) return <p>Loading...</p>;
-
-    if (!userInfoLoaded) return;
 
     return (
         <Routes>
