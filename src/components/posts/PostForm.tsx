@@ -66,7 +66,6 @@ const PostForm = ({ post, onSubmit, onDiscard }: IProps) => {
         reset,
     } = useForm<PostFormValues>({
         resolver: yupResolver(validationSchema),
-        defaultValues: post,
     });
 
     const authContext = useAuth();
@@ -111,19 +110,19 @@ const PostForm = ({ post, onSubmit, onDiscard }: IProps) => {
                     label="Title"
                     error={!!errors.title}
                     helperText={errors.title && String(errors.title?.message)}
+                    defaultValue={post?.title}
                 />
                 <TextField
                     multiline
-                    rows={8}
                     required
                     {...register("text")}
                     label="Write in your target language"
                     error={!!errors.text}
                     helperText={errors.text && String(errors.text?.message)}
+                    defaultValue={post?.text || ""}
                 />
                 <TextField
                     multiline
-                    rows={8}
                     {...register("native_text")}
                     label="Notes"
                     error={!!errors.native_text}
@@ -131,6 +130,7 @@ const PostForm = ({ post, onSubmit, onDiscard }: IProps) => {
                         errors.native_text &&
                         String(errors.native_text?.message)
                     }
+                    defaultValue={post?.native_text || ""}
                 />
                 <FormControl error={!!errors.language} fullWidth required>
                     <InputLabel id="language">Language</InputLabel>

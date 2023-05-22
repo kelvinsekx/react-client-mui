@@ -1,6 +1,6 @@
 import Article from "./Article";
 import { CardContent } from "@mui/material";
-import PostCreateForm, { PostFormValues } from "./PostForm";
+import PostForm, { PostFormValues } from "./PostForm";
 import { ISimplePost } from "./Post";
 import { AxiosResponse } from "axios";
 
@@ -16,7 +16,7 @@ const EditableArticle = ({ post, isEditing, onSubmit, onDiscard }: IProps) => {
         <>
             {isEditing ? (
                 <CardContent>
-                    <PostCreateForm
+                    <PostForm
                         post={post}
                         onSubmit={onSubmit}
                         onDiscard={onDiscard}
