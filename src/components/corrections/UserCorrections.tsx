@@ -114,7 +114,9 @@ const UserCorrections = ({
                     </Stack>
                     {hasFeedback ? (
                         feedback?.map((fnote) => (
-                            <Typography>{fnote.comment}</Typography>
+                            <Typography key={fnote.id}>
+                                {fnote.comment}
+                            </Typography>
                         ))
                     ) : (
                         <Typography>No feedback has been provided.</Typography>
