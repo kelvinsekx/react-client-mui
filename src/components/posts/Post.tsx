@@ -20,7 +20,7 @@ import {
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 // import BookmarkBorderIcon from "@mui/icons-material/BookmarkBorder";
-// import FlagIcon from "@mui/icons-material/Flag";
+import FlagIcon from "@mui/icons-material/Flag";
 import LanguageIcon from "@mui/icons-material/Language";
 import EditIcon from "@mui/icons-material/Edit";
 // import DeleteIcon from "@mui/icons-material/Delete";
@@ -54,6 +54,10 @@ const Post = ({ post }: PostPreviewInterface) => {
     }
 
     const { currentUser } = authContext;
+
+    const isPostOwner = currentUser
+        ? currentUser.username === post.user.username
+        : false;
 
     const open = Boolean(anchorEl);
 
@@ -135,12 +139,21 @@ const Post = ({ post }: PostPreviewInterface) => {
                     "aria-labelledby": "post-menu-button",
                 }}
             >
-                <MenuItem onClick={handleEdit} disabled={isEditing}>
-                    <ListItemIcon>
-                        <EditIcon />
-                    </ListItemIcon>
-                    <ListItemText>Edit</ListItemText>
-                </MenuItem>
+                {isPostOwner ? (
+                    <MenuItem onClick={handleEdit} disabled={isEditing}>
+                        <ListItemIcon>
+                            <EditIcon />
+                        </ListItemIcon>
+                        <ListItemText>Edit</ListItemText>
+                    </MenuItem>
+                ) : (
+                    <MenuItem onClick={handleClose}>
+                        <ListItemIcon>
+                            <FlagIcon />
+                        </ListItemIcon>
+                        <ListItemText>Report post</ListItemText>
+                    </MenuItem>
+                )}
                 {/* commented out until implemented */}
                 {/* <MenuItem onClick={handleClose}>
                     <ListItemIcon>
