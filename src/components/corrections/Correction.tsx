@@ -92,20 +92,7 @@ const Correction = ({ data }: CorrectionPropInterface) => {
                         />
                     </Box>
                 }
-                secondary={
-                    data.note ? (
-                        <Alert
-                            icon={<ErrorOutlineIcon />}
-                            variant="outlined"
-                            color="info"
-                            sx={{ mt: 2 }}
-                        >
-                            {data.note}
-                        </Alert>
-                    ) : (
-                        ""
-                    )
-                }
+                secondary={data.note ? data.note : ""}
             />
         );
 
