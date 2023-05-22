@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 
-const useLocalStorage = (key: string, firstValue: string | null = null) => {
+type LocalStorageReturnType = [string | null, (value: string | null) => void];
+
+const useLocalStorage = (
+    key: string,
+    firstValue: string | null = null,
+): LocalStorageReturnType => {
     const initialValue = localStorage.getItem(key) || firstValue;
 
-    const [item, setItem] = useState(initialValue);
+    const [item, setItem] = useState<string | null>(initialValue);
 
     useEffect(
         function setKeyInLocalStorage() {

@@ -7,14 +7,32 @@ import {
     REFRESH_TOKEN_STORAGE_ID,
 } from "../constants";
 
+interface ILanguage {
+    code: string;
+    en_name: string;
+}
+
+export interface ICurrentUser {
+    id: number;
+    username: string;
+    nick_name: string;
+    bio: string;
+    gender: string;
+    is_premium: boolean;
+    user_role: string;
+    date_joined: string;
+    get_studying_languages: ILanguage[];
+    get_native_languages: ILanguage[];
+}
+
 export interface IAuthContext {
-    currentUser: object;
+    currentUser: ICurrentUser | null;
     refreshToken: string | null;
     accessToken: string | null;
     isAuthenticated: boolean;
     userInfoLoaded: boolean;
     logout: () => void;
-    setCurrentUser: (user: object) => void;
+    setCurrentUser: (user: ICurrentUser | null) => void;
     setRefreshToken: (token: string) => void;
     setAccessToken: (token: string) => void;
 }
@@ -50,36 +68,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [refreshToken, setRefreshToken] = useLocalStorage(
         REFRESH_TOKEN_STORAGE_ID,
     );
-    const [currentUser, setCurrentUser] = useState({});
+    const [currentUser, setCurrentUser] = useState<ICurrentUser | null>(null);
 
     const [userInfoLoaded, setUserInfoLoaded] = useState(false);
 
-    const isAuthenticated = Object.keys(currentUser).length > 0;
+    const isAuthenticated = currentUser
+        ? Object.keys(currentUser).length > 0
+        : false;
 
     const logout = () => {
-        if (
-            typeof setAccessToken === "function" &&
-            typeof setRefreshToken === "function"
-        ) {
-            setAccessToken(null);
-            setRefreshToken(null);
-        }
-        setCurrentUser({});
+        setCurrentUser(null);
+        setAccessToken(null);
+        setRefreshToken(null);
     };
 
     useEffect(() => {
         async function fetchUser() {
             if (accessToken) {
-                // I disabled this line b/c I don't see how `accessToken` can be null b/c of my conditional check
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-                // @ts-ignore
                 const decodedToken = jwtDecode<IDecodeToken>(accessToken);
                 const { username } = decodedToken;
                 const response = await axiosPrivate.get(`/users/${username}`);
                 setCurrentUser(response.data);
                 setUserInfoLoaded(true);
             } else {
-                setCurrentUser({});
+                setCurrentUser(null);
                 setUserInfoLoaded(true);
             }
         }
