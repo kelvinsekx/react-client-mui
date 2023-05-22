@@ -1,4 +1,4 @@
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
@@ -15,10 +15,21 @@ import {
     TextField,
 } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
 import { useState } from "react";
+import { ISimplePost } from "./Post";
+import { AxiosError, AxiosResponse, isAxiosError } from "axios";
 
-export interface ICreatePostData extends FieldValues {
+// export interface IPostFormData extends FieldValues {
+//     title: string;
+//     text: string;
+//     native_text?: string;
+//     language: string;
+//     gender_of_narration: string;
+//     permission?: string;
+//     tags?: string;
+// }
+
+export type PostFormValues = {
     title: string;
     text: string;
     native_text?: string;
@@ -26,7 +37,7 @@ export interface ICreatePostData extends FieldValues {
     gender_of_narration: string;
     permission?: string;
     tags?: string;
-}
+};
 
 const validationSchema = yup.object().shape({
     title: yup.string().max(60).required(),
@@ -38,22 +49,14 @@ const validationSchema = yup.object().shape({
     // tags: yup.string(),
 });
 
-// interface IProps {
-//     onCreate: (formData: ICreatePostData) => {
-//         title: string;
-//         text: string;
-//         native_text: string;
-//         language: number;
-//         gender_of_narration: string;
-//         permission: string;
-//         tags: [];
-//         slug: string;
-//     };
-// }
+interface IProps {
+    post: ISimplePost | undefined;
+    onSubmit: (data: PostFormValues) => Promise<AxiosResponse>;
+    onDiscard: () => void;
+}
 
-const PostForm = ({ post, onSubmit }) => {
+const PostForm = ({ post, onSubmit, onDiscard }: IProps) => {
     const navigate = useNavigate();
-    const axiosPrivate = useAxiosPrivate();
     const isEditing = post !== undefined && Object.keys(post).length > 0;
     const [errMsg, setErrMsg] = useState("");
     const {
@@ -61,14 +64,19 @@ const PostForm = ({ post, onSubmit }) => {
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm({
+    } = useForm<PostFormValues>({
         resolver: yupResolver(validationSchema),
         defaultValues: post,
     });
 
-    const { currentUser } = useAuth();
+    const authContext = useAuth();
+    if (!authContext) {
+        throw new Error("authContext missing");
+    }
 
-    const onSubmitHandler: SubmitHandler<FieldValues> = async (data) => {
+    const { currentUser } = authContext;
+
+    const onSubmitHandler: SubmitHandler<PostFormValues> = async (data) => {
         try {
             const response = await onSubmit(data);
             reset();
@@ -78,13 +86,18 @@ const PostForm = ({ post, onSubmit }) => {
                 navigate(`/journals/${slug}`);
             }
         } catch (err) {
-            if (err.response.status === 403) {
-                setErrMsg(err.response.data?.detail);
+            const error = err as Error | AxiosError;
+
+            if (!isAxiosError(error)) {
+                setErrMsg("An error has occured.");
             } else {
-                console.log(
-                    "🚀 ~ file: PostForm.tsx:73 ~ constonSubmitHandler:SubmitHandler<FieldValues>= ~ err:",
-                    err,
-                );
+                if (!error?.response) {
+                    setErrMsg("No server response");
+                } else if (error.response?.status === 403) {
+                    setErrMsg(error.response?.data?.detail);
+                } else {
+                    setErrMsg("Action failed. Try again.");
+                }
             }
         }
     };
@@ -187,7 +200,14 @@ const PostForm = ({ post, onSubmit }) => {
             )}
 
             <Box display="flex" justifyContent="end" gap={1}>
-                <Button variant="outlined" color="error" onClick={() => {}}>
+                <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => {
+                        reset();
+                        onDiscard();
+                    }}
+                >
                     {isEditing ? "Discard changes" : "Cancel"}
                 </Button>
                 <Button type="submit" variant="contained">

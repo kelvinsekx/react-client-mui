@@ -1,13 +1,26 @@
 import Article from "./Article";
 import { CardContent } from "@mui/material";
-import PostCreateForm from "./PostForm";
+import PostCreateForm, { PostFormValues } from "./PostForm";
+import { ISimplePost } from "./Post";
+import { AxiosResponse } from "axios";
 
-const EditableArticle = ({ post, isEditing, onSubmit }) => {
+interface IProps {
+    post: ISimplePost;
+    isEditing: boolean;
+    onSubmit: (data: PostFormValues) => Promise<AxiosResponse>;
+    onDiscard: () => void;
+}
+
+const EditableArticle = ({ post, isEditing, onSubmit, onDiscard }: IProps) => {
     return (
         <>
             {isEditing ? (
                 <CardContent>
-                    <PostCreateForm post={post} onSubmit={onSubmit} />
+                    <PostCreateForm
+                        post={post}
+                        onSubmit={onSubmit}
+                        onDiscard={onDiscard}
+                    />
                 </CardContent>
             ) : (
                 <Article

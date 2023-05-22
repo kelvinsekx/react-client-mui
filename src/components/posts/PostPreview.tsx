@@ -49,7 +49,9 @@ const PostPreview = ({ post }: PostPreviewInterface) => {
 
     const { user, meta, content, total_correctors, corrected_by } = post;
 
-    const isCorrectedByUser = corrected_by?.includes(currentUser?.username);
+    const isCorrectedByUser = currentUser
+        ? corrected_by?.includes(currentUser?.username)
+        : false;
 
     return (
         <Card sx={{ marginBottom: 3 }}>

@@ -4,7 +4,9 @@ import PersonIcon from "@mui/icons-material/Person";
 
 import Post from "../components/posts/Post";
 import { Button, ButtonGroup, Stack, Tooltip, Typography } from "@mui/material";
-import UserCorrections from "../components/corrections/UserCorrections";
+import UserCorrections, {
+    IUserCorrections,
+} from "../components/corrections/UserCorrections";
 import { useQueries } from "@tanstack/react-query";
 import KeyboardBackspaceIcon from "@mui/icons-material/KeyboardBackspace";
 import axiosPublic from "../api/axios";
@@ -73,15 +75,19 @@ const PostDetailPage = () => {
                     </Stack>
 
                     <Stack gap={5}>
-                        {correctionsQuery.data.map((correction) => (
-                            <UserCorrections
-                                key={correction.username}
-                                username={correction.username}
-                                corrections={correction.corrections}
-                                comments={correction.comments}
-                                feedback={correction.overall_feedback}
-                            />
-                        ))}
+                        {correctionsQuery.data.map(
+                            (correction: IUserCorrections) => (
+                                <UserCorrections
+                                    key={correction.username}
+                                    username={correction.username}
+                                    corrections={correction.corrections}
+                                    comments={correction.comments}
+                                    overall_feedback={
+                                        correction?.overall_feedback
+                                    }
+                                />
+                            ),
+                        )}
                     </Stack>
                 </>
             ) : (

@@ -2,7 +2,12 @@ import { useLocation, Navigate, Outlet } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 
 const RequireAuth = () => {
-    const { isAuthenticated } = useAuth();
+    const authContext = useAuth();
+    if (!authContext) {
+        throw new Error("Auth Context Missing");
+    }
+
+    const { isAuthenticated } = authContext;
     const location = useLocation();
 
     return isAuthenticated ? (

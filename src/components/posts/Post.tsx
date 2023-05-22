@@ -25,18 +25,35 @@ import LanguageIcon from "@mui/icons-material/Language";
 import EditIcon from "@mui/icons-material/Edit";
 // import DeleteIcon from "@mui/icons-material/Delete";
 import EditableArticle from "./EditableArticle.tsx";
-import { axiosPrivate } from "../../api/axios.tsx";
+// import { axiosPrivate } from "../../api/axios.tsx";
 import useAuth from "../../hooks/useAuth.tsx";
+import useAxiosPrivate from "../../hooks/useAxiosPrivate.tsx";
+import { PostFormValues } from "./PostForm.tsx";
 
 interface PostPreviewInterface {
     post: PostInterface;
 }
 
+export interface ISimplePost {
+    title: string;
+    text: string;
+    native_text: string;
+    language: string;
+    gender_of_narration: string;
+    permission: string;
+}
+
 const Post = ({ post }: PostPreviewInterface) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isEditing, setIsEditing] = useState(false);
+    const axiosPrivate = useAxiosPrivate();
 
-    const { currentUser } = useAuth();
+    const authContext = useAuth();
+    if (!authContext) {
+        throw new Error("AuthContext must be passed");
+    }
+
+    const { currentUser } = authContext;
 
     const open = Boolean(anchorEl);
 
@@ -52,12 +69,15 @@ const Post = ({ post }: PostPreviewInterface) => {
         handleClose();
     };
 
-    const handleSubmit = async (data) => {
+    const handleSubmit = async (data: PostFormValues) => {
         const slug = `/journals/${post.meta.slug}`;
-        const response = await axiosPrivate.patch(slug, data);
         setIsEditing(false);
         handleClose();
-        return response;
+        return await axiosPrivate.patch(slug, data);
+    };
+
+    const handleDiscard = () => {
+        setIsEditing(false);
     };
 
     const {
@@ -79,7 +99,9 @@ const Post = ({ post }: PostPreviewInterface) => {
         permission: meta.permission,
     };
 
-    const isCorrectedByUser = corrected_by?.includes(currentUser?.username);
+    const isCorrectedByUser = currentUser
+        ? corrected_by?.includes(currentUser?.username)
+        : false;
 
     return (
         <Card>
@@ -144,6 +166,7 @@ const Post = ({ post }: PostPreviewInterface) => {
                 post={serializedPost}
                 isEditing={isEditing}
                 onSubmit={handleSubmit}
+                onDiscard={handleDiscard}
             />
 
             {!isEditing && (

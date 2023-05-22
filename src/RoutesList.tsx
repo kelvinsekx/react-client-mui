@@ -13,7 +13,9 @@ import NotFoundPage from "./pages/NotFoundPage.tsx";
 
 const RoutesList = () => {
     const authContext = useAuth();
-    if (authContext === undefined) return <p>Loading...</p>;
+    if (!authContext) {
+        throw new Error("AuthContext missing");
+    }
 
     const { currentUser, isAuthenticated, userInfoLoaded } = authContext;
 
@@ -60,11 +62,7 @@ const RoutesList = () => {
                     path="/journals"
                     element={
                         <PostPage
-                            mode={
-                                Object.keys(currentUser).length > 0
-                                    ? "teach"
-                                    : "recentlyCorrected"
-                            }
+                            mode={currentUser ? "teach" : "recentlyCorrected"}
                         />
                     }
                 />
