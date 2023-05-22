@@ -27,13 +27,7 @@ const PostDetailPage = () => {
                 queryFn: () =>
                     axiosPublic
                         .get(`/journals/${slug}/corrections`)
-                        .then((res) => {
-                            console.log(
-                                "🚀 ~ file: PostDetailPage.tsx:34 ~ .then ~ res:",
-                                res,
-                            );
-                            return res.data?.results;
-                        }),
+                        .then((res) => res.data?.results),
             },
         ],
     });
