@@ -34,7 +34,7 @@
 <!-- GETTING STARTED -->
 ## Getting Started
 
-### Installation
+### Installation (NEEDS TO BE UPDATED)
 
 1. Clone the repository
 ```sh
@@ -45,42 +45,6 @@ git clone git@github.com:LangCorrect/react-client-mui.git
  ```sh
  npm install
  ```
-
-3. Create the json-server db
-```json
-
-{
-    "journals": [
-      {
-        "id": 9999,
-        "content": {
-          "title": "...",
-          "text": "...",
-          "native_text": "..."
-        },
-        "language": {
-          "code": "en",
-          "en_name": "English"
-        },
-        "meta": {
-          "slug": "...",
-          "tags": [],
-          "permission": "public",
-          "created": "2023-04-26T16:10:44.360279Z",
-          "modified": "2023-04-26T17:45:02.983247Z"
-        },
-        "gender_of_narration": "U",
-        "prompt": null,
-        "language_level": null,
-        "user": {
-          "username": "...",
-          "is_premium": false
-        },
-        "total_correctors": 999
-      }
-   ]
-}
-```
 
 4. Create the .env.local file in root
 
