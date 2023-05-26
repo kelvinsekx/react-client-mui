@@ -27,19 +27,19 @@ interface IOverallFeedback {
     username?: string;
 }
 
-interface UserCorrectionsInterface {
+export interface IUserCorrections {
     username: string;
     corrections: CorrectionInterface[];
     comments: CommentInterface[];
-    feedback: IOverallFeedback[];
+    overall_feedback: IOverallFeedback[];
 }
 
 const UserCorrections = ({
     username,
     corrections,
     comments,
-    feedback,
-}: UserCorrectionsInterface) => {
+    overall_feedback,
+}: IUserCorrections) => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -49,7 +49,8 @@ const UserCorrections = ({
         setAnchorEl(null);
     };
 
-    const hasFeedback = feedback.length > 0 && feedback[0]?.comment !== "";
+    const hasFeedback =
+        overall_feedback?.length > 0 && overall_feedback[0]?.comment !== "";
 
     return (
         <>
@@ -113,8 +114,10 @@ const UserCorrections = ({
                         </Menu>
                     </Stack>
                     {hasFeedback ? (
-                        feedback?.map((fnote) => (
-                            <Typography>{fnote.comment}</Typography>
+                        overall_feedback?.map((fnote) => (
+                            <Typography key={fnote.id}>
+                                {fnote.comment}
+                            </Typography>
                         ))
                     ) : (
                         <Typography>No feedback has been provided.</Typography>

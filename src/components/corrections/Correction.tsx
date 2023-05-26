@@ -1,6 +1,5 @@
 import React from "react";
 import {
-    Alert,
     Box,
     Divider,
     IconButton,
@@ -19,7 +18,6 @@ import "./Correction.css";
 import DeleteIcon from "@mui/icons-material/Delete";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 
 export interface CorrectionInterface {
     username: string;
@@ -92,20 +90,7 @@ const Correction = ({ data }: CorrectionPropInterface) => {
                         />
                     </Box>
                 }
-                secondary={
-                    data.note ? (
-                        <Alert
-                            icon={<ErrorOutlineIcon />}
-                            variant="outlined"
-                            color="info"
-                            sx={{ mt: 2 }}
-                        >
-                            {data.note}
-                        </Alert>
-                    ) : (
-                        ""
-                    )
-                }
+                secondary={data.note ? data.note : ""}
             />
         );
 
@@ -122,7 +107,7 @@ const Correction = ({ data }: CorrectionPropInterface) => {
                         <IconButton
                             edge="end"
                             aria-label="options"
-                            aria-controls={open ? "basic-menu" : undefined}
+                            aria-controls={open ? "correction-menu" : undefined}
                             aria-haspopup="true"
                             aria-expanded={open ? "true" : undefined}
                             onClick={handleClick}
@@ -130,12 +115,12 @@ const Correction = ({ data }: CorrectionPropInterface) => {
                             <MoreVertIcon />
                         </IconButton>
                         <Menu
-                            id="basic-menu"
+                            id="correction-menu"
                             anchorEl={anchorEl}
                             open={open}
                             onClose={handleClose}
                             MenuListProps={{
-                                "aria-labelledby": "basic-button",
+                                "aria-labelledby": "correction-button",
                             }}
                         >
                             <MenuItem onClick={handleClose}>

@@ -5,7 +5,13 @@ import useAuth from "./useAuth";
 
 const useAxiosPrivate = () => {
     const refresh = useRefreshToken();
-    const { accessToken } = useAuth();
+
+    const authContext = useAuth();
+    if (!authContext) {
+        throw new Error("AuthContext missing.");
+    }
+
+    const { accessToken } = authContext;
 
     useEffect(() => {
         const requestIntercept = axiosPrivate.interceptors.request.use(

@@ -1,8 +1,9 @@
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import {
+    Alert,
     Box,
     Button,
     FormControl,
@@ -14,9 +15,21 @@ import {
     TextField,
 } from "@mui/material";
 import useAuth from "../../hooks/useAuth";
-import useAxiosPrivate from "../../hooks/useAxiosPrivate";
+import { useState } from "react";
+import { ISimplePost } from "./Post";
+import { AxiosError, AxiosResponse, isAxiosError } from "axios";
 
-export interface ICreatePostData extends FieldValues {
+// export interface IPostFormData extends FieldValues {
+//     title: string;
+//     text: string;
+//     native_text?: string;
+//     language: string;
+//     gender_of_narration: string;
+//     permission?: string;
+//     tags?: string;
+// }
+
+export type PostFormValues = {
     title: string;
     text: string;
     native_text?: string;
@@ -24,7 +37,7 @@ export interface ICreatePostData extends FieldValues {
     gender_of_narration: string;
     permission?: string;
     tags?: string;
-}
+};
 
 const validationSchema = yup.object().shape({
     title: yup.string().max(60).required(),
@@ -36,45 +49,55 @@ const validationSchema = yup.object().shape({
     // tags: yup.string(),
 });
 
-// interface IProps {
-//     onCreate: (formData: ICreatePostData) => {
-//         title: string;
-//         text: string;
-//         native_text: string;
-//         language: number;
-//         gender_of_narration: string;
-//         permission: string;
-//         tags: [];
-//         slug: string;
-//     };
-// }
+interface IProps {
+    post: ISimplePost | undefined;
+    onSubmit: (data: PostFormValues) => Promise<AxiosResponse>;
+    onDiscard: () => void;
+}
 
-const PostCreateForm = () => {
+const PostForm = ({ post, onSubmit, onDiscard }: IProps) => {
     const navigate = useNavigate();
-    const axiosPrivate = useAxiosPrivate();
-
+    const isEditing = post !== undefined && Object.keys(post).length > 0;
+    const [errMsg, setErrMsg] = useState("");
     const {
         register,
         handleSubmit,
         formState: { errors },
         reset,
-    } = useForm({
+    } = useForm<PostFormValues>({
         resolver: yupResolver(validationSchema),
     });
 
-    const { currentUser } = useAuth();
+    const authContext = useAuth();
+    if (!authContext) {
+        throw new Error("authContext missing");
+    }
 
-    const onSubmitHandler: SubmitHandler<FieldValues> = async (data) => {
+    const { currentUser } = authContext;
+
+    const onSubmitHandler: SubmitHandler<PostFormValues> = async (data) => {
         try {
-            const response = await axiosPrivate.post("/journals/", data);
-            const { slug } = response.data;
+            const response = await onSubmit(data);
             reset();
-            navigate(`/journals/${slug}`);
+
+            if (!isEditing) {
+                const { slug } = response.data;
+                navigate(`/journals/${slug}`);
+            }
         } catch (err) {
-            console.log(
-                "🚀 ~ file: PostCreateForm.tsx:74 ~ constonSubmitHandler:SubmitHandler<FieldValues>= ~ err:",
-                err,
-            );
+            const error = err as Error | AxiosError;
+
+            if (!isAxiosError(error)) {
+                setErrMsg("An error has occured.");
+            } else {
+                if (!error?.response) {
+                    setErrMsg("No server response");
+                } else if (error.response?.status === 403) {
+                    setErrMsg(error.response?.data?.detail);
+                } else {
+                    setErrMsg("Action failed. Try again.");
+                }
+            }
         }
     };
 
@@ -86,35 +109,35 @@ const PostCreateForm = () => {
                     {...register("title")}
                     label="Title"
                     error={!!errors.title}
-                    helperText={errors.title && String(errors.title.message)}
+                    helperText={errors.title && String(errors.title?.message)}
+                    defaultValue={post?.title}
                 />
                 <TextField
                     multiline
-                    rows={8}
                     required
                     {...register("text")}
                     label="Write in your target language"
                     error={!!errors.text}
-                    helperText={errors.text && String(errors.text.message)}
+                    helperText={errors.text && String(errors.text?.message)}
+                    defaultValue={post?.text || ""}
                 />
                 <TextField
                     multiline
-                    rows={8}
                     {...register("native_text")}
                     label="Notes"
                     error={!!errors.native_text}
                     helperText={
-                        errors.native_text && String(errors.native_text.message)
+                        errors.native_text &&
+                        String(errors.native_text?.message)
                     }
+                    defaultValue={post?.native_text || ""}
                 />
                 <FormControl error={!!errors.language} fullWidth required>
-                    <InputLabel id="demo-simple-select-label">
-                        Language
-                    </InputLabel>
+                    <InputLabel id="language">Language</InputLabel>
                     <Select
                         {...register("language")}
                         label="Language"
-                        defaultValue=""
+                        defaultValue={post?.language || ""}
                     >
                         {currentUser?.get_studying_languages?.map((lang) => (
                             <MenuItem key={lang.code} value={lang.code}>
@@ -133,13 +156,11 @@ const PostCreateForm = () => {
                     fullWidth
                     required
                 >
-                    <InputLabel id="demo-simple-select-label">
-                        Gender of Narration
-                    </InputLabel>
+                    <InputLabel id="gender">Gender of Narration</InputLabel>
                     <Select
                         {...register("gender_of_narration")}
                         label="Gender of Narration"
-                        defaultValue="U"
+                        defaultValue={post?.gender_of_narration || "U"}
                     >
                         <MenuItem value="M">Male</MenuItem>
                         <MenuItem value="F">Female</MenuItem>
@@ -152,19 +173,12 @@ const PostCreateForm = () => {
                         </FormHelperText>
                     )}
                 </FormControl>
-                <FormControl
-                    error={!!errors.language}
-                    fullWidth
-                    required
-                    defaultValue=""
-                >
-                    <InputLabel id="demo-simple-select-label">
-                        Visibility
-                    </InputLabel>
+                <FormControl error={!!errors.permission} fullWidth required>
+                    <InputLabel id="visibility">Visibility</InputLabel>
                     <Select
                         {...register("permission")}
                         label="Visibility"
-                        defaultValue="public"
+                        defaultValue={post?.permission || "public"}
                     >
                         <MenuItem value="public">Viewable by everyone</MenuItem>
                         <MenuItem value="member">
@@ -179,13 +193,29 @@ const PostCreateForm = () => {
                 </FormControl>
             </Stack>
 
-            <Box display="flex" justifyContent="end">
+            {errMsg && (
+                <Alert severity="error" sx={{ mb: 3 }}>
+                    {errMsg}
+                </Alert>
+            )}
+
+            <Box display="flex" justifyContent="end" gap={1}>
+                <Button
+                    variant="outlined"
+                    color="error"
+                    onClick={() => {
+                        reset();
+                        onDiscard();
+                    }}
+                >
+                    {isEditing ? "Discard changes" : "Cancel"}
+                </Button>
                 <Button type="submit" variant="contained">
-                    Submit
+                    {isEditing ? "Save" : "Submit"}
                 </Button>
             </Box>
         </form>
     );
 };
 
-export default PostCreateForm;
+export default PostForm;
