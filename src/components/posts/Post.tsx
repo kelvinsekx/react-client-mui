@@ -29,6 +29,7 @@ import EditableArticle from "./EditableArticle.tsx";
 import useAuth from "../../hooks/useAuth.tsx";
 import useAxiosPrivate from "../../hooks/useAxiosPrivate.tsx";
 import { PostFormValues } from "./PostForm.tsx";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface PostPreviewInterface {
     post: PostInterface;
@@ -47,6 +48,21 @@ const Post = ({ post }: PostPreviewInterface) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const [isEditing, setIsEditing] = useState(false);
     const axiosPrivate = useAxiosPrivate();
+    const queryClient = useQueryClient();
+
+    const mutation = useMutation({
+        mutationFn: (editedPost: PostFormValues) => {
+            return axiosPrivate.patch(
+                `/journals/${post.meta.slug}`,
+                editedPost,
+            );
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries({
+                queryKey: ["posts", post.meta.slug],
+            });
+        },
+    });
 
     const authContext = useAuth();
     if (!authContext) {
@@ -74,10 +90,9 @@ const Post = ({ post }: PostPreviewInterface) => {
     };
 
     const handleSubmit = async (data: PostFormValues) => {
-        const slug = `/journals/${post.meta.slug}`;
         setIsEditing(false);
         handleClose();
-        return await axiosPrivate.patch(slug, data);
+        mutation.mutate(data);
     };
 
     const handleDiscard = () => {
