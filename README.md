@@ -1,11 +1,12 @@
 <!-- Improved compatibility of back to top link: See: https://github.com/othneildrew/Best-README-Template/pull/73 -->
+
 <a name="readme-top"></a>
 
 <!-- PROJECT SHIELDS -->
+
 [![Forks][forks-shield]][forks-url]
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]
-
 
 <!-- PROJECT LOGO -->
 <br />
@@ -22,48 +23,56 @@
 </div>
 
 <!-- ABOUT THE PROJECT -->
+
 ## About The Project
 
 ### Built With
 
-- React
-- Material UI
+-   React
+-   Material UI
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- GETTING STARTED -->
+
 ## Getting Started
 
-### Installation (NEEDS TO BE UPDATED)
+### Installation
 
 1. Clone the repository
+
 ```sh
 git clone git@github.com:LangCorrect/react-client-mui.git
 ```
 
 2. Install the NPM packages
- ```sh
- npm install
- ```
 
-4. Create the .env.local file in root
-
-```
-VITE_API_BASE_URL=http://localhost:3001
-```
-
-5. Run
 ```sh
-npm run server
-npm run dev
+npm install
+```
+
+3. In the root directory create a file called `.env.local` and add the following:
+
+```
+VITE_API_BASE_URL=<STAGING URL>
+```
+
+**The staging environment is protected and it will only allow access to users who have their IPs whitelisted. You will need to send an email to support [at] langcorrect.com with your IP and github username in order to be granted access to the staging environment.**
+
+4. Run
+
+```sh
+npm run dev // run the server
+npm run test // run the tests
 ```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
 ## Documentation
 
-TBD
+API Docs
+
+You will receive a link to API documentation when you get your IP whitelisted.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -83,10 +92,13 @@ Daniel Zeljko - [LinkedIn](https://www.linkedin.com/in/daniel-zeljko/)
 
 Project Link: [https://github.com/LangCorrect/react-client-mui](https://github.com/LangCorrect/react-client-mui)
 
+Main Website: https://langcorrect.com
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+
 [contributors-shield]: https://img.shields.io/github/contributors/LangCorrect/react-client-mui.svg?style=for-the-badge
 [contributors-url]: https://github.com/LangCorrect/react-client-mui/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/LangCorrect/react-client-mui.svg?style=for-the-badge
