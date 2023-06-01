@@ -57,7 +57,19 @@ npm install
 VITE_API_BASE_URL=<STAGING URL>
 ```
 
-**The staging environment is protected and it will only allow access to users who have their IPs whitelisted. You will need to send an email to support [at] langcorrect.com with your IP and github username in order to be granted access to the staging environment.**
+To ensure secure access and maintain system integrity, contributors must have their static IP addresses whitelisted before accessing the staging environment where the API is hosted. This process also prevents unnecessary indexing of the site by robots. To whitelist your static IP, please follow these steps:
+
+1. Compose an Email:
+- Send an email to support[at]langcorrect.com.
+- Include the following details in your email:
+  - Your GitHub username.
+  - Your static IP address.
+
+2. Request Processing Time:
+  - Please allow some time for your request to be processed.
+  - Most requests are typically processed within 24 hours.
+
+Once your static IP is successfully whitelisted, you will be able to access the staging environment without any issues. If you encounter any difficulties or have any questions, feel free to reach out to the support team.
 
 4. Run
 
