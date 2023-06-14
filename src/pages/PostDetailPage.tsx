@@ -1,7 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import LayersIcon from "@mui/icons-material/Layers";
 import PersonIcon from "@mui/icons-material/Person";
-
 import Post from "../components/posts/Post";
 import { Button, ButtonGroup, Stack, Tooltip, Typography } from "@mui/material";
 import UserCorrections, {
@@ -29,7 +28,7 @@ const PostDetailPage = () => {
                 queryFn: () =>
                     axiosPublic
                         .get(`/journals/${slug}/corrections`)
-                        .then((res) => res.data?.results),
+                        .then((res) => res.data),
             },
         ],
     });
