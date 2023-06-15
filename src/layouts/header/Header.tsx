@@ -10,20 +10,29 @@ import AvatarPopover from "./AvatarPopover.js";
 import LogoMarkWhite from "../../assets/logos/logo-mark-white.svg";
 import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../../hooks/useAuth.js";
-import { useContext } from "react";
-import NightlightRoundIcon from "@mui/icons-material/NightlightRound";
+import React, { useContext, useState, MouseEvent } from "react";
+
+import SettingsIcon from "@mui/icons-material/Settings";
+import Popover from "@mui/material/Popover";
+
+import Switch from "@mui/material/Switch";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+
 import { ColorModeContext } from "../../theme.js";
 
 interface Props {
     onNavOpen: () => void;
 }
 
-const Header = ({ onNavOpen }: Props) => {
+export default function Header({ onNavOpen }: Props) {
     const theme = useTheme();
     const colorMode = useContext(ColorModeContext);
     const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
     const navigate = useNavigate();
     const { isAuthenticated, userInfoLoaded } = useAuth();
+
+    const [rtl, setRTL] = useState(document.dir);
 
     if (!userInfoLoaded) return;
 
@@ -84,17 +93,94 @@ const Header = ({ onNavOpen }: Props) => {
                             {renderLogo}
                         </span>
                     </Box>
-                    <IconButton
-                        onClick={colorMode.toggleColorMode}
-                        color="inherit"
-                    >
-                        <NightlightRoundIcon />
-                    </IconButton>
+                    <LangSettingPopOver rtl={rtl}>
+                        <FormGroup>
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        size="medium"
+                                        onClick={() => {
+                                            if (document.dir) {
+                                                setRTL("undefined");
+                                                return (document.dir =
+                                                    "undefined");
+                                            }
+                                            setRTL("rtl");
+                                            return (document.dir = "rtl");
+                                        }}
+                                    />
+                                }
+                                label="RTL"
+                                labelPlacement="start"
+                                sx={{
+                                    justifyContent: "space-between",
+                                }}
+                            />
+                            <FormControlLabel
+                                control={
+                                    <Switch
+                                        size="medium"
+                                        onClick={colorMode.toggleColorMode}
+                                    />
+                                }
+                                label="Dark Mode"
+                                labelPlacement="start"
+                                sx={{
+                                    justifyContent: "space-between",
+                                }}
+                            />
+                        </FormGroup>
+                    </LangSettingPopOver>
                     {renderPopovers}
                 </Toolbar>
             </AppBar>
         </>
     );
-};
+}
 
-export default Header;
+const LangSettingPopOver = ({
+    children,
+    rtl,
+}: {
+    children: React.ReactNode;
+    rtl: string;
+}) => {
+    const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+
+    const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const open = Boolean(anchorEl);
+    const id = open ? "simple-popover" : undefined;
+    return (
+        <div>
+            <IconButton color="inherit" onClick={handleClick}>
+                <SettingsIcon />
+            </IconButton>
+            <Popover
+                id={id}
+                open={open}
+                anchorEl={anchorEl}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "left",
+                }}
+                dir={rtl}
+            >
+                <Box
+                    sx={{
+                        padding: "1rem",
+                    }}
+                >
+                    {children}
+                </Box>
+            </Popover>
+        </div>
+    );
+};
