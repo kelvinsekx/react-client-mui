@@ -40,13 +40,42 @@ const MakeCorrectionPage = () => {
             const resp = await axiosPrivate.post("drafts/", data);
             return resp?.data;
         },
+        onSuccess: (data) => {
+            console.log(
+                "🚀 ~ file: MakeCorrectionPage.tsx:44 ~ MakeCorrectionPage ~ data:",
+                data,
+            );
+            queryClient.invalidateQueries({
+                queryKey: ["makeCorrections", slug],
+            });
+        },
+        onError: (err) => {
+            // TODO: Show error snackbar
+            console.log(
+                "🚀 ~ file: MakeCorrectionPage.tsx:60 ~ MakeCorrectionPage ~ err:",
+                err,
+            );
+        },
+    });
+
+    const deleteMutation = useMutation({
+        mutationFn: async (data: {
+            rowId: number;
+            type: "correction" | "perfect";
+        }) => {
+            await axiosPrivate.post("corrections/delete", data);
+        },
         onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["makeCorrections", slug],
             });
         },
-        onError: () => {
-            // TODO:
+        onError: (err) => {
+            // TODO: Show error snackbar
+            console.log(
+                "🚀 ~ file: MakeCorrectionPage.tsx:78 ~ MakeCorrectionPage ~ err:",
+                err,
+            );
         },
     });
 
@@ -56,7 +85,9 @@ const MakeCorrectionPage = () => {
         try {
             await axiosPrivate.post(`/journals/${slug}/make-correction/`);
             navigate(`/journals/${slug}`);
-        } catch (err) { /* empty */ }
+        } catch (err) {
+            /* empty */
+        }
     };
 
     if (query.isLoading) return <p>Loading...</p>;
@@ -74,6 +105,7 @@ const MakeCorrectionPage = () => {
                         correction={row?.correction}
                         onDraftSave={mutation.mutate}
                         isPublished={row.correction?.is_published}
+                        onDelete={deleteMutation.mutate}
                     />
                 </Box>
             ))}

@@ -35,6 +35,7 @@ interface IProps {
     prid: number;
     original_sentence: string;
     onDraftSave: (data: ICorrectionDraft) => void;
+    onDelete: (data: { rowId: number; type: "perfect" | "correction" }) => void;
     isCorrected: boolean;
     correction: ICorrection;
     isPublished: string;
@@ -44,6 +45,7 @@ const CorrectionCard = ({
     prid,
     original_sentence,
     onDraftSave,
+    onDelete,
     isCorrected,
     correction,
     isPublished,
@@ -60,6 +62,7 @@ const CorrectionCard = ({
         register,
         handleSubmit,
         watch,
+        reset,
         formState: { errors, isDirty },
     } = useForm<CorrectionFormValues>({
         resolver: yupResolver(validationSchema),
@@ -73,6 +76,23 @@ const CorrectionCard = ({
     const handleEditClick = () => {
         setShowForm(true);
         setIsProcessed(true);
+    };
+
+    const handleDeleteClick = () => {
+        try {
+            onDelete({
+                rowId: correction.id,
+                type: correction?.type,
+            });
+            setShowForm(false);
+            setIsProcessed(false);
+            reset();
+        } catch (err) {
+            console.log(
+                "🚀 ~ file: CorrectionCard.tsx:88 ~ handleDeleteClick ~ err:",
+                err,
+            );
+        }
     };
 
     // TODO: double check this
@@ -159,6 +179,7 @@ const CorrectionCard = ({
                                 <IconButton
                                     aria-label="delete-correction"
                                     color="error"
+                                    onClick={handleDeleteClick}
                                 >
                                     <DeleteForeverIcon />
                                 </IconButton>
