@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { Box, Button, TextField, Typography } from "@mui/material";
 import CorrectionCard from "../components/corrections/CorrectionCard";
 import { ICorrection } from "../components/corrections/Correction";
 import React, { useState } from "react";
@@ -37,7 +37,14 @@ const MakeCorrectionPage = () => {
     const query = useQuery(["makeCorrections", slug], () =>
         axiosPrivate
             .get(`/journals/${slug}/make-correction`)
-            .then((res) => res.data),
+            .then((res) => {
+                // TODO: Check user permissions in RequireAuth?
+                if (res.data.message === "You can only make corrections for languages you speak."){
+                    navigate(`/journals/${slug}`);
+                }
+                console.log("🚀 ~ file: MakeCorrectionPage.tsx:41 ~ .then ~ res:", res);
+                return res.data
+            }),
     );
 
     const mutation = useMutation({
@@ -101,7 +108,7 @@ const MakeCorrectionPage = () => {
             {errMsg && <SnackBar message={errMsg} severity="error" />}
 
             <Typography mb={3}>Make a correction</Typography>
-            {query.data.correction_data.map((row: IRow) => (
+            {query.data.correction_data?.map((row: IRow) => (
                 <Box mb={2} key={row.postrow_id}>
                     <CorrectionCard
                         prid={row.postrow_id}
