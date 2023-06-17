@@ -1,9 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Divider, TextField, Typography } from "@mui/material";
 import CorrectionCard from "../components/corrections/CorrectionCard";
 import { ICorrection } from "../components/corrections/Correction";
+import React, { useState } from "react";
+import SnackBar from "../layouts/SnackBar";
 
 interface IFullCorrection extends ICorrection {
     is_published: string;
@@ -29,6 +31,9 @@ const MakeCorrectionPage = () => {
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
+    const [errMsg, setErrMsg] = useState<string | null>(null);
+    const overallFeedback = React.useRef<HTMLFormElement | undefined>();
+
     const query = useQuery(["makeCorrections", slug], () =>
         axiosPrivate
             .get(`/journals/${slug}/make-correction`)
@@ -37,24 +42,17 @@ const MakeCorrectionPage = () => {
 
     const mutation = useMutation({
         mutationFn: async (data: ICorrectionDraft) => {
+            setErrMsg(null);
             const resp = await axiosPrivate.post("drafts/", data);
             return resp?.data;
         },
-        onSuccess: (data) => {
-            console.log(
-                "🚀 ~ file: MakeCorrectionPage.tsx:44 ~ MakeCorrectionPage ~ data:",
-                data,
-            );
+        onSuccess: () => {
             queryClient.invalidateQueries({
                 queryKey: ["makeCorrections", slug],
             });
         },
-        onError: (err) => {
-            // TODO: Show error snackbar
-            console.log(
-                "🚀 ~ file: MakeCorrectionPage.tsx:60 ~ MakeCorrectionPage ~ err:",
-                err,
-            );
+        onError: () => {
+            setErrMsg("Error saving draft...");
         },
     });
 
@@ -63,6 +61,7 @@ const MakeCorrectionPage = () => {
             rowId: number;
             type: "correction" | "perfect";
         }) => {
+            setErrMsg(null);
             await axiosPrivate.post("corrections/delete", data);
         },
         onSuccess: () => {
@@ -70,23 +69,28 @@ const MakeCorrectionPage = () => {
                 queryKey: ["makeCorrections", slug],
             });
         },
-        onError: (err) => {
-            // TODO: Show error snackbar
-            console.log(
-                "🚀 ~ file: MakeCorrectionPage.tsx:78 ~ MakeCorrectionPage ~ err:",
-                err,
-            );
+        onError: () => {
+            setErrMsg("Error deleting correction...");
         },
     });
 
     const handleSubmit = async (evt: React.SyntheticEvent) => {
         evt.preventDefault();
+        setErrMsg(null);
+
+        const payload = {
+            overall_feedback: overallFeedback?.current?.value,
+        };
 
         try {
-            await axiosPrivate.post(`/journals/${slug}/make-correction/`);
+            await axiosPrivate.post(
+                `/journals/${slug}/make-correction/`,
+                payload,
+            );
+            queryClient.invalidateQueries(["makeCorrections", slug]);
             navigate(`/journals/${slug}`);
         } catch (err) {
-            /* empty */
+            setErrMsg("Error publishing corrections...");
         }
     };
 
@@ -94,9 +98,10 @@ const MakeCorrectionPage = () => {
 
     return (
         <>
-            <Typography mb={3}>Make a correction</Typography>
+            {errMsg && <SnackBar message={errMsg} severity="error" />}
 
-            {query.data.map((row: IRow) => (
+            <Typography mb={3}>Make a correction</Typography>
+            {query.data.correction_data.map((row: IRow) => (
                 <Box mb={2} key={row.postrow_id}>
                     <CorrectionCard
                         prid={row.postrow_id}
@@ -109,16 +114,22 @@ const MakeCorrectionPage = () => {
                     />
                 </Box>
             ))}
+            <Box component="form" method="post" onSubmit={handleSubmit} mt={3}>
+                {/* does not require any validation */}
+                <TextField
+                    id="overall-feedback"
+                    label="Overall Feedback"
+                    multiline
+                    fullWidth
+                    defaultValue={query.data.overall_feedback || ""}
+                    inputRef={overallFeedback}
+                />
 
-            <Box
-                component="form"
-                display="flex"
-                justifyContent="end"
-                method="post"
-                onSubmit={handleSubmit}
-            >
-                <Button>Discard all drafts</Button>
-                <Button type="submit">Publish</Button>
+                <Box display="flex" justifyContent="end" mt={3}>
+                    <Button type="submit" variant="contained">
+                        Publish
+                    </Button>
+                </Box>
             </Box>
         </>
     );
