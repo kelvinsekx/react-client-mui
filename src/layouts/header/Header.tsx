@@ -19,7 +19,7 @@ import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
-import { ColorModeContext } from "../../theme.js";
+import { ColorModeContext, RTLContext, useRTL } from "../../theme";
 
 interface Props {
     onNavOpen: () => void;
@@ -30,9 +30,8 @@ export default function Header({ onNavOpen }: Props) {
     const colorMode = useContext(ColorModeContext);
     const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
     const navigate = useNavigate();
+    const RtlMode = useContext(RTLContext);
     const { isAuthenticated, userInfoLoaded } = useAuth();
-
-    const [rtl, setRTL] = useState(document.dir);
 
     if (!userInfoLoaded) return;
 
@@ -93,27 +92,25 @@ export default function Header({ onNavOpen }: Props) {
                             {renderLogo}
                         </span>
                     </Box>
-                    <LangSettingPopOver rtl={rtl}>
+                    <LangSettingPopOver>
                         <FormGroup>
                             <FormControlLabel
                                 control={
                                     <Switch
                                         size="medium"
-                                        onClick={() => {
-                                            if (document.dir) {
-                                                setRTL("undefined");
-                                                return (document.dir =
-                                                    "undefined");
-                                            }
-                                            setRTL("rtl");
-                                            return (document.dir = "rtl");
-                                        }}
+                                        onClick={RtlMode.toggleRTL}
+                                        checked={
+                                            theme.direction === "rtl"
+                                                ? true
+                                                : false
+                                        }
                                     />
                                 }
                                 label="RTL"
                                 labelPlacement="start"
                                 sx={{
                                     justifyContent: "space-between",
+                                    margin: "0px",
                                 }}
                             />
                             <FormControlLabel
@@ -121,12 +118,18 @@ export default function Header({ onNavOpen }: Props) {
                                     <Switch
                                         size="medium"
                                         onClick={colorMode.toggleColorMode}
+                                        checked={
+                                            theme.palette.mode === "dark"
+                                                ? true
+                                                : false
+                                        }
                                     />
                                 }
                                 label="Dark Mode"
                                 labelPlacement="start"
                                 sx={{
                                     justifyContent: "space-between",
+                                    margin: "0px",
                                 }}
                             />
                         </FormGroup>
@@ -138,13 +141,7 @@ export default function Header({ onNavOpen }: Props) {
     );
 }
 
-const LangSettingPopOver = ({
-    children,
-    rtl,
-}: {
-    children: React.ReactNode;
-    rtl: string;
-}) => {
+const LangSettingPopOver = ({ children }: { children: React.ReactNode }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
 
     const handleClick = (event: MouseEvent<HTMLButtonElement>) => {
@@ -171,7 +168,6 @@ const LangSettingPopOver = ({
                     vertical: "bottom",
                     horizontal: "left",
                 }}
-                dir={rtl}
             >
                 <Box
                     sx={{
