@@ -35,7 +35,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AxiosError, isAxiosError } from "axios";
 
 interface PostPreviewInterface {
@@ -276,6 +276,8 @@ const Post = ({ post }: PostPreviewInterface) => {
                                 isCorrectedByUser ? "contained" : "outlined"
                             }
                             startIcon={<CheckCircleOutlineIcon />}
+                            component={Link}
+                            to={`/journals/${post.meta.slug}/make-corrections`}
                         >
                             {isCorrectedByUser
                                 ? "Already corrected"

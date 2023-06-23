@@ -13,8 +13,7 @@ import { Link } from "react-router-dom";
 
 const RegisterPage = () => {
     const register = async (formData: RegisterUser) => {
-        const resp = await LangCorrectAPI.register(formData);
-        console.log("🚀 ~ file: RegisterPage.tsx:12 ~ register ~ resp:", resp);
+        await LangCorrectAPI.register(formData);
     };
 
     return (
