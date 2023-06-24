@@ -73,7 +73,7 @@ const LoginForm = () => {
                     <TextField
                         required
                         {...register("username")}
-                        label="username"
+                        label="Username"
                         error={!!errors.username}
                         helperText={
                             errors.username && String(errors.username.message)
