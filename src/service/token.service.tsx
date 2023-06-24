@@ -4,11 +4,6 @@ import {
 } from "../constants";
 
 const getLocalAccessToken = () => {
-    const token = localStorage.getItem(ACCESS_TOKEN_STORAGE_ID);
-    console.log(
-        "🚀 ~ file: token.service.tsx:9 ~ TokenService ~ getLocalAccessToken ~ token:",
-        token,
-    );
     return localStorage.getItem(ACCESS_TOKEN_STORAGE_ID);
 };
 

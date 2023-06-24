@@ -21,22 +21,20 @@ import PostService from "../service/post.service";
 import CorrectionService from "../service/correction.service";
 
 const PostDetailPage = () => {
-    const { slug } = useParams();
+    const params = useParams();
+    const slug = params.slug || "";
+
     const navigate = useNavigate();
 
     const [postQuery, correctionsQuery] = useQueries({
         queries: [
             {
                 queryKey: ["posts", slug],
-                // TODO:
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                queryFn: () => PostService.getPost(slug!),
+                queryFn: () => PostService.getPost(slug),
             },
             {
                 queryKey: ["corrections", slug],
-                // TODO:
-                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                queryFn: () => CorrectionService.getCorrectionsForPost(slug!),
+                queryFn: () => CorrectionService.getCorrectionsForPost(slug),
             },
         ],
     });

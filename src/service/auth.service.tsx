@@ -12,15 +12,11 @@ export interface IRegisterUser {
 }
 
 const login = async (username: string, password: string) => {
-    const resp = await api.post(`/token/`, { username, password });
-    console.log("🚀 ~ file: auth.service.tsx:7 ~ login ~ resp:", resp);
-    return resp;
+    return await api.post(`/token/`, { username, password });
 };
 
 const register = async (data: IRegisterUser) => {
-    const resp = await api.post(`users/~create`, data);
-    console.log("🚀 ~ file: auth.service.tsx:13 ~ register ~ resp:", resp);
-    return resp;
+    return await api.post(`users/~create`, data);
 };
 
 const AuthService = {
