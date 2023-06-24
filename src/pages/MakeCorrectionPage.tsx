@@ -1,11 +1,12 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
-import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { Box, Button, TextField, Typography } from "@mui/material";
 import CorrectionCard from "../components/corrections/CorrectionCard";
 import { ICorrection } from "../components/corrections/Correction";
 import React, { useState } from "react";
 import SnackBar from "../layouts/SnackBar";
+import CorrectionService from "../service/correction.service";
+import DraftService from "../service/draft.service";
 
 interface IFullCorrection extends ICorrection {
     is_published: string;
@@ -26,8 +27,9 @@ export interface ICorrectionDraft {
 }
 
 const MakeCorrectionPage = () => {
-    const { slug } = useParams();
-    const axiosPrivate = useAxiosPrivate();
+    const params = useParams();
+    const slug = params.slug || "";
+
     const queryClient = useQueryClient();
     const navigate = useNavigate();
 
@@ -35,23 +37,13 @@ const MakeCorrectionPage = () => {
     const overallFeedback = React.useRef<HTMLFormElement | undefined>();
 
     const query = useQuery(["makeCorrections", slug], () =>
-        axiosPrivate
-            .get(`/journals/${slug}/make-correction`)
-            .then((res) => {
-                // TODO: Check user permissions in RequireAuth?
-                if (res.data.message === "You can only make corrections for languages you speak."){
-                    navigate(`/journals/${slug}`);
-                }
-                console.log("🚀 ~ file: MakeCorrectionPage.tsx:41 ~ .then ~ res:", res);
-                return res.data
-            }),
+        CorrectionService.getMakeCorrection(slug),
     );
 
     const mutation = useMutation({
         mutationFn: async (data: ICorrectionDraft) => {
             setErrMsg(null);
-            const resp = await axiosPrivate.post("drafts/", data);
-            return resp?.data;
+            return await DraftService.createDraft(data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
@@ -69,7 +61,7 @@ const MakeCorrectionPage = () => {
             type: "correction" | "perfect";
         }) => {
             setErrMsg(null);
-            await axiosPrivate.post("corrections/delete", data);
+            await CorrectionService.deleteCorrection(data);
         },
         onSuccess: () => {
             queryClient.invalidateQueries({
@@ -90,10 +82,7 @@ const MakeCorrectionPage = () => {
         };
 
         try {
-            await axiosPrivate.post(
-                `/journals/${slug}/make-correction/`,
-                payload,
-            );
+            await CorrectionService.submitCorrections(slug, payload);
             queryClient.invalidateQueries(["makeCorrections", slug]);
             navigate(`/journals/${slug}`);
         } catch (err) {

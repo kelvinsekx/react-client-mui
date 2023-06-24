@@ -88,10 +88,7 @@ const CorrectionCard = ({
             setIsProcessed(false);
             reset();
         } catch (err) {
-            console.log(
-                "🚀 ~ file: CorrectionCard.tsx:88 ~ handleDeleteClick ~ err:",
-                err,
-            );
+            //    
         }
     };
 
