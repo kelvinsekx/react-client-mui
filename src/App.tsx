@@ -1,27 +1,17 @@
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import { BrowserRouter } from "react-router-dom";
-import RoutesList from "./RoutesList.tsx";
-import {
-    ColorModeContext,
-    useColorMode,
-    useRTL,
-    RTLContext,
-} from "./theme.tsx";
+import RoutesList from "./RoutesList";
+import { ColorModeContext, useColorMode } from "./theme";
+import { useRTL, RTLContext } from "./context/RTLProvider";
 import { CacheProvider } from "@emotion/react";
 import rtlPlugin from "stylis-plugin-rtl";
 
 import createCache from "@emotion/cache";
 import React, { useMemo } from "react";
-//@ts-ignore
 import { prefixer } from "stylis";
 
-const cacheRtl = createCache({
-    key: "muirtl",
-    stylisPlugins: [prefixer, rtlPlugin],
-});
-
 function App() {
-    let [theme, colorMode] = useColorMode();
+    const [theme, colorMode] = useColorMode();
     const [RTLTheme, RtlMode] = useRTL();
 
     const newTheme = {
@@ -29,18 +19,18 @@ function App() {
         ...RTLTheme,
     };
 
-    // this is the most important part
     const Container = useMemo(() => {
-        if (RTLTheme.direction === "rtl") {
-            return ({ children }: { children: React.ReactNode }) => (
-                <CacheProvider value={cacheRtl}>{children}</CacheProvider>
-            );
-        } else {
-            return ({ children }: { children: React.ReactNode }) => (
-                <>{children}</>
-            );
-        }
-    }, [newTheme]);
+        const isRTL = RTLTheme.direction === "rtl";
+
+        const cacheIsRtl = createCache({
+            key: isRTL ? "muirtl" : "muiltr",
+            stylisPlugins: isRTL ? [rtlPlugin, prefixer] : [],
+        });
+
+        return ({ children }: { children: React.ReactNode }) => (
+            <CacheProvider value={cacheIsRtl}>{children}</CacheProvider>
+        );
+    }, [RTLTheme.direction]);
 
     return (
         <ColorModeContext.Provider value={colorMode}>

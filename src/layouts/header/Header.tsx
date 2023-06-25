@@ -19,13 +19,14 @@ import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 
-import { ColorModeContext, RTLContext, useRTL } from "../../theme";
+import { ColorModeContext } from "../../theme";
+import { RTLContext } from "../../context/RTLProvider.js";
 
 interface Props {
     onNavOpen: () => void;
 }
 
-export default function Header({ onNavOpen }: Props) {
+const Header = ({ onNavOpen }: Props) => {
     const theme = useTheme();
     const colorMode = useContext(ColorModeContext);
     const isMediumScreen = useMediaQuery(theme.breakpoints.up("md"));
@@ -139,7 +140,9 @@ export default function Header({ onNavOpen }: Props) {
             </AppBar>
         </>
     );
-}
+};
+
+export default Header;
 
 const LangSettingPopOver = ({ children }: { children: React.ReactNode }) => {
     const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
