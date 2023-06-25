@@ -10,6 +10,7 @@ import RequireAuth from "./components/RequireAuth.tsx";
 import useAuth from "./hooks/useAuth.tsx";
 import CreatePostPage from "./pages/CreatePostPage.tsx";
 import NotFoundPage from "./pages/NotFoundPage.tsx";
+import MakeCorrectionPage from "./pages/MakeCorrectionPage.tsx";
 
 const RoutesList = () => {
     const authContext = useAuth();
@@ -76,6 +77,10 @@ const RoutesList = () => {
                     <Route path="teach" element={<PostPage mode="teach" />} />
                     <Route path="learn" element={<PostPage mode="learn" />} />
                     <Route path="create/post" element={<CreatePostPage />} />
+                    <Route
+                        path="journals/:slug/make-corrections"
+                        element={<MakeCorrectionPage />}
+                    />
                 </Route>
             </Route>
 
